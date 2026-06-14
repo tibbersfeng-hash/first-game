@@ -30,12 +30,14 @@ Systems Design
 
 - [x] Dungeon Flow System GDD (`design/gdd/dungeon-flow.md`)
 
+- [x] HUD System GDD (`design/gdd/hud.md`)
+
 ## In Progress
-- Systems Design: 8/9 MVP GDD 完成
+- Systems Design: **9/9 MVP GDD 全部完成!** 🎉
 
 ## Next Steps
-1. `/design-system hud` — 最后1个MVP GDD!
-2. `/review-all-gdds` — 全系统交叉审查
-3. `/gate-check` — 阶段门验证
+1. `/review-all-gdds` — 全系统交叉审查
+2. `/gate-check` — Systems Design→Technical Setup 阶段门
+3. `/create-architecture` — 进入 Technical Setup
 4. `/review-all-gdds` — 全系统交叉审查
 4. `/review-all-gdds` — 全系统交叉审查
