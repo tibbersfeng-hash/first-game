@@ -8,7 +8,7 @@ var _velocity: Vector2 = Vector2.ZERO
 var _lifetime: float = 0.0
 
 func spawn(pos: Vector2, damage: int, attack_type: int, is_crit: bool = false) -> void:
-	position = pos + Vector2(randf_range(-CombatData.DMG_NUMBER_SPREAD, CombatData.DMG_NUMBER_SPREAD), 0)
+	global_position = pos + Vector2(randf_range(-CombatData.DMG_NUMBER_SPREAD, CombatData.DMG_NUMBER_SPREAD), 0)
 	text = str(damage)
 	_velocity = Vector2(0, CombatData.DMG_NUMBER_RISE_SPEED)
 	_lifetime = CombatData.DMG_NUMBER_LIFETIME
@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 
-	position += _velocity * delta
+	global_position += _velocity * delta
 	_velocity.y *= 0.97  # slow down rise
 
 	# Fade out in last 30% of lifetime

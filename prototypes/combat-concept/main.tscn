@@ -1,7 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1"]
 [ext_resource type="Script" path="res://dummy_enemy.gd" id="2"]
+[ext_resource type="Script" path="res://combo_manager.gd" id="3"]
+[ext_resource type="Script" path="res://hit_stop_manager.gd" id="4"]
+[ext_resource type="Script" path="res://screen_shake.gd" id="5"]
+[ext_resource type="Script" path="res://combat_data.gd" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1400, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(40, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(50, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dummy"]
+size = Vector2(50, 55)
 
 [node name="Main" type="Node2D"]
 
@@ -64,18 +80,18 @@ shape = SubResource("RectangleShape2D_hitbox")
 disabled = true
 
 [node name="ComboManager" type="Node" parent="Player"]
-script = ExtResource("1_combo")
+script = ExtResource("3")
 
 [node name="HitStopManager" type="Node" parent="Player"]
-script = ExtResource("1_hitstop")
+script = ExtResource("4")
 
 [node name="AttackTimer" type="Timer" parent="Player"]
 one_shot = true
 
 [node name="ComboLabel" type="Label" parent="Player"]
-offset_left = -40
+offset_left = -50
 offset_top = -80
-offset_right = 40
+offset_right = 50
 offset_bottom = -60
 horizontal_alignment = 1
 text = ""
@@ -114,7 +130,7 @@ text = "DUMMY"
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -50)
 zoom = Vector2(1.2, 1.2)
-script = ExtResource("screen_shake")
+script = ExtResource("5")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -126,3 +142,9 @@ offset_bottom = 120.0
 text = "A/D - Move | W - Jump
 J - Light Attack | K - Heavy Attack | L - Special
 Combos: J-J-K-L (basic) | J-J-J (quick) | K-L (power)"
+
+[connection signal="combo_step" from="Player/ComboManager" to="Player" method="_on_combo_step"]
+[connection signal="combo_finished" from="Player/ComboManager" to="Player" method="_on_combo_finished"]
+[connection signal="combo_dropped" from="Player/ComboManager" to="Player" method="_on_combo_dropped"]
+[connection signal="timeout" from="Player/AttackTimer" to="Player" method="_on_attack_timer_timeout"]
+[connection signal="body_entered" from="Player/HitboxPivot/HitboxArea" to="Player" method="_on_hitbox_area_body_entered"]
