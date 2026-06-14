@@ -15,10 +15,10 @@ Systems Design
 - [x] Input System GDD (`design/gdd/input-system.md`)
 
 ## In Progress
-- Systems Design: 1/9 MVP GDD 完成
+- Systems Design: 2/9 MVP GDD 完成
 
 ## Next Steps
-1. `/design-system player-controller` — 第2个GDD
-2. `/design-system hit-detection-feedback` — 第3个GDD
+1. `/design-system hit-detection-feedback` — 第3个GDD
+2. `/design-system combat-system` — 第4个GDD
 3. 继续完成剩余7个MVP系统GDD
 4. `/review-all-gdds` — 全系统交叉审查
