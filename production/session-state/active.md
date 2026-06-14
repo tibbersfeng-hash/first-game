@@ -26,12 +26,14 @@ Systems Design
 
 - [x] Enemy AI GDD (`design/gdd/enemy-ai.md`)
 
+- [x] Dungeon Room System GDD (`design/gdd/dungeon-room.md`)
+
 ## In Progress
-- Systems Design: 6/9 MVP GDD 完成
+- Systems Design: 7/9 MVP GDD 完成
 
 ## Next Steps
-1. `/design-system dungeon-room` — 第7个GDD
-2. `/design-system dungeon-flow` — 第8个GDD
-3. `/design-system hud` — 第9个GDD
+1. `/design-system dungeon-flow` — 第8个GDD
+2. `/design-system hud` — 第9个GDD
+3. `/review-all-gdds` — 全系统交叉审查
 4. `/review-all-gdds` — 全系统交叉审查
 4. `/review-all-gdds` — 全系统交叉审查
