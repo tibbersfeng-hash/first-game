@@ -5,14 +5,13 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]
-- **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint]
+- **Engine**: Godot 4.6.3
+- **Language**: GDScript (主语言) + C# (可选性能模块)
 - **Version Control**: Git with trunk-based development
-- **Build System**: [SPECIFY after choosing engine]
-- **Asset Pipeline**: [SPECIFY after choosing engine]
+- **Build System**: Godot Editor export
+- **Asset Pipeline**: Godot import (sprites, audio, shaders)
 
-> **Note**: Engine-specialist agents exist for Godot, Unity, and Unreal with
-> dedicated sub-specialists. Use the set matching your engine.
+> **Note**: Using Godot specialist agent set — godot-specialist, godot-gdscript-specialist, godot-shader-specialist, godot-gdextension-specialist.
 
 ## Project Structure
 
@@ -42,8 +41,8 @@ Every task follows: **Question -> Options -> Decision -> Draft -> Approval**
 
 See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
-> **First session?** If the project has no engine configured and no game concept,
-> run `/start` to begin the guided onboarding flow.
+> **Game: 格斗萌主** — Q版2D横版格斗闯关游戏（类DNF）。引擎已配置，概念已确立。
+> 继续开发使用: `/brainstorm` `/map-systems` `/design-system` `/prototype` `/dev-story`
 
 ## Coding Standards
 

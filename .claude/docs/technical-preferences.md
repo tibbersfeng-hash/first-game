@@ -5,54 +5,53 @@
 
 ## Engine & Language
 
-- **Engine**: [TO BE CONFIGURED — run /setup-engine]
-- **Language**: [TO BE CONFIGURED]
-- **Rendering**: [TO BE CONFIGURED]
-- **Physics**: [TO BE CONFIGURED]
+- **Engine**: Godot 4.6.3
+- **Language**: GDScript (主语言) + C# (可选，用于性能关键模块)
+- **Rendering**: GLES3 (2D项目使用Forward+以获取完整着色器支持)
+- **Physics**: Godot Physics (2D内置) / Jolt (4.6默认)
 
 ## Input & Platform
 
-<!-- Written by /setup-engine. Read by /ux-design, /ux-review, /test-setup, /team-ui, and /dev-story -->
-<!-- to scope interaction specs, test helpers, and implementation to the correct input methods. -->
-
-- **Target Platforms**: [TO BE CONFIGURED — e.g., PC, Console, Mobile, Web]
-- **Input Methods**: [TO BE CONFIGURED — e.g., Keyboard/Mouse, Gamepad, Touch, Mixed]
-- **Primary Input**: [TO BE CONFIGURED — the dominant input for this game]
-- **Gamepad Support**: [TO BE CONFIGURED — Full / Partial / None]
-- **Touch Support**: [TO BE CONFIGURED — Full / Partial / None]
-- **Platform Notes**: [TO BE CONFIGURED — any platform-specific UX constraints]
+- **Target Platforms**: PC (Steam/Epic)
+- **Input Methods**: Keyboard/Mouse + Gamepad
+- **Primary Input**: Keyboard (连招搓招)，Gamepad 作为完整替代
+- **Gamepad Support**: Full — 所有操作均可通过手柄完成
+- **Touch Support**: None
+- **Platform Notes**: PC首版，后期考虑移动端移植需重新设计输入
 
 ## Naming Conventions
 
-- **Classes**: [TO BE CONFIGURED]
-- **Variables**: [TO BE CONFIGURED]
-- **Signals/Events**: [TO BE CONFIGURED]
-- **Files**: [TO BE CONFIGURED]
-- **Scenes/Prefabs**: [TO BE CONFIGURED]
-- **Constants**: [TO BE CONFIGURED]
+- **Classes**: PascalCase — `PlayerController`, `ComboManager`, `DungeonRoom`
+- **Variables**: snake_case — `combo_count`, `base_damage`, `move_speed`
+- **Signals/Events**: snake_case 过去式 — `hit_landed`, `combo_finished`, `room_cleared`
+- **Files**: snake_case — `player_controller.gd`, `combo_manager.gd`
+- **Scenes/Prefabs**: PascalCase — `Player.tscn`, `DungeonRoom.tscn`, `BossGoblin.tscn`
+- **Constants**: UPPER_SNAKE_CASE — `MAX_COMBO_COUNT`, `BASE_DAMAGE`, `HIT_STOP_FRAMES`
 
 ## Performance Budgets
 
-- **Target Framerate**: [TO BE CONFIGURED]
-- **Frame Budget**: [TO BE CONFIGURED]
-- **Draw Calls**: [TO BE CONFIGURED]
-- **Memory Ceiling**: [TO BE CONFIGURED]
+- **Target Framerate**: 60 FPS (战斗场景必须稳定)
+- **Frame Budget**: 16.67ms — 战斗逻辑不超过 5ms，渲染不超过 10ms
+- **Draw Calls**: < 100 per frame (2D精灵场景)
+- **Memory Ceiling**: < 512MB
 
 ## Testing
 
-- **Framework**: [TO BE CONFIGURED]
-- **Minimum Coverage**: [TO BE CONFIGURED]
-- **Required Tests**: Balance formulas, gameplay systems, networking (if applicable)
+- **Framework**: GUT (Godot Unit Testing) + 手动场景测试
+- **Minimum Coverage**: 80% 核心战斗逻辑（连招判定、伤害计算、状态机）
+- **Required Tests**: 连招判定公式、伤害计算、状态机转换、装备词缀组合
 
 ## Forbidden Patterns
 
-<!-- Add patterns that should never appear in this project's codebase -->
-- [None configured yet — add as architectural decisions are made]
+- 不在 `_process()` 中做复杂计算 — 战斗逻辑用 `_physics_process()`
+- 不硬编码游戏数值 — 必须从 Resource/JSON 配置加载
+- 不在角色脚本中直接操作 UI — 使用信号解耦
+- 不使用 `call_deferred` 绕过生命周期问题 — 正确重构架构
 
 ## Allowed Libraries / Addons
 
-<!-- Add approved third-party dependencies here -->
-- [None configured yet — add as dependencies are approved]
+- GUT (Godot Unit Testing)
+- Godot 4.6 内置功能（Tween, AnimationPlayer, StateMachine 等）
 
 ## Architecture Decisions Log
 
@@ -61,27 +60,20 @@
 
 ## Engine Specialists
 
-<!-- Written by /setup-engine when engine is configured. -->
-<!-- Read by /code-review, /architecture-decision, /architecture-review, and team skills -->
-<!-- to know which specialist to spawn for engine-specific validation. -->
-
-- **Primary**: [TO BE CONFIGURED — run /setup-engine]
-- **Language/Code Specialist**: [TO BE CONFIGURED]
-- **Shader Specialist**: [TO BE CONFIGURED]
-- **UI Specialist**: [TO BE CONFIGURED]
-- **Additional Specialists**: [TO BE CONFIGURED]
-- **Routing Notes**: [TO BE CONFIGURED]
+- **Primary**: godot-specialist
+- **Language/Code Specialist**: godot-gdscript-specialist
+- **Shader Specialist**: godot-shader-specialist
+- **UI Specialist**: godot-specialist (Godot UI 使用内置节点)
+- **Additional Specialists**: godot-gdextension-specialist (如需C++性能模块)
+- **Routing Notes**: 2D项目为主，shader需求集中在对打击反馈特效和技能视觉效果
 
 ### File Extension Routing
 
-<!-- Skills use this table to select the right specialist per file type. -->
-<!-- If a row says [TO BE CONFIGURED], fall back to Primary for that file type. -->
-
 | File Extension / Type | Specialist to Spawn |
 |-----------------------|---------------------|
-| Game code (primary language) | [TO BE CONFIGURED] |
-| Shader / material files | [TO BE CONFIGURED] |
-| UI / screen files | [TO BE CONFIGURED] |
-| Scene / prefab / level files | [TO BE CONFIGURED] |
-| Native extension / plugin files | [TO BE CONFIGURED] |
-| General architecture review | Primary |
+| Game code (.gd) | godot-gdscript-specialist |
+| Shader / material files (.gdshader) | godot-shader-specialist |
+| UI / screen files (.tscn + Control节点) | godot-specialist |
+| Scene / prefab / level files (.tscn) | godot-specialist |
+| Native extension / plugin files (.cpp/.gdextension) | godot-gdextension-specialist |
+| General architecture review | godot-specialist |
