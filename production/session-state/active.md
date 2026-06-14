@@ -28,12 +28,14 @@ Systems Design
 
 - [x] Dungeon Room System GDD (`design/gdd/dungeon-room.md`)
 
+- [x] Dungeon Flow System GDD (`design/gdd/dungeon-flow.md`)
+
 ## In Progress
-- Systems Design: 7/9 MVP GDD 完成
+- Systems Design: 8/9 MVP GDD 完成
 
 ## Next Steps
-1. `/design-system dungeon-flow` — 第8个GDD
-2. `/design-system hud` — 第9个GDD
-3. `/review-all-gdds` — 全系统交叉审查
+1. `/design-system hud` — 最后1个MVP GDD!
+2. `/review-all-gdds` — 全系统交叉审查
+3. `/gate-check` — 阶段门验证
 4. `/review-all-gdds` — 全系统交叉审查
 4. `/review-all-gdds` — 全系统交叉审查
