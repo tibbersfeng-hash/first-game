@@ -10,12 +10,12 @@ Concept
 - [x] 引擎配置 Godot 4.6.3 (`.claude/docs/technical-preferences.md`)
 - [x] 战斗原型代码 (`prototypes/combat-concept/`)
 - [x] 修复原型场景文件引用问题
+- [x] 美术圣经 (`design/art/art-bible.md`)
 
 ## In Progress
-- 战斗原型 Godot 运行验证（需用户在本地 Godot 打开测试）
+- Concept 阶段收尾：还需 `/map-systems`
 
 ## Next Steps
-1. 用户在 Godot 中验证原型可运行
-2. `/art-bible` — 创建美术圣经
-3. `/map-systems` — 系统拆解
-4. `/design-system` — GDD 编写
+1. `/map-systems` — 系统拆解与依赖排序
+2. `/design-system` — 逐系统编写 GDD
+3. `/gate-check` — Concept 阶段门验证
