@@ -3,7 +3,7 @@
 *Last updated: 2026-06-15*
 
 ## Current Phase
-Systems Design
+Technical Setup
 
 ## Completed
 - [x] 游戏概念文档 (`design/gdd/game-concept.md`)
@@ -33,11 +33,14 @@ Systems Design
 - [x] HUD System GDD (`design/gdd/hud.md`)
 
 ## In Progress
-- Systems Design: **9/9 MVP GDD 全部完成!** 🎉
+- [x] Architecture Document (`docs/architecture/architecture.md`)
+
+## In Progress
+- Technical Setup: Architecture done, need ADRs + control manifest
 
 ## Next Steps
-1. `/review-all-gdds` — 全系统交叉审查
-2. `/gate-check` — Systems Design→Technical Setup 阶段门
-3. `/create-architecture` — 进入 Technical Setup
+1. `/architecture-decision` — 编写 ADR 文件(至少3份)
+2. `/create-control-manifest` — 编译决策为规则表
+3. `/architecture-review` — 验证架构完整性
 4. `/review-all-gdds` — 全系统交叉审查
 4. `/review-all-gdds` — 全系统交叉审查
