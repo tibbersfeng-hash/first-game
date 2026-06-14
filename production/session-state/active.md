@@ -13,9 +13,10 @@ Concept
 - [x] 美术圣经 (`design/art/art-bible.md`)
 
 ## In Progress
-- Concept 阶段收尾：还需 `/map-systems`
+- Concept 阶段完成，准备进入 Systems Design
 
 ## Next Steps
-1. `/map-systems` — 系统拆解与依赖排序
-2. `/design-system` — 逐系统编写 GDD
-3. `/gate-check` — Concept 阶段门验证
+1. `/design-system input-system` — 第一个GDD
+2. `/design-system player-controller` — 第二个GDD
+3. 逐个完成9个MVP系统GDD
+4. `/gate-check` — Concept→Systems Design 阶段门
