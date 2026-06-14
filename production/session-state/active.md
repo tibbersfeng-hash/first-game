@@ -3,7 +3,7 @@
 *Last updated: 2026-06-15*
 
 ## Current Phase
-Concept
+Systems Design
 
 ## Completed
 - [x] 游戏概念文档 (`design/gdd/game-concept.md`)
@@ -11,12 +11,14 @@ Concept
 - [x] 战斗原型代码 (`prototypes/combat-concept/`)
 - [x] 修复原型场景文件引用问题
 - [x] 美术圣经 (`design/art/art-bible.md`)
+- [x] 系统拆解 (`design/gdd/systems-index.md`)
+- [x] Input System GDD (`design/gdd/input-system.md`)
 
 ## In Progress
-- Concept 阶段完成，准备进入 Systems Design
+- Systems Design: 1/9 MVP GDD 完成
 
 ## Next Steps
-1. `/design-system input-system` — 第一个GDD
-2. `/design-system player-controller` — 第二个GDD
-3. 逐个完成9个MVP系统GDD
-4. `/gate-check` — Concept→Systems Design 阶段门
+1. `/design-system player-controller` — 第2个GDD
+2. `/design-system hit-detection-feedback` — 第3个GDD
+3. 继续完成剩余7个MVP系统GDD
+4. `/review-all-gdds` — 全系统交叉审查
