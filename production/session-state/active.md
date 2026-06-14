@@ -22,10 +22,13 @@ Systems Design
 - [x] Combat System GDD (`design/gdd/combat-system.md`)
 
 ## In Progress
-- Systems Design: 4/9 MVP GDD 完成
+- [x] Combo System GDD (`design/gdd/combo-system.md`)
+
+## In Progress
+- Systems Design: 5/9 MVP GDD 完成
 
 ## Next Steps
-1. `/design-system combo-system` — 第5个GDD
-2. `/design-system enemy-ai` — 第6个GDD
-3. 继续完成剩余5个MVP系统GDD
+1. `/design-system enemy-ai` — 第6个GDD
+2. `/design-system dungeon-room` — 第7个GDD
+3. 继续完成剩余4个MVP系统GDD
 4. `/review-all-gdds` — 全系统交叉审查
