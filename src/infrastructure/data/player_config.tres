@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PlayerConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/infrastructure/data/player_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+move_speed = 300.0
+jump_velocity = -500.0
+gravity = 980.0
+attack_push_speed = 50.0
+combo_damage_bonus_pct = 0.1
+crit_chance = 0.15
+crit_multiplier = 1.5
+air_control_ratio = 0.7
+coyote_time_frames = 5
+jump_buffer_frames = 9

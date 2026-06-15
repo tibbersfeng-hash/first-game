@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="ComboData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/infrastructure/data/combo_data.gd" id="1"]
+[ext_resource type="Script" path="res://src/infrastructure/data/attack_data.gd" id="2"]
+
+[sub_resource type="Resource" id="AttackData_basic_1"]
+script = ExtResource("2")
+attack_id = "basic_light_1"
+display_name = "轻攻1"
+type = 0
+damage = 10
+startup_frames = 2
+active_frames = 2
+recovery_frames = 3
+energy_cost = 0
+energy_gain_on_hit = 5
+cancel_priority = 1
+hit_stop_frames = 3
+shake_intensity = 0.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(50, 40)
+window_frames = 18
+anim_name = "light_1"
+
+[sub_resource type="Resource" id="AttackData_basic_2"]
+script = ExtResource("2")
+attack_id = "basic_light_2"
+display_name = "轻攻2"
+type = 0
+damage = 12
+startup_frames = 2
+active_frames = 2
+recovery_frames = 3
+energy_cost = 0
+energy_gain_on_hit = 5
+cancel_priority = 2
+hit_stop_frames = 4
+shake_intensity = 1.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(50, 40)
+window_frames = 15
+anim_name = "light_2"
+
+[sub_resource type="Resource" id="AttackData_basic_3"]
+script = ExtResource("2")
+attack_id = "basic_heavy"
+display_name = "重击"
+type = 1
+damage = 25
+startup_frames = 4
+active_frames = 3
+recovery_frames = 8
+energy_cost = 5
+energy_gain_on_hit = 8
+cancel_priority = 3
+hit_stop_frames = 8
+shake_intensity = 4.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(60, 45)
+window_frames = 24
+anim_name = "heavy"
+
+[sub_resource type="Resource" id="AttackData_basic_4"]
+script = ExtResource("2")
+attack_id = "basic_special"
+display_name = "必杀"
+type = 2
+damage = 50
+startup_frames = 5
+active_frames = 5
+recovery_frames = 14
+energy_cost = 30
+energy_gain_on_hit = 0
+cancel_priority = 4
+hit_stop_frames = 12
+shake_intensity = 8.0
+hitbox_offset = Vector2(40, -25)
+hitbox_size = Vector2(70, 50)
+window_frames = 0
+anim_name = "special"
+
+[resource]
+script = ExtResource("1")
+combo_id = "basic"
+display_name = "基础连"
+chain_name = "basic"
+steps = [SubResource("AttackData_basic_1"), SubResource("AttackData_basic_2"), SubResource("AttackData_basic_3"), SubResource("AttackData_basic_4")]
+timeout_frames = 48
+cancel_window_pct = 0.5
+bonus_damage_pct = 0.0

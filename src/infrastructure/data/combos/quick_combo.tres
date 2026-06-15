@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="ComboData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/infrastructure/data/combo_data.gd" id="1"]
+[ext_resource type="Script" path="res://src/infrastructure/data/attack_data.gd" id="2"]
+
+[sub_resource type="Resource" id="AttackData_quick_1"]
+script = ExtResource("2")
+attack_id = "quick_light_1"
+display_name = "速轻1"
+type = 0
+damage = 8
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
+energy_cost = 0
+energy_gain_on_hit = 4
+cancel_priority = 1
+hit_stop_frames = 2
+shake_intensity = 0.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(50, 40)
+window_frames = 12
+anim_name = "light_1"
+
+[sub_resource type="Resource" id="AttackData_quick_2"]
+script = ExtResource("2")
+attack_id = "quick_light_2"
+display_name = "速轻2"
+type = 0
+damage = 8
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
+energy_cost = 0
+energy_gain_on_hit = 4
+cancel_priority = 2
+hit_stop_frames = 2
+shake_intensity = 0.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(50, 40)
+window_frames = 12
+anim_name = "light_2"
+
+[sub_resource type="Resource" id="AttackData_quick_3"]
+script = ExtResource("2")
+attack_id = "quick_light_3"
+display_name = "速轻收尾"
+type = 0
+damage = 15
+startup_frames = 2
+active_frames = 3
+recovery_frames = 4
+energy_cost = 0
+energy_gain_on_hit = 6
+cancel_priority = 3
+hit_stop_frames = 5
+shake_intensity = 2.0
+hitbox_offset = Vector2(30, -20)
+hitbox_size = Vector2(55, 42)
+window_frames = 0
+anim_name = "light_3"
+
+[resource]
+script = ExtResource("1")
+combo_id = "quick"
+display_name = "速连"
+chain_name = "quick"
+steps = [SubResource("AttackData_quick_1"), SubResource("AttackData_quick_2"), SubResource("AttackData_quick_3")]
+timeout_frames = 48
+cancel_window_pct = 0.5
+bonus_damage_pct = 0.0
