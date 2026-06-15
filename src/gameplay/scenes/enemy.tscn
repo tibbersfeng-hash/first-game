@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/gameplay/enemies/base_enemy.gd" id="1"]
+[ext_resource type="Script" path="res://src/core/hit_detection/hurtbox_component.gd" id="2"]
+[ext_resource type="Script" path="res://src/core/state_machine/state_machine.gd" id="3"]
+[ext_resource type="Script" path="res://src/gameplay/enemies/states/enemy_idle_state.gd" id="4"]
+[ext_resource type="Script" path="res://src/gameplay/enemies/states/enemy_hit_stun_state.gd" id="5"]
+[ext_resource type="Script" path="res://src/gameplay/enemies/states/enemy_dead_state.gd" id="6"]
+[ext_resource type="Script" path="res://src/core/components/health_component.gd" id="7"]
+[ext_resource type="Script" path="res://src/core/components/movement_component.gd" id="8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy"]
 size = Vector2(50, 55)
@@ -25,29 +32,29 @@ shape = SubResource("RectangleShape2D_enemy")
 [node name="HurtboxComponent" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 4
-script = preload("res://src/core/hit_detection/hurtbox_component.gd")
+script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 shape = SubResource("RectangleShape2D_enemy")
 
 [node name="StateMachine" type="Node" parent="."]
-script = preload("res://src/core/state_machine/state_machine.gd")
+script = ExtResource("3")
 initial_state_name = "Idle"
 
 [node name="Idle" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/enemies/states/enemy_idle_state.gd")
+script = ExtResource("4")
 
 [node name="HitStun" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/enemies/states/enemy_hit_stun_state.gd")
+script = ExtResource("5")
 
 [node name="Dead" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/enemies/states/enemy_dead_state.gd")
+script = ExtResource("6")
 
 [node name="HealthComponent" type="Node" parent="."]
-script = preload("res://src/core/components/health_component.gd")
+script = ExtResource("7")
 
 [node name="MovementComponent" type="Node" parent="."]
-script = preload("res://src/core/components/movement_component.gd")
+script = ExtResource("8")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -30.0

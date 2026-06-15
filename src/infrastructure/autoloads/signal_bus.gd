@@ -2,7 +2,6 @@
 ## Stateless: only declares and forwards signals. No game state.
 ## Signal naming convention: player_, combo_, enemy_, hit_/attack_/damage_, room_/dungeon_, game_
 ## All signals have 4 or fewer parameters per ADR-003 constraint.
-class_name SignalBus
 extends Node
 
 # ─── Player state ───

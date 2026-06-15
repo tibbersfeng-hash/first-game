@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://src/gameplay/player/player.gd" id="1"]
+[ext_resource type="Script" path="res://src/core/hit_detection/hitbox_component.gd" id="2"]
+[ext_resource type="Script" path="res://src/core/state_machine/state_machine.gd" id="3"]
+[ext_resource type="Script" path="res://src/gameplay/player/states/player_idle_state.gd" id="4"]
+[ext_resource type="Script" path="res://src/gameplay/player/states/player_run_state.gd" id="5"]
+[ext_resource type="Script" path="res://src/gameplay/player/states/player_jump_state.gd" id="6"]
+[ext_resource type="Script" path="res://src/gameplay/player/states/player_attack_state.gd" id="7"]
+[ext_resource type="Script" path="res://src/gameplay/player/states/player_hit_stun_state.gd" id="8"]
+[ext_resource type="Script" path="res://src/core/input/input_buffer.gd" id="9"]
+[ext_resource type="Script" path="res://src/core/components/movement_component.gd" id="10"]
+[ext_resource type="Script" path="res://src/core/components/health_component.gd" id="11"]
+[ext_resource type="Script" path="res://src/core/components/energy_component.gd" id="12"]
+[ext_resource type="Script" path="res://src/gameplay/combat/combo_manager.gd" id="13"]
+[ext_resource type="Script" path="res://src/gameplay/combat/hit_stop_manager.gd" id="14"]
+[ext_resource type="Script" path="res://src/core/hit_detection/hit_manager.gd" id="15"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(40, 50)
@@ -25,14 +39,14 @@ offset_left = -8.0
 offset_top = -40.0
 offset_right = -3.0
 offset_bottom = -30.0
-color = Color.WHITE
+color = Color(1, 1, 1, 1)
 
 [node name="Eyes2" type="ColorRect" parent="VisualPivot/BodySprite"]
 offset_left = 3.0
 offset_top = -40.0
 offset_right = 8.0
 offset_bottom = -30.0
-color = Color.WHITE
+color = Color(1, 1, 1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_player")
@@ -42,51 +56,51 @@ shape = SubResource("RectangleShape2D_player")
 [node name="HitboxComponent" type="Area2D" parent="HitboxPivot"]
 collision_layer = 4
 collision_mask = 2
-script = preload("res://src/core/hit_detection/hitbox_component.gd")
+script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxPivot/HitboxComponent"]
 shape = SubResource("RectangleShape2D_hitbox")
 disabled = true
 
 [node name="StateMachine" type="Node" parent="."]
-script = preload("res://src/core/state_machine/state_machine.gd")
+script = ExtResource("3")
 initial_state_name = "Idle"
 
 [node name="Idle" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/player/states/player_idle_state.gd")
+script = ExtResource("4")
 
 [node name="Run" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/player/states/player_run_state.gd")
+script = ExtResource("5")
 
 [node name="Jump" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/player/states/player_jump_state.gd")
+script = ExtResource("6")
 
 [node name="Attack" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/player/states/player_attack_state.gd")
+script = ExtResource("7")
 
 [node name="HitStun" type="Node" parent="StateMachine"]
-script = preload("res://src/gameplay/player/states/player_hit_stun_state.gd")
+script = ExtResource("8")
 
 [node name="InputBuffer" type="Node" parent="."]
-script = preload("res://src/core/input/input_buffer.gd")
+script = ExtResource("9")
 
 [node name="MovementComponent" type="Node" parent="."]
-script = preload("res://src/core/components/movement_component.gd")
+script = ExtResource("10")
 
 [node name="HealthComponent" type="Node" parent="."]
-script = preload("res://src/core/components/health_component.gd")
+script = ExtResource("11")
 
 [node name="EnergyComponent" type="Node" parent="."]
-script = preload("res://src/core/components/energy_component.gd")
+script = ExtResource("12")
 
 [node name="ComboManager" type="Node" parent="."]
-script = preload("res://src/gameplay/combat/combo_manager.gd")
+script = ExtResource("13")
 
 [node name="HitStopManager" type="Node" parent="."]
-script = preload("res://src/gameplay/combat/hit_stop_manager.gd")
+script = ExtResource("14")
 
 [node name="HitManager" type="Node" parent="."]
-script = preload("res://src/core/hit_detection/hit_manager.gd")
+script = ExtResource("15")
 
 [node name="ComboLabel" type="Label" parent="."]
 offset_left = -50

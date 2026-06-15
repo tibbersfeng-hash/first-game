@@ -2,7 +2,6 @@
 ## All data loaded from .tres Resources via preload (ADR-004).
 ## No runtime modification allowed.
 ## Autoload load order: CombatData first (ADR-002).
-class_name CombatData
 extends Node
 
 enum AttackType { LIGHT, HEAVY, SPECIAL }

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://src/gameplay/scenes/player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://src/gameplay/scenes/enemy.tscn" id="2"]
+[ext_resource type="Script" path="res://src/presentation/effects/screen_shake.gd" id="3"]
+[ext_resource type="Script" path="res://src/presentation/effects/damage_number_pool.gd" id="4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1400, 100)
@@ -38,10 +40,10 @@ position = Vector2(200, 200)
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -50)
 zoom = Vector2(1.2, 1.2)
-script = preload("res://src/presentation/effects/screen_shake.gd")
+script = ExtResource("3")
 
 [node name="DamageNumberPool" type="Node" parent="."]
-script = preload("res://src/presentation/effects/damage_number_pool.gd")
+script = ExtResource("4")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

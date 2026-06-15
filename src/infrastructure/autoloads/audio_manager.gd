@@ -1,7 +1,6 @@
 ## Audio playback autoload (ADR-002: command-only).
 ## Accepts play requests, never calls back into business logic.
 ## Uses a pool of AudioStreamPlayer nodes for concurrent SFX playback.
-class_name AudioManager
 extends Node
 
 var _sfx_players: Array[AudioStreamPlayer] = []

@@ -1,7 +1,6 @@
 ## Game state management autoload (ADR-002).
 ## Sole writer of game state. Other systems notify via signals.
 ## GameManager does NOT reference other Autoloads directly (ADR-002).
-class_name GameManager
 extends Node
 
 signal game_state_changed(new_state: String)
