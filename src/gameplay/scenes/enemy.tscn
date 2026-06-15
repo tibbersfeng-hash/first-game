@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/gameplay/enemies/base_enemy.gd" id="1"]
 [ext_resource type="Script" path="res://src/core/hit_detection/hurtbox_component.gd" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://src/gameplay/enemies/states/enemy_dead_state.gd" id="6"]
 [ext_resource type="Script" path="res://src/core/components/health_component.gd" id="7"]
 [ext_resource type="Script" path="res://src/core/components/movement_component.gd" id="8"]
+[ext_resource type="Script" path="res://src/presentation/visuals/character_visual.gd" id="9"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy"]
 size = Vector2(50, 55)
@@ -20,11 +21,18 @@ enemy_data_id = "goblin"
 [node name="VisualPivot" type="Node2D" parent="."]
 
 [node name="BodySprite" type="ColorRect" parent="VisualPivot"]
+visible = false
 offset_left = -25.0
 offset_top = -55.0
 offset_right = 25.0
 offset_bottom = 0.0
 color = Color(0.9, 0.3, 0.3, 1)
+
+[node name="CharacterVisual" type="Node2D" parent="VisualPivot"]
+script = ExtResource("9")
+body_color = Color(0.9, 0.3, 0.3, 1)
+is_enemy = true
+scale_factor = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_enemy")
