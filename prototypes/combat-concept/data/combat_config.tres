@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CombatConfig" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/combat_config.gd" id="1"]
+[ext_resource type="Resource" path="res://data/player_config.tres" id="2"]
+[ext_resource type="Resource" path="res://data/enemy_config.tres" id="3"]
+[ext_resource type="Resource" path="res://data/damage_number_config.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+hit_stop_time_scale = 0.0
+player_config = ExtResource("2")
+enemy_config = ExtResource("3")
+damage_number_config = ExtResource("4")

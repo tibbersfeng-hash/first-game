@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="ComboChainData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/combo_chain_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/attack_step_data.gd" id="2"]
+
+[sub_resource type="Resource" id="AttackStepData_basic_1"]
+script = ExtResource("2")
+type = 0
+damage = 10
+hit_stop_frames = 3
+shake_intensity = 0.0
+anim_name = "light_1"
+window_frames = 18
+startup_frames = 2
+active_frames = 2
+recovery_frames = 3
+
+[sub_resource type="Resource" id="AttackStepData_basic_2"]
+script = ExtResource("2")
+type = 0
+damage = 12
+hit_stop_frames = 4
+shake_intensity = 1.0
+anim_name = "light_2"
+window_frames = 15
+startup_frames = 2
+active_frames = 2
+recovery_frames = 3
+
+[sub_resource type="Resource" id="AttackStepData_basic_3"]
+script = ExtResource("2")
+type = 1
+damage = 25
+hit_stop_frames = 8
+shake_intensity = 4.0
+anim_name = "heavy"
+window_frames = 24
+startup_frames = 4
+active_frames = 3
+recovery_frames = 8
+
+[sub_resource type="Resource" id="AttackStepData_basic_4"]
+script = ExtResource("2")
+type = 2
+damage = 50
+hit_stop_frames = 12
+shake_intensity = 8.0
+anim_name = "special"
+window_frames = 0
+startup_frames = 5
+active_frames = 5
+recovery_frames = 14
+
+[resource]
+script = ExtResource("1")
+chain_name = "basic"
+display_name = "基础连"
+steps = [SubResource("AttackStepData_basic_1"), SubResource("AttackStepData_basic_2"), SubResource("AttackStepData_basic_3"), SubResource("AttackStepData_basic_4")]
+timeout_frames = 48

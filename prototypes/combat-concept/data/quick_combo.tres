@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="ComboChainData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/combo_chain_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/attack_step_data.gd" id="2"]
+
+[sub_resource type="Resource" id="AttackStepData_quick_1"]
+script = ExtResource("2")
+type = 0
+damage = 8
+hit_stop_frames = 2
+shake_intensity = 0.0
+anim_name = "light_1"
+window_frames = 12
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
+
+[sub_resource type="Resource" id="AttackStepData_quick_2"]
+script = ExtResource("2")
+type = 0
+damage = 8
+hit_stop_frames = 2
+shake_intensity = 0.0
+anim_name = "light_2"
+window_frames = 12
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
+
+[sub_resource type="Resource" id="AttackStepData_quick_3"]
+script = ExtResource("2")
+type = 0
+damage = 15
+hit_stop_frames = 5
+shake_intensity = 2.0
+anim_name = "light_3"
+window_frames = 0
+startup_frames = 2
+active_frames = 3
+recovery_frames = 4
+
+[resource]
+script = ExtResource("1")
+chain_name = "quick"
+display_name = "速连"
+steps = [SubResource("AttackStepData_quick_1"), SubResource("AttackStepData_quick_2"), SubResource("AttackStepData_quick_3")]
+timeout_frames = 48

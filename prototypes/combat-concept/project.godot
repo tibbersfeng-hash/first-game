@@ -18,6 +18,12 @@ window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 
+[physics]
+
+common/physics_ticks_per_second=60
+common/physics_interpolation=false
+2d/default_gravity=0
+
 [input]
 
 move_left={
@@ -54,3 +60,4 @@ attack_special={
 [autoload]
 
 CombatData="*res://combat_data.gd"
+SignalBus="*res://signal_bus.gd"
