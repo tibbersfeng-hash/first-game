@@ -29,9 +29,9 @@ Technical Setup
 - [x] ADR-005: Fixed Room Size (`docs/architecture/adr-005-fixed-room-size.md`)
 - [x] ADR-006: Frame-Based Combat Timing (`docs/architecture/adr-006-frame-based-combat-timing.md`)
 - [x] Architecture Registry (`docs/registry/architecture.yaml`)
+- [x] Control Manifest (`docs/architecture/control-manifest.md`)
 
 ## Next Steps
-1. `/create-control-manifest` — 编译所有 ADR 决策为规则表
-2. `/architecture-review` — 验证架构完整性（⚠️ 必须在新的 Claude Code 会话中运行）
-3. `/review-all-gdds` — 全系统交叉审查
-4. 进入 MVP Prototyping 阶段 — 开始正式代码编写
+1. `/architecture-review` — 验证架构完整性（⚠️ 必须在新的 Claude Code 会话中运行）
+2. `/review-all-gdds` — 全系统交叉审查
+3. 进入 MVP Prototyping 阶段 — `/create-epics` → `/create-stories` → `/dev-story`
