@@ -1,7 +1,7 @@
 # ADR-003: Signal Bus over Direct References
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-06-15

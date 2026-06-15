@@ -1,7 +1,7 @@
 # ADR-005: Fixed Room Size (1280×720, No Scrolling)
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-06-15

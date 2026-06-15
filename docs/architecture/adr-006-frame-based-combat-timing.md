@@ -1,7 +1,7 @@
 # ADR-006: Frame-Based Combat Timing
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-06-15

@@ -1,7 +1,7 @@
 # ADR-004: Resource-Based Data Configuration
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-06-15

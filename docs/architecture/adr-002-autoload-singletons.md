@@ -1,7 +1,7 @@
 # ADR-002: Autoload Singletons for Cross-Cutting Services
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-06-15

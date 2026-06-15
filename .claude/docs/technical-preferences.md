@@ -57,11 +57,11 @@
 
 <!-- Quick reference linking to full ADRs in docs/architecture/ -->
 - [ADR-001: GDScript as Primary Language](../docs/architecture/adr-001-gdscript-primary.md) — Accepted
-- [ADR-002: Autoload Singletons for Cross-Cutting Services](../docs/architecture/adr-002-autoload-singletons.md) — Proposed
-- [ADR-003: Signal Bus over Direct References](../docs/architecture/adr-003-signal-bus.md) — Proposed
-- [ADR-004: Resource-Based Data Configuration](../docs/architecture/adr-004-resource-data-configuration.md) — Proposed
-- [ADR-005: Fixed Room Size (1280×720)](../docs/architecture/adr-005-fixed-room-size.md) — Proposed
-- [ADR-006: Frame-Based Combat Timing](../docs/architecture/adr-006-frame-based-combat-timing.md) — Proposed
+- [ADR-002: Autoload Singletons for Cross-Cutting Services](../docs/architecture/adr-002-autoload-singletons.md) — Accepted
+- [ADR-003: Signal Bus over Direct References](../docs/architecture/adr-003-signal-bus.md) — Accepted
+- [ADR-004: Resource-Based Data Configuration](../docs/architecture/adr-004-resource-data-configuration.md) — Accepted
+- [ADR-005: Fixed Room Size (1280×720)](../docs/architecture/adr-005-fixed-room-size.md) — Accepted
+- [ADR-006: Frame-Based Combat Timing](../docs/architecture/adr-006-frame-based-combat-timing.md) — Accepted
 
 ## Engine Specialists
 
