@@ -13,16 +13,31 @@ func _ready() -> void:
 	# Disable by default — only enabled during active frames
 	monitoring = false
 	area_entered.connect(_on_area_entered)
+	# Also disable the collision shape so it doesn't report overlaps when inactive
+	_set_shape_disabled(true)
+
+func _physics_process(_delta: float) -> void:
+	# Each frame during active phase, check overlapping hurtboxes.
+	# This catches overlaps that existed when monitoring was enabled
+	# (area_entered only fires on NEW overlaps, not pre-existing ones).
+	if monitoring and _attack_data != null:
+		for area in get_overlapping_areas():
+			if area is HurtboxComponent:
+				var hurtbox: HurtboxComponent = area as HurtboxComponent
+				if not has_hit_target(hurtbox):
+					hit_hurtbox.emit(hurtbox)
 
 ## Activate this hitbox for the given attack data.
 func activate(attack: AttackData) -> void:
 	_attack_data = attack
 	_hit_targets.clear()
 	monitoring = true
+	_set_shape_disabled(false)
 
 ## Deactivate this hitbox (end of active frames or after first hit).
 func deactivate() -> void:
 	monitoring = false
+	_set_shape_disabled(true)
 	_attack_data = null
 	_hit_targets.clear()
 
@@ -44,3 +59,9 @@ func _on_area_entered(area: Area2D) -> void:
 		var hurtbox: HurtboxComponent = area as HurtboxComponent
 		if not has_hit_target(hurtbox):
 			hit_hurtbox.emit(hurtbox)
+
+## Enable/disable the CollisionShape2D child so physics queries match monitoring state.
+func _set_shape_disabled(disabled: bool) -> void:
+	for child in get_children():
+		if child is CollisionShape2D:
+			child.disabled = disabled
