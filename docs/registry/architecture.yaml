@@ -30,20 +30,78 @@
 #   Superseded entries:     Grep pattern="status: superseded"
 
 version: 1
-last_updated: ""
+last_updated: "2026-06-15"
 
 # ─── STATE OWNERSHIP ─────────────────────────────────────────────────────────
-# Who is the authoritative owner of each piece of shared game state.
-# Conflicts: two ADRs claiming to own the same state = data race / authority bug.
-#
-# Register state when it is READ or WRITTEN by more than one system.
-# Internal-only state (never accessed by another system) does not need to be registered.
-#
-# Required fields: state, owner_system, adr, interface, referenced_by[], added
-# interface: how other systems access this state (read-only property, method call,
-#   signal, shared resource, etc.) — this is the contract other ADRs depend on.
 
-state_ownership: []
+state_ownership:
+  - state: combat_config_data
+    status: active
+    owner_system: combat-data-autoload
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    interface: "CombatData.get_attack_frames(attack_id: String) → Dictionary (read-only)"
+    write_access: editor-only
+    referenced_by:
+      - docs/architecture/adr-002-autoload-singletons.md
+      - docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
+
+  - state: game_runtime_state
+    status: active
+    owner_system: game-manager-autoload
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    interface: "GameManager.current_dungeon_id, current_room_index, revive_coins_remaining (read-only via signals)"
+    write_access: game-manager-only
+    referenced_by:
+      - docs/architecture/adr-002-autoload-singletons.md
+      - docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+    revised: ""
+
+  - state: player_health
+    status: active
+    owner_system: player-controller
+    adr: docs/architecture/adr-003-signal-bus.md
+    interface: "SignalBus.player_health_changed(current: int, maximum: int) signal"
+    write_access: player-controller-only
+    referenced_by:
+      - docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+    revised: ""
+
+  - state: player_energy
+    status: active
+    owner_system: player-controller
+    adr: docs/architecture/adr-003-signal-bus.md
+    interface: "SignalBus.player_energy_changed(current: float, maximum: float) signal"
+    write_access: player-controller-only
+    referenced_by:
+      - docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+    revised: ""
+
+  - state: combo_count
+    status: active
+    owner_system: combo-system
+    adr: docs/architecture/adr-003-signal-bus.md
+    interface: "SignalBus.combo_updated(count: int, chain_name: String) signal"
+    write_access: combo-system-only
+    referenced_by:
+      - docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+    revised: ""
+
+  - state: frame_timing
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    interface: "frame_counter: int, frame_in_state: int (per entity)"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
 
 # Example:
 #
@@ -71,7 +129,39 @@ state_ownership: []
 #
 # pattern options: signal | direct_call | event_bus | shared_resource | rpc | none
 
-interfaces: []
+interfaces:
+  - contract: cross_system_communication
+    status: active
+    pattern: signal
+    producer: any-system
+    consumers:
+      - hud-system
+      - dungeon-flow
+      - audio-manager
+      - damage-number
+    adr: docs/architecture/adr-003-signal-bus.md
+    signal_signature: "SignalBus.* (see ADR-003 for full signal list)"
+    referenced_by:
+      - docs/architecture/adr-003-signal-bus.md
+      - docs/architecture/adr-002-autoload-singletons.md
+    added: 2026-06-15
+    revised: ""
+
+  - contract: combat_config_access
+    status: active
+    pattern: direct_call
+    producer: combat-data-autoload
+    consumers:
+      - combat-system
+      - enemy-ai
+      - combo-system
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    signal_signature: "N/A — CombatData.get_attack_frames(), get_energy_config() etc."
+    referenced_by:
+      - docs/architecture/adr-002-autoload-singletons.md
+      - docs/architecture/adr-004-resource-data-configuration.md
+    added: 2026-06-15
+    revised: ""
 
 # Example:
 #
@@ -100,7 +190,53 @@ interfaces: []
 # Register a budget when an ADR explicitly claims a frame time allocation.
 # The registry lets /architecture-review verify the total doesn't exceed the target.
 
-performance_budgets: []
+performance_budgets:
+  - target_fps: 60
+    total_frame_budget_ms: 16.6
+    platform: PC
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
+
+  - system: player_update
+    status: active
+    budget_ms: 1.0
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    notes: "Player state machine, input buffer, movement — all in _physics_process"
+    referenced_by:
+      - docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
+
+  - system: combat_system
+    status: active
+    budget_ms: 0.5
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    notes: "Hit detection + damage calculation + combo check — frame-based integer ops"
+    referenced_by:
+      - docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
+
+  - system: enemies_10x
+    status: active
+    budget_ms: 3.0
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    notes: "10 enemies active, each AI decision + state update"
+    referenced_by:
+      - docs/architecture/adr-002-autoload-singletons.md
+    added: 2026-06-15
+    revised: ""
+
+  - system: hud_update
+    status: active
+    budget_ms: 0.5
+    adr: docs/architecture/adr-003-signal-bus.md
+    notes: "Signal-driven updates only — no polling"
+    referenced_by:
+      - docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+    revised: ""
 
 # Example:
 #
@@ -131,7 +267,40 @@ performance_budgets: []
 # Register an API decision when the choice is non-obvious and other ADRs might
 # make a different choice for the same purpose without knowing this was decided.
 
-api_decisions: []
+api_decisions:
+  - purpose: data_configuration_format
+    status: active
+    api: Godot Resource (.tres/.res)
+    not: JSON / CSV / inline constants
+    adr: docs/architecture/adr-004-resource-data-configuration.md
+    reason: "Resource provides type safety, editor integration, and nested data support; JSON lacks type checking"
+    referenced_by:
+      - docs/architecture/adr-004-resource-data-configuration.md
+      - docs/architecture/adr-002-autoload-singletons.md
+    added: 2026-06-15
+    revised: ""
+
+  - purpose: combat_timing_unit
+    status: active
+    api: frame_count (integer)
+    not: delta_time (float seconds)
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    reason: "Fighting games require frame-precise timing; delta accumulation causes floating-point drift and inconsistent cancel windows"
+    referenced_by:
+      - docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+    revised: ""
+
+  - purpose: camera_behavior
+    status: active
+    api: Camera2D fixed position (no follow, no scroll)
+    not: Camera2D smoothing / follow
+    adr: docs/architecture/adr-005-fixed-room-size.md
+    reason: "DNF-style fixed-screen combat; eliminates camera logic complexity and ensures all combatants visible"
+    referenced_by:
+      - docs/architecture/adr-005-fixed-room-size.md
+    added: 2026-06-15
+    revised: ""
 
 # Example:
 #
@@ -157,7 +326,41 @@ api_decisions: []
 # Register a pattern when an ADR explicitly bans it AND other ADRs might
 # unknowingly use it (i.e., it's a tempting but wrong approach for this project).
 
-forbidden_patterns: []
+forbidden_patterns:
+  - pattern: autoload_cross_reference
+    status: active
+    description: "Autoloads must not reference other Autoloads by name. Only SignalBus may be listened to by other Autoloads."
+    why: "Cross-Autoload references create hidden load-order dependencies and tight coupling between global services."
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    added: 2026-06-15
+
+  - pattern: signal_chain
+    status: active
+    description: "A SignalBus signal handler must not emit another SignalBus signal. Use direct method calls within the same system instead."
+    why: "Signal chains create infinite loop risks and make event flow impossible to trace."
+    adr: docs/architecture/adr-003-signal-bus.md
+    added: 2026-06-15
+
+  - pattern: runtime_resource_mutation
+    status: active
+    description: "Code must not modify Resource (.tres) properties at runtime. Resources are read-only configuration data."
+    why: "Runtime Resource mutation breaks the data-driven model — configuration should only change via editor or reload."
+    adr: docs/architecture/adr-004-resource-data-configuration.md
+    added: 2026-06-15
+
+  - pattern: delta_time_in_combat
+    status: active
+    description: "Combat timing logic must not use delta time or accumulate floats. Use frame counters (integer) exclusively."
+    why: "Delta accumulation causes floating-point drift; cancel windows become inconsistent across frame rates."
+    adr: docs/architecture/adr-006-frame-based-combat-timing.md
+    added: 2026-06-15
+
+  - pattern: direct_cross_system_state_write
+    status: active
+    description: "A system must never write to state owned by another system. Use signals or method calls on the owner instead."
+    why: "Direct state writes create race conditions and break the state ownership model."
+    adr: docs/architecture/adr-002-autoload-singletons.md
+    added: 2026-06-15
 
 # Example:
 #

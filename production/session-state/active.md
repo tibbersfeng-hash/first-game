@@ -13,34 +13,25 @@ Technical Setup
 - [x] 美术圣经 (`design/art/art-bible.md`)
 - [x] 系统拆解 (`design/gdd/systems-index.md`)
 - [x] Input System GDD (`design/gdd/input-system.md`)
-
-## In Progress
 - [x] Player Controller GDD (`design/gdd/player-controller.md`)
 - [x] Hit Detection & Feedback GDD (`design/gdd/hit-detection-feedback.md`)
-
-## In Progress
 - [x] Combat System GDD (`design/gdd/combat-system.md`)
-
-## In Progress
 - [x] Combo System GDD (`design/gdd/combo-system.md`)
-
 - [x] Enemy AI GDD (`design/gdd/enemy-ai.md`)
-
 - [x] Dungeon Room System GDD (`design/gdd/dungeon-room.md`)
-
 - [x] Dungeon Flow System GDD (`design/gdd/dungeon-flow.md`)
-
 - [x] HUD System GDD (`design/gdd/hud.md`)
-
-## In Progress
 - [x] Architecture Document (`docs/architecture/architecture.md`)
-
-## In Progress
-- Technical Setup: Architecture done, need ADRs + control manifest
+- [x] ADR-001: GDScript as Primary Language (`docs/architecture/adr-001-gdscript-primary.md`)
+- [x] ADR-002: Autoload Singletons (`docs/architecture/adr-002-autoload-singletons.md`)
+- [x] ADR-003: Signal Bus (`docs/architecture/adr-003-signal-bus.md`)
+- [x] ADR-004: Resource-Based Data Configuration (`docs/architecture/adr-004-resource-data-configuration.md`)
+- [x] ADR-005: Fixed Room Size (`docs/architecture/adr-005-fixed-room-size.md`)
+- [x] ADR-006: Frame-Based Combat Timing (`docs/architecture/adr-006-frame-based-combat-timing.md`)
+- [x] Architecture Registry (`docs/registry/architecture.yaml`)
 
 ## Next Steps
-1. `/architecture-decision` — 编写 ADR 文件(至少3份)
-2. `/create-control-manifest` — 编译决策为规则表
-3. `/architecture-review` — 验证架构完整性
-4. `/review-all-gdds` — 全系统交叉审查
-4. `/review-all-gdds` — 全系统交叉审查
+1. `/create-control-manifest` — 编译所有 ADR 决策为规则表
+2. `/architecture-review` — 验证架构完整性（⚠️ 必须在新的 Claude Code 会话中运行）
+3. `/review-all-gdds` — 全系统交叉审查
+4. 进入 MVP Prototyping 阶段 — 开始正式代码编写
