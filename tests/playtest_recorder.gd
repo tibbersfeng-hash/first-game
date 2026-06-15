@@ -17,6 +17,7 @@ var _hp_snap: Array[Dictionary] = []
 var _ss_dir := ""
 var _next_ss := 10
 var _ss_interval := 10
+var _pending_ss: Array[String] = []  # 截图队列，延迟到渲染后执行
 
 func _ready() -> void:
 	_ss_dir = OS.get_environment("SCREENSHOT_DIR")
@@ -117,10 +118,18 @@ func _on_combo(c: int, nm: String) -> void:
 	_combo_log.append("%d段@F%d[%s]" % [c, _frame, nm]); printraw("   🔗 %d段(%s)\n" % [c, nm])
 
 func _ss(tag: String) -> void:
-	var img = get_viewport().get_texture().get_image()
-	if img:
-		var p = "%s/shot_%s.png" % [_ss_dir, tag]
-		img.save_png(p); printraw("   📸 %s\n" % p)
+	_pending_ss.append(tag)
+
+func _process(_delta: float) -> void:
+	# 在 _process（渲染后）执行截图，保证画面已绘制完成
+	if _pending_ss.size() > 0:
+		var img = get_viewport().get_texture().get_image()
+		if img:
+			for tag in _pending_ss:
+				var p = "%s/shot_%s.png" % [_ss_dir, tag]
+				img.save_png(p)
+				printraw("   📸 %s\n" % p)
+		_pending_ss.clear()
 
 func _report() -> void:
 	printraw("\n" + "━".repeat(50) + "\n📊 结果\n" + "━".repeat(50) + "\n")
