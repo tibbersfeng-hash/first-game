@@ -40,7 +40,7 @@ color = Color(0.4, 0.6, 1.0, 1)
 script = ExtResource("16")
 body_color = Color(0.4, 0.6, 1.0, 1)
 is_enemy = false
-scale_factor = 1.5
+scale_factor = 3.0
 
 [node name="Eyes" type="ColorRect" parent="VisualPivot/BodySprite"]
 offset_left = -8.0
