@@ -1,234 +1,232 @@
-# Input System
+# Input System (3D 版)
 
-> **Status**: Draft
-> **Author**: game-designer
-> **Last Updated**: 2026-06-15
-> **Last Verified**: —
+> **Status**: Draft (Updated for 3D)
+> **Last Updated**: 2026-06-17
 > **Implements Pillar**: 爽快打击+Q版反差 (输入响应是打击感的基石)
+> **Reference**: 崩坏3、战双帕弥什、UE5 Enhanced Input
 
 ## Summary
 
-输入系统管理键盘和手柄的所有玩家输入映射、输入缓冲、优先级裁决和上下文切换。它是战斗手感的基石——延迟1帧就是手感的生死之差。本系统为所有上层系统提供统一的输入事件接口。
+输入系统管理键盘/手柄/鼠标的所有玩家输入映射、输入缓冲、优先级裁决、双模态视角控制（移动+视角分离）和上下文切换。它是战斗手感的基石——延迟1帧就是手感的生死之差。本系统为所有上层系统提供统一的输入事件接口，基于 UE5 Enhanced Input System。
 
 > **Quick reference** — Layer: `Foundation` · Priority: `MVP` · Key deps: `None`
 
 ## Overview
 
-格斗萌主的输入系统负责将物理输入（键盘按键/手柄摇杆按钮）转换为游戏动作事件。它提供输入缓冲窗口让连招输入更宽容、上下文感知让同一按键在不同场景有不同行为、优先级裁决避免动作冲突。目标是让玩家感觉"按键就出招"，而非"按键后等系统响应"。
-
-## Player Fantasy
-
-玩家按下攻击键的瞬间角色就应该动起来——零延迟、零犹豫。连招输入可以在前一招还没结束时提前输入，系统记住意图在正确时机自动衔接。手柄和键盘体验完全对等，不存在"必须用哪个"的强迫感。
+格斗萌主的输入系统负责将物理输入转换为游戏动作事件。核心特性：
+- **移动与视角分离**: 左摇杆/WASD控制移动，右摇杆/鼠标控制视角（3D必需）
+- **输入缓冲**: 攻击/跳跃/闪避有缓冲窗口，让连招更宽容
+- **上下文切换**: 同一输入在不同状态下映射不同动作
+- **优先级裁决**: 多输入冲突时按优先级处理
+- **双模态**: 自由模式（探索）和战斗模式（锁定）的输入差异
 
 ## Detailed Design
 
 ### Core Rules
 
-1. **输入映射**: 每个游戏动作（move_left, jump, attack_light等）映射到一个或多个物理输入，通过 Godot InputMap 配置
-2. **输入缓冲**: 攻击/跳跃/闪避等动作有输入缓冲窗口（buffer_window），在缓冲窗口内的输入会在当前动作结束后自动触发
-3. **上下文切换**: 同一输入在不同状态下可映射到不同动作（如空中攻击vs地面攻击），由 Player Controller 的状态机决定
-4. **优先级裁决**: 当多个输入同时到达时，按优先级处理：闪避 > 攻击 > 移动
-5. **输入消抖**: 同一输入在 action_pressed 后的 100ms 内不重复触发
-6. **手柄支持**: 左摇杆移动、A/B/X/Y对应跳跃/轻攻/重攻/特殊，完全对等键盘
+1. **双轴分离**: 移动轴(XY)和视角轴(XY)独立处理
+2. **输入缓冲**: 动作有 buffer_window，窗口内输入在当前动作结束后自动触发
+3. **上下文切换**: 同一按键在自由模式/战斗模式/空中/地面有不同行为
+4. **优先级裁决**: 闪避 > 必杀 > 攻击 > 锁定切换 > 移动
+5. **输入消抖**: 同一输入 action_pressed 后 100ms 内不重复触发
+6. **手柄/键鼠对等**: 所有操作两种方式完全对等，无强制
 
 ### Input Map Definition
 
+#### 移动 (Move — 左摇杆 / WASD)
+
 | Action | Keyboard | Gamepad | Context |
-|--------|----------|---------|---------|
-| move_left | A / ← | 左摇杆左 | 全局 |
-| move_right | D / → | 左摇杆右 | 全局 |
-| move_up | W / ↑ | 左摇杆上 | 梯子/菜单 |
-| move_down | S / ↓ | 左摇杆下 | 梯子/菜单 |
-| jump | W / Space | A (底部) | 地面/空中 |
-| attack_light | J | X (左侧) | 战斗 |
-| attack_heavy | K | Y (顶部) | 战斗 |
-| attack_special | L | B (右侧) | 战斗 |
-| dodge | Shift | RB | 战斗 |
-| interact | E | LB | 非战斗 |
-| pause | Esc | Start | 全局 |
+|---|---|---|---|
+| Move_Forward | W | 左摇杆↑ | 全局（相对相机/锁定目标） |
+| Move_Backward | S | 左摇杆↓ | 全局 |
+| Move_Left | A | 左摇杆← | 全局 |
+| Move_Right | D | 左摇杆→ | 全局 |
+| Sprint | Shift | LB (按住) | 全局（需体力） |
 
-### States and Transitions
+#### 战斗 (Combat — 面部按钮)
 
-| State | Entry Condition | Exit Condition | Behavior |
-|-------|----------------|----------------|----------|
-| Normal | 默认 | 进入任何受限状态 | 所有输入正常响应 |
-| InCombo | 攻击触发连招 | 连招结束/超时/被打断 | 缓冲窗口激活，只接受攻击/闪避输入 |
-| InHitStun | 被击中 | 硬直结束 | 输入被抑制，仅缓冲第一个逃脱输入 |
-| InCutscene | 过场动画开始 | 过场结束 | 只响应pause输入 |
-| MenuOpen | 菜单打开 | 菜单关闭 | 输入路由到UI系统 |
+| Action | Keyboard | Gamepad | Context | Notes |
+|---|---|---|---|---|
+| Attack_Light | J (鼠标左键) | X | 战斗 | 轻攻击，快速出招 |
+| Attack_Heavy | K (鼠标右键) | Y | 战斗 | 重攻击，蓄力可选 |
+| Skill_1 | U | A (底部) | 战斗 | 技能1（短CD） |
+| Skill_2 | I | B (右侧) | 战斗 | 技能2（中CD） |
+| Skill_Ult | O (需能量) | RT (需能量) | 战斗 | 必杀技（能量≥30） |
 
-### Input Buffer Rules
+#### 防御/闪避 (Defense — 肩键)
 
-1. 缓冲队列最大容量：2个动作
-2. 缓冲窗口：轻攻200ms，重攻150ms，必杀100ms，跳跃300ms，闪避250ms
-3. 缓冲输入在触发后被消费（清出队列）
-4. 如果缓冲的动作在窗口结束前仍未被消费，丢弃
-5. 新缓冲输入覆盖同类型旧输入（最后意图优先）
+| Action | Keyboard | Gamepad | Context | Notes |
+|---|---|---|---|---|
+| Dodge | Space | RB | 战斗/自由 | 3D全向闪避，无敌帧 |
+| Lock_On | Tab | R3 (按下右摇杆) | 战斗 | 锁定/切换目标 |
 
-### Interactions with Other Systems
+#### 视角 (Camera — 右摇杆 / 鼠标)
+
+| Action | Keyboard | Gamepad | Context | Notes |
+|---|---|---|---|---|
+| Camera_Pitch | 鼠标Y轴 | 右摇杆Y | 全局 | 上下视角 |
+| Camera_Yaw | 鼠标X轴 | 右摇杆X | 全局 | 左右视角 |
+| Camera_Reset | 中键 | R3快速双击 | 全局 | 回到默认视角 |
+| Lock_Release | Esc | L3 (按下左摇杆) | 战斗 | 释放锁定 |
+
+#### 菜单/其他 (Menu)
+
+| Action | Keyboard | Gamepad | Context |
+|---|---|---|---|
+| Interact | E | Y (长按) | 非战斗 |
+| Pause | Esc | Start | 全局 |
+| QuickMenu | Q | Back | 全局 |
+| SwitchTarget_Next | Tab (连按) | R (连按) | 战斗 |
+| SwitchTarget_Prev | Shift+Tab | L (连按) | 战斗 |
+
+### Input Buffer Windows
+
+| Action | Buffer Window | Rationale |
+|---|---|---|
+| Attack_Light | 200ms (12帧) | 连招宽容度 |
+| Attack_Heavy | 150ms (9帧) | 略短（重攻击更慎重） |
+| Skill_1/2 | 200ms | 技能衔接 |
+| Dodge | 100ms (6帧) | 闪避要及时 |
+| Jump | 150ms | 配合土狼时间 |
+| Lock_On | 50ms | 锁定要精确 |
+| Ultimate | 300ms | 必杀时机要宽容 |
+
+### Priority Rules (多输入冲突)
+
+当多个输入在同一帧内到达，按以下优先级处理：
+
+```
+1. Dodge (最高) — 生存必需，必须即时响应
+2. Ultimate — 高价值输入，避免被覆盖
+3. Attack_Light / Attack_Heavy / Skill_* — 战斗动作
+4. Lock_On — 目标管理
+5. Jump — 移动动作
+6. Sprint — 移动动作
+7. Move_* (最低) — 持续输入，不冲突
+```
+
+**冲突处理规则**:
+- 高优先级输入**覆盖**低优先级输入（不被缓冲）
+- 同优先级输入按"最后输入"原则处理
+- 闪避可**中断**攻击收招（但不可中断攻击启动）
+- 攻击动作期间，移动输入被**忽略**（除非是连招推力）
+
+### Context State Machine
+
+```
+           ┌──────────────────────┐
+           │   Global Context     │
+           │  (Move+Camera 可用)  │
+           └──────┬───────────┬───┘
+                  │           │
+           ┌──────▼─────┐ ┌──▼──────────┐
+           │ Free Mode  │ │ Combat Mode │
+           │ (无锁定)   │ │ (锁定中)    │
+           └──────┬─────┘ └──┬──────────┘
+                  │           │
+           ┌──────▼─────┐ ┌──▼──────────┐
+           │ Ground     │ │ Air         │
+           │ (地面)     │ │ (空中)      │
+           └────────────┘ └─────────────┘
+```
+
+| Context | Attack_Light | Attack_Heavy | Dodge | Lock_On | Move |
+|---|---|---|---|---|---|
+| Free+Ground | 地面轻攻 | 地面重攻 | 地面闪避 | 锁定最近 | 相对相机 |
+| Free+Air | 空中轻攻(1次) | 空中重攻(1次) | 不允许 | 锁定最近 | 空中控制 |
+| Combat+Ground | 面向目标轻攻 | 面向目标重攻 | 相对目标闪避 | 切换目标 | 环绕目标 |
+| Combat+Air | 面向目标空攻 | 不允许 | 不允许 | 切换目标 | 空中控制 |
+
+### Dual Input Support (键鼠 / 手柄自动切换)
+
+```cpp
+// 自动检测最后使用的输入设备
+if (LastInputDeviceChanged()) {
+    SwitchInputMappingContext(LastInputDevice);
+    // 更新 UI 提示（"键盘模式" / "手柄模式"）
+}
+```
+
+| Device | Movement | Camera | Attacks | Dodge |
+|---|---|---|---|---|
+| Keyboard+Mouse | WASD | 鼠标移动 | J/K/U/I/O (数字键) | Space |
+| Gamepad | 左摇杆 | 右摇杆 | X/Y/A/B (面部键) | RB |
+
+## Interactions with Other Systems
 
 | System | Interaction | Interface |
-|--------|-------------|-----------|
-| Player Controller | 消费输入事件驱动角色状态 | InputSystem.get_buffered_action() |
-| Combat System | 攻击输入触发战斗状态 | signal: attack_requested(type) |
-| Combo System | 连招期间缓冲窗口控制 | query: is_in_combo() |
-| HUD System | 显示输入相关UI（技能冷却/缓冲提示） | signal: action_buffered(action) |
-| UI System | 菜单状态切换输入路由 | signal: input_context_changed(context) |
+|---|---|---|
+| Player Controller | 提供输入事件 | GetMovementInput(), IsActionPressed() |
+| Combat System | 战斗输入消费 | OnAttackInput(), OnSkillInput() |
+| Camera System | 视角输入 | GetCameraInput() → FVector2D |
+| LockOn System | 锁定输入 | OnLockOnPressed(), OnSwitchTarget() |
+| UI System | 菜单输入 | OnMenuInput(), OnPause() |
+| Input Buffer | 提供缓冲窗口 | SetBufferWindow(Action, Duration) |
 
 ## Formulas
 
-### Buffer Window Duration
+### 移动输入归一化（防止斜向超速）
 
-```
-buffer_duration = base_buffer * (1 - combo_step * combo_decay)
-```
-
-| Variable | Type | Range | Source | Description |
-|----------|------|-------|--------|-------------|
-| buffer_duration | float | 0.05-0.3 | calculated | 实际缓冲窗口时长(秒) |
-| base_buffer | float | 0.1-0.3 | config | 基础缓冲窗口 |
-| combo_step | int | 0-4 | combo system | 当前连招第几步 |
-| combo_decay | float | 0.0-0.15 | config | 每步连招缓冲衰减 |
-
-**Expected output range**: 0.05s (连招末端) to 0.3s (初始)
-**Edge case**: combo_step > 4 时，buffer_duration 不低于 0.05s（最低保证）
-
-### Input Priority Score
-
-```
-priority = base_priority * urgency_modifier
+```cpp
+FVector2D MoveInput = GetMovementInput();
+if (MoveInput.Size() > 1.0f) {
+    MoveInput.Normalize();
+}
 ```
 
-| Variable | Type | Range | Source | Description |
-|----------|------|-------|--------|-------------|
-| priority | float | 1-100 | calculated | 输入优先级分数 |
-| base_priority | float | 10-80 | config | 动作基础优先级 |
-| urgency_modifier | float | 0.5-2.0 | config | 紧急度修正（被击中时闪避×2） |
+### 相机输入平滑
 
-**Priority table**: dodge=80, attack_special=60, attack_heavy=50, attack_light=40, jump=30, move=10
+```cpp
+// 键鼠直接输入，手柄带死区+曲线
+float CameraYaw = ApplyDeadzone(RawInput.X, 0.15f);
+CameraYaw = FMath::Sign(CameraYaw) * FMath::Pow(FMath::Abs(CameraYaw), 1.4f);
+// 非线性曲线，中心更精确，边缘更快
+```
+
+### 输入缓冲超时
+
+```cpp
+if (ActionBuffered && (CurrentTime - BufferTime) < BufferWindow) {
+    ExecuteAction(BufferedAction);
+    ClearBuffer(BufferedAction);
+} else {
+    ClearBuffer(BufferedAction);  // 超时丢弃
+}
+```
 
 ## Edge Cases
 
 | Scenario | Expected Behavior | Rationale |
-|----------|------------------|-----------|
-| 同时按下轻攻和重攻 | 重攻优先（优先级高） | 避免误触发轻攻 |
-| 连招中按下闪避 | 立即中断连招执行闪避 | 闪避是最高优先级逃脱手段 |
-| 空中按跳跃 | 不触发二段跳（除非角色有该能力） | 防止无限跳跃 |
-| 缓冲队列已满时再按攻击 | 覆盖最早的缓冲动作 | 最新意图优先 |
-| 手柄断连 | 暂停游戏+提示重连 | 防止角色失控 |
-| 按键持续按住 | 只触发一次pressed，held用于移动 | 避免攻击连发 |
-
-## Dependencies
-
-| System | Direction | Nature of Dependency |
-|--------|-----------|---------------------|
-| Player Controller | Player Controller depends on this | 消费输入事件 |
-| Combat System | Combat System depends on this | 接收攻击请求信号 |
-| Combo System | Combo System depends on this | 查询连招状态影响缓冲 |
-| HUD System | HUD System depends on this | 显示技能/缓冲状态 |
+|---|---|---|
+| 同时按攻击+闪避 | 闪避优先 | 生存必需 |
+| 攻击中按反方向移动 | 忽略（攻击推力除外） | 保持攻击朝向 |
+| 锁定中快速切Tab | 200ms延迟后切换 | 防止抖动 |
+| 手柄+键盘同时输入 | 最后使用的设备优先 | 避免双设备冲突 |
+| 技能CD中按技能键 | 按键无效+UI提示 | 明确反馈 |
+| 能量不足按必杀 | 按键无效+UI提示 | 明确反馈 |
+| 空中按闪避 | 按键无效 | 防止无限浮空 |
+| 菜单打开时按攻击 | 忽略 | 避免误操作 |
 
 ## Tuning Knobs
 
-| Parameter | Current Value | Safe Range | Effect of Increase | Effect of Decrease |
-|-----------|--------------|------------|-------------------|-------------------|
-| base_buffer (轻攻) | 200ms | 100-400ms | 连招更容易，手感更宽容 | 连招更严格，需精确输入 |
-| base_buffer (重攻) | 150ms | 80-300ms | 重攻更容易衔接 | 重攻需更精准 |
-| base_buffer (必杀) | 100ms | 50-200ms | 必杀释放更宽松 | 必杀需精确时机 |
-| combo_decay | 0.10 | 0.0-0.15 | 连招后期缓冲更短 | 连招后期缓冲保持 |
-| min_buffer | 50ms | 30-100ms | 最低保证更宽 | 连招末端极严格 |
-| dodge_priority | 80 | 50-100 | 闪避更容易打断攻击 | 闪避可能被攻击覆盖 |
-
-## Visual/Audio Requirements
-
-| Event | Visual Feedback | Audio Feedback | Priority |
-|-------|----------------|---------------|----------|
-| 攻击输入被缓冲 | 微弱的按键图标脉冲 | 无 | Low |
-| 缓冲动作成功触发 | 技能图标短暂高亮 | 无 | Low |
-| 闪避打断连招 | 角色闪烁 + 残影 | 闪避音效 | Medium |
-| 输入被抑制(硬直中) | 微弱红色闪烁 | 低沉提示音 | Low |
-
-## Game Feel
-
-### Feel Reference
-应像《街头霸王》的输入系统——零延迟响应+宽容缓冲窗口。输入缓冲让"提前输入"成为自然行为，而非需要精确计时。**不应像**早期魂系的严格输入窗口——那让玩家感到"我明明按了为什么不响应"。
-
-### Input Responsiveness
-
-| Action | Max Input-to-Response Latency (ms) | Frame Budget (at 60fps) | Notes |
-|--------|-----------------------------------|------------------------|-------|
-| 轻攻 | 33ms | 2帧 | 必须极速，连招基础 |
-| 重攻 | 50ms | 3帧 | 可稍慢，蓄力感 |
-| 必杀 | 66ms | 4帧 | 蓄力动画允许更多延迟 |
-| 跳跃 | 33ms | 2帧 | 平台游戏基本要求 |
-| 闪避 | 33ms | 2帧 | 逃脱动作必须即时 |
-| 移动 | 16ms | 1帧 | 最优先，持续输入 |
-
-### Animation Feel Targets
-
-| Animation | Startup Frames | Active Frames | Recovery Frames | Feel Goal | Notes |
-|-----------|---------------|--------------|----------------|-----------|-------|
-| 轻攻1 | 2 | 3 | 4 | 极速，低承诺 | 可被后续连招取消 |
-| 轻攻2 | 2 | 3 | 4 | 同上 | |
-| 重攻 | 5 | 4 | 8 | 有分量，高承诺 | 不可轻易取消 |
-| 必杀 | 8 | 6 | 12 | 史诗感，最高承诺 | 蓄力→爆发→长收招 |
-| 闪避 | 1 | 8 | 4 | 即时逃脱 | 启动帧最短 |
-| 跳跃 | 1 | — | — | 即时离地 | 无启动帧 |
-
-### Impact Moments
-
-| Impact Type | Duration (ms) | Effect Description | Configurable? |
-|-------------|--------------|-------------------|---------------|
-| Hit-stop (轻攻命中) | 50ms | 3帧冻结 | Yes |
-| Hit-stop (重攻命中) | 133ms | 8帧冻结 | Yes |
-| Hit-stop (必杀命中) | 200ms | 12帧冻结 | Yes |
-| 屏幕震动 (必杀释放) | 150ms | 方向性震动，衰减 | Yes |
-
-### Weight and Responsiveness Profile
-
-- **Weight**: 轻攻=轻快如蜂，重攻=沉如有锤。输入响应全部轻快，但动画commitment分级
-- **Player control**: 轻攻高控制（可随时取消），重攻中等（仅闪避可取消），必杀低控制（全力投入）
-- **Snap quality**: 所有输入响应是即时的二元触发，没有渐变加速
-- **Acceleration model**: 移动是即时的arcade feel（无加速曲线），攻击也是即时触发
-- **Failure texture**: 输入被硬直抑制时，角色有明显的受击状态视觉，玩家能清晰理解"为什么没响应"
-
-### Feel Acceptance Criteria
-
-- [ ] 玩家从按下攻击键到角色动画启动不超过2帧
-- [ ] 连招输入可以在前一招结束前300ms提前输入并成功衔接
-- [ ] 闪避能100%打断除必杀收招外的所有动作
-- [ ] 手柄和键盘体验完全一致，无功能缺失
-- [ ] 无测试者反馈"我按了但没反应"
-
-## UI Requirements
-
-| Information | Display Location | Update Frequency | Condition |
-|-------------|-----------------|-----------------|-----------|
-| 技能图标 | HUD右下角 | 每帧 | 持续显示 |
-| 技能冷却 | 技能图标上叠加 | 每帧 | 冷却中 |
-| 缓冲输入指示 | 技能图标微弱高亮 | 输入时 | 缓冲中有输入 |
-| 输入提示(教学) | 画面中央下方 | 事件触发 | 新手引导 |
-
-## Cross-References
-
-| This Document References | Target GDD | Specific Element Referenced | Nature |
-|--------------------------|-----------|----------------------------|--------|
-| combo_step影响缓冲窗口 | `design/gdd/combo-system.md` | combo_step值 | Data dependency |
-| 闪避打断连招 | `design/gdd/combat-system.md` | 动作取消规则 | Rule dependency |
-| 手柄按键映射 | `.claude/docs/technical-preferences.md` | Input Methods配置 | Rule dependency |
+| Parameter | Default | Safe Range | Effect |
+|---|---|---|---|
+| light_attack_buffer | 200ms | 100-400ms | 连招宽容度 |
+| dodge_buffer | 100ms | 50-200ms | 闪避响应性 |
+| input_debounce | 100ms | 50-200ms | 防止重复触发 |
+| camera_sensitivity | 1.0 | 0.5-2.0 | 视角旋转速度 |
+| camera_invert_y | false | bool | 视角Y轴反转 |
+| deadzone_inner | 0.15 | 0.05-0.3 | 摇杆死区 |
+| deadzone_outer | 0.9 | 0.7-1.0 | 摇杆最大值 |
+| device_switch_delay | 500ms | 200-1000ms | 设备切换延迟 |
 
 ## Acceptance Criteria
 
-- [ ] 所有11个动作输入在键盘和手柄上均可触发，无遗漏
-- [ ] 输入缓冲窗口在config中可配置，无硬编码
-- [ ] 缓冲队列正确消费和丢弃，不会积累幽灵输入
-- [ ] 闪避优先级高于所有攻击，可可靠打断
-- [ ] 上下文切换在Normal/InCombo/InHitStun/MenuOpen间正确转换
-- [ ] Performance: 输入轮询在_physics_process中完成，耗时<0.5ms
-- [ ] No hardcoded values in implementation
-
-## Open Questions
-
-| Question | Owner | Deadline | Resolution |
-|----------|-------|----------|-----------|
-| 是否需要宏按键支持？ | game-designer | GDD审批时 | 倾向不做，防止连发外挂 |
-| 手柄震动反馈强度？ | game-designer | Audio System GDD时 | 与Audio系统一起定义 |
+- [ ] 所有输入设备自动检测并切换映射
+- [ ] 输入缓冲在窗口内100%成功触发
+- [ ] 优先级规则：闪避 > 攻击 > 移动（通过测试验证）
+- [ ] 键鼠和手柄所有操作100%对等
+- [ ] 输入响应延迟 < 16ms（1帧内）
+- [ ] 上下文切换正确（Free/Combat × Ground/Air）
+- [ ] 无输入丢失（快速连续按键100%响应）
+- [ ] Performance: 输入处理耗时 < 0.1ms per frame

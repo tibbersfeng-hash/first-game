@@ -1,15 +1,15 @@
 # Systems Index: 格斗萌主
 
-> **Status**: Draft
-> **Created**: 2026-06-15
-> **Last Updated**: 2026-06-15
-> **Source Concept**: design/gdd/game-concept.md
+> **Status**: Draft (Updated for 3D)
+> **Last Updated**: 2026-06-17
+> **Engine**: Unreal Engine 5.7 (3D第三人称动作)
+> **Reference**: 崩坏3、战双帕弥什、绝区零
 
 ---
 
 ## Overview
 
-格斗萌主是一款Q版2D横版格斗闯关游戏，核心循环是"城镇整备→副本闯关→结算奖励→成长搭配"。三大支柱——爽快打击+Q版反差、职业深度与成长、轻社交竞争——决定了系统优先级。战斗手感系统是命根子，必须最先设计验证；职业/装备成长系统驱动长期留存；轻量PVP提供社交调味。总共拆解为18个系统，其中9个为MVP必需。
+格斗萌主是一款Q版3D第三人称动作闯关游戏，核心循环是"城镇整备→副本闯关→结算奖励→成长搭配"。三大支柱——爽快打击+Q版反差、职业深度与成长、轻社交竞争——决定了系统优先级。战斗手感系统是命根子，必须最先设计验证；职业/装备成长系统驱动长期留存；轻量PVP提供社交调味。总共拆解为20个系统（3D版新增2个：Camera System、LockOn System），其中11个为MVP必需。
 
 ---
 
@@ -17,24 +17,26 @@
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | Input System | Core | MVP | Not Started | — | — |
-| 2 | Player Controller | Core | MVP | Not Started | — | Input System |
-| 3 | Combat System | Gameplay | MVP | Not Started | — | Player Controller, Hit Detection |
-| 4 | Hit Detection & Feedback | Core | MVP | Not Started | — | Player Controller |
-| 5 | Combo System | Gameplay | MVP | Not Started | — | Combat System |
-| 6 | Enemy AI | Gameplay | MVP | Not Started | — | Combat System, Hit Detection |
-| 7 | Dungeon Room System | Gameplay | MVP | Not Started | — | Enemy AI |
-| 8 | Dungeon Flow System | Gameplay | MVP | Not Started | — | Dungeon Room System |
-| 9 | HUD System | UI | MVP | Not Started | — | Combo System, Combat System |
-| 10 | Character Stats | Progression | Vertical Slice | Not Started | — | — |
-| 11 | Skill Tree System | Progression | Vertical Slice | Not Started | — | Character Stats |
-| 12 | Equipment System | Economy | Vertical Slice | Not Started | — | Character Stats |
-| 13 | Loot & Drop System | Economy | Vertical Slice | Not Started | — | Equipment System, Enemy AI |
-| 14 | Town Hub | Gameplay | Vertical Slice | Not Started | — | Dungeon Flow System |
-| 15 | Save System | Persistence | Alpha | Not Started | — | Character Stats, Equipment System |
-| 16 | Audio System | Audio | Alpha | Not Started | — | Combat System, Hit Detection |
-| 17 | PVP Arena | Gameplay | Full Vision | Not Started | — | Combat System, Character Stats |
-| 18 | Leaderboard & Social | Meta | Full Vision | Not Started | — | PVP Arena |
+| 1 | Input System | Core | MVP | Done | — | — |
+| 2 | Player Controller | Core | MVP | Done | — | Input System, Camera System |
+| 3 | Camera System 🆕 | Core | MVP | Draft | — | Player Controller |
+| 4 | LockOn System 🆕 | Core | MVP | Draft | — | Camera System, Input |
+| 5 | Combat System | Gameplay | MVP | Done | — | Player Controller, Hit Detection, LockOn |
+| 6 | Hit Detection & Feedback | Core | MVP | Done | — | Player Controller |
+| 7 | Combo System | Gameplay | MVP | Not Started | — | Combat System |
+| 8 | Enemy AI | Gameplay | MVP | Done | — | Combat System, Hit Detection, NavMesh |
+| 9 | Dungeon Room System | Gameplay | MVP | Done | — | Enemy AI |
+| 10 | Dungeon Flow System | Gameplay | MVP | Not Started | — | Dungeon Room System |
+| 11 | HUD System | UI | MVP | Not Started | — | Combo System, Combat System |
+| 12 | Character Stats | Progression | Vertical Slice | Not Started | — | — |
+| 13 | Skill Tree System | Progression | Vertical Slice | Not Started | — | Character Stats |
+| 14 | Equipment System | Economy | Vertical Slice | Not Started | — | Character Stats |
+| 15 | Loot & Drop System | Economy | Vertical Slice | Not Started | — | Equipment System, Enemy AI |
+| 16 | Town Hub | Gameplay | Vertical Slice | Not Started | — | Dungeon Flow System |
+| 17 | Save System | Persistence | Alpha | Not Started | — | Character Stats, Equipment |
+| 18 | Audio System | Audio | Alpha | Not Started | — | Combat System, Hit Detection |
+| 19 | PVP Arena | Gameplay | Full Vision | Not Started | — | Combat System, Character Stats |
+| 20 | Leaderboard & Social | Meta | Full Vision | Not Started | — | PVP Arena |
 
 ---
 
