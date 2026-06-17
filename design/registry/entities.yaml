@@ -37,7 +37,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: ""
+last_updated: "2026-06-15"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -48,9 +48,102 @@ last_updated: ""
 # Attribute fields: any key stats that could appear in another GDD
 #   (health, damage, drops, faction, etc.)
 
-entities: []
+entities:
+  # ── Playable Characters ──────────────────────────────────────────────────
+  - name: huikong
+    display_name: 气功小武僧·慧空
+    class_name: Blazing Monkfist
+    status: active
+    source: design/narrative/characters/character-blazing-monkfist.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+      - design/gdd/combat-system.md
+      - design/gdd/combo-system.md
+    role: playable_character
+    primary_color: "#6699FF"
+    combat_style: melee_combo
+    core_mechanic: qi_stacks
+    attack_range: close
+    attack_speed: fastest
+    single_hit_damage: low
+    survivability: medium
+    difficulty: medium
+    added: 2026-06-15
+    revised: ""
 
-# Example (remove when first real entry is added):
+  - name: tangtang
+    display_name: 糖果魔导师·糖糖
+    class_name: Sugar Hexblade
+    status: active
+    source: design/narrative/characters/character-sugar-hexblade.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+    role: playable_character
+    primary_color: "#FF6B9D"
+    combat_style: mid_range_control
+    core_mechanic: candy_combo
+    attack_range: mid_far
+    attack_speed: medium
+    single_hit_damage: medium
+    survivability: low
+    difficulty: hard
+    added: 2026-06-15
+    revised: ""
+
+  - name: kiguemaru
+    display_name: 萌鬼狂战士·小鬼丸
+    class_name: Oni Crushkin
+    status: active
+    source: design/narrative/characters/character-oni-crushkin.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+    role: playable_character
+    primary_color: "#9B59B6"
+    combat_style: melee_burst
+    core_mechanic: rage
+    attack_range: close_aoe
+    attack_speed: slowest
+    single_hit_damage: highest
+    survivability: highest
+    difficulty: easy
+    added: 2026-06-15
+    revised: ""
+
+  # ── Factions ─────────────────────────────────────────────────────────────
+  - name: monk_temple
+    display_name: 深山古寺
+    status: active
+    source: design/narrative/characters/character-blazing-monkfist.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+    type: faction
+    description: 气功一脉的传承地，慧空长大的地方
+    added: 2026-06-15
+    revised: ""
+
+  - name: alchemist_guild
+    display_name: 炼金术士公会
+    status: active
+    source: design/narrative/characters/character-sugar-hexblade.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+    type: faction
+    description: 糖糖曾加入的炼金术组织，因实验事故离开
+    added: 2026-06-15
+    revised: ""
+
+  - name: oni_clan
+    display_name: 鬼族
+    status: active
+    source: design/narrative/characters/character-oni-crushkin.md
+    referenced_by:
+      - design/narrative/characters/class-overview.md
+    type: faction
+    description: 熔岩地狱中的鬼族势力，小鬼丸的出身
+    added: 2026-06-15
+    revised: ""
+
+# Example (keep for reference):
 #
 # entities:
 #   - name: goblin
