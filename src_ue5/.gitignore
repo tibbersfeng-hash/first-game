@@ -1,0 +1,56 @@
+# UE5 .gitignore for 格斗萌主
+
+# Binaries and build artifacts
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+Build/
+
+# IDE files
+.vs/
+.vscode/
+*.sdf
+*.VC.db
+*.opensdf
+*.suo
+*.user
+*.userprefs
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# UE5 specific
+*.sln
+*.make
+*.makefile
+*.sh
+*.bat
+*.command
+
+# Don't ignore Source code (we track C++ source)
+# But ignore compiled objects
+*.o
+*.obj
+*.lib
+*.exp
+*.dll
+*.so
+*.dylib
+*.pdb
+
+# Content that should be versioned:
+# Content/ — .uasset, .umap, Blueprints, etc.
+# Source/ — all C++ .h and .cpp files
+# Config/ — .ini files
+# *.uproject
+
+# Large binary assets (optional: use Git LFS)
+# Content/**/*.uasset
+# Content/**/*.umap
+
+# Exceptions for small configs
+!Config/*.ini

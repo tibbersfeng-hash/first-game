@@ -1,0 +1,151 @@
+// Copyright 2026 格斗萌主 Team. All Rights Reserved.
+// Player Character — 2.5D side-scrolling fighter
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "PlayerCharacter.generated.h"
+
+class UAbilitySystemComponent;
+class UCharacterDataAsset;
+class UHitBoxComponent;
+class UHurtBoxComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerStateChanged, class APlayerCharacter*, Player, FName, NewState);
+
+UCLASS()
+class FIRSTGAME_API APlayerCharacter : public ACharacter, public IAbilitySystemInterface
+{
+	GENERATED_BODY()
+
+public:
+	APlayerCharacter();
+
+	// ─── AbilitySystemInterface ──────────────────────────────────────
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	// ─── Setup ───────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void InitializeCharacter(UCharacterDataAsset* InDataAsset);
+
+	// ─── Properties ──────────────────────────────────────────────────
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
+	UCharacterDataAsset* CharacterData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
+	FName CurrentCharacterId;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Stats")
+	float CurrentHealth;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Stats")
+	float CurrentEnergy;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Stats")
+	int32 CurrentComboCount;
+
+	// ─── States ──────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "State")
+	FName GetCurrentState() const { return CurrentState; }
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	bool CanAct() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "State")
+	FOnPlayerStateChanged OnStateChanged;
+
+	// ─── Actions ─────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void PerformLightAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void PerformHeavyAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void PerformSpecialMove();
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void PerformDodge();
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void JumpAction();
+
+	// ─── Damage ──────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void ReceiveHitDamage(float Amount, AActor* DamageCauser);
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void Heal(float Amount);
+
+	// ─── Hit Stop ────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void ApplyHitStop(float Duration);
+
+	// ── Energy ───────────────────────────────────────────────────────
+	UFUNCTION(BlueprintCallable, Category = "Energy")
+	void AddEnergy(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Energy")
+	bool ConsumeEnergy(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Energy")
+	bool HasEnoughEnergy(float Amount) const;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// ─── 2D Movement ─────────────────────────────────────────────────
+	void Move2D(float Value);
+	void Jump2D();
+
+	// ─── State Transitions ───────────────────────────────────────────
+	void SetState(FName NewState);
+
+	// ─── Combat Helpers ──────────────────────────────────────────────
+	void ResetCombo();
+	void UpdateCombo();
+
+	// ─── Components ──────────────────────────────────────────────────
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	class UAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UHitBoxComponent* ActiveHitBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UHurtBoxComponent* PlayerHurtBox;
+
+private:
+	// ─── State ───────────────────────────────────────────────────────
+	UPROPERTY()
+	FName CurrentState = "Idle";
+
+	float ComboTimer = 0.f;
+	float HitStopTimer = 0.f;
+	bool bIsInHitStop = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* MoveAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* JumpActionInput;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* LightAttackAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* HeavyAttackAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* SpecialAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* DodgeAction;
+};
