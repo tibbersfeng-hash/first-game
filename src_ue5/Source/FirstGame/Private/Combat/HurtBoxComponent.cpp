@@ -10,12 +10,13 @@ UHurtBoxComponent::UHurtBoxComponent()
 	SetCollisionResponseToAllChannels(ECR_Ignore);
 	SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECR_Overlap); // HitBox channel
 
-	SetBoxExtent(FVector(30.f, 10.f, 50.f));
+	// SetBoxExtent deferred to BeginPlay to avoid NewObject in UObject constructor
 }
 
 void UHurtBoxComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	SetBoxExtent(FVector(30.f, 10.f, 50.f));
 	OnComponentBeginOverlap.AddDynamic(this, &UHurtBoxComponent::OnDamageOverlapBegin);
 }
 
