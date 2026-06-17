@@ -41,6 +41,10 @@ dist/
 # === Engine: Godot (legacy — migrated to UE5.7 on 2026-06-17) ===
 # Godot entries removed; re-add if legacy Godot work resumes.
 
+# === Legacy 2D Sprites (Godot era, not used in 3D direction) ===
+design/assets/output/
+design/narrative/characters/artwork/
+
 # === Engine: Unity ===
 [Ll]ibrary/
 [Tt]emp/
