@@ -5,13 +5,13 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: Godot 4.6.3
-- **Language**: GDScript (主语言) + C# (可选性能模块)
+- **Engine**: Unreal Engine 5.7
+- **Language**: C++ (核心系统) + Blueprint (内容/关卡/动画/UI)
 - **Version Control**: Git with trunk-based development
-- **Build System**: Godot Editor export
-- **Asset Pipeline**: Godot import (sprites, audio, shaders)
+- **Build System**: UE5 Build System (UBT) + UnrealBuildTool
+- **Asset Pipeline**: UE5 Content Browser (meshes, textures, animations, materials)
 
-> **Note**: Using Godot specialist agent set — godot-specialist, godot-gdscript-specialist, godot-shader-specialist, godot-gdextension-specialist.
+> **Note**: Using UE5 specialist agent set — unreal-specialist, unreal-cpp-specialist, unreal-gas-specialist, unreal-umg-specialist, unreal-ai-specialist.
 
 ## Project Structure
 
@@ -19,7 +19,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Engine Version Reference
 
-@docs/engine-reference/godot/VERSION.md
+@docs/engine-reference/unreal/VERSION.md
 
 ## Technical Preferences
 
@@ -41,7 +41,7 @@ Every task follows: **Question -> Options -> Decision -> Draft -> Approval**
 
 See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
-> **Game: 格斗萌主** — Q版2D横版格斗闯关游戏（类DNF）。引擎已配置，概念已确立。
+> **Game: 格斗萌主** — Q版3D第三人称动作游戏（类崩坏3）。引擎 UE5.7，概念已确立。
 > 继续开发使用: `/brainstorm` `/map-systems` `/design-system` `/prototype` `/dev-story`
 
 ## Coding Standards

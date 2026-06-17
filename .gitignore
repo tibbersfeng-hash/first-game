@@ -38,13 +38,8 @@ dist/
 *.dylib
 *.app
 
-# === Engine: Godot ===
-.godot/
-*.translation
-*.uid
-export_presets.cfg
-# Uncomment if using Godot:
-# *.import
+# === Engine: Godot (legacy — migrated to UE5.7 on 2026-06-17) ===
+# Godot entries removed; re-add if legacy Godot work resumes.
 
 # === Engine: Unity ===
 [Ll]ibrary/

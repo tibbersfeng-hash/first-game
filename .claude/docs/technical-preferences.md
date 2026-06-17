@@ -4,10 +4,10 @@
 
 ## Engine & Language
 
-- **Engine**: Unreal Engine 5.6
+- **Engine**: Unreal Engine 5.7
 - **Language**: C++ (核心系统) + Blueprint (内容/关卡/动画)
-- **Rendering**: 2.5D — 固定侧视相机，默认渲染管线
-- **Physics**: UE5 Chaos Physics（2D约束：锁定Y轴平面运动）
+- **Rendering**: 3D — 第三人称越肩相机，NPR 渲染管线（卡通渲染）
+- **Physics**: UE5 Chaos Physics（3D 全向运动 + NavMesh 寻路）
 
 ## Input & Platform
 
@@ -58,7 +58,7 @@ src_ue5/
 
 - **Target Framerate**: 60 FPS (战斗场景必须稳定)
 - **Frame Budget**: 16.67ms — 战斗逻辑不超过 5ms
-- **Draw Calls**: < 200 per frame (2.5D场景)
+- **Draw Calls**: < 500 per frame (3D场景)
 - **Memory Ceiling**: < 1GB
 
 ## Testing
@@ -80,9 +80,9 @@ src_ue5/
 - GameplayTags — 状态管理
 - GameplayTasks — 异步任务
 - EnhancedInput — 输入系统
-- Paper2D — 2D sprite（过渡用，后期换3D模型）
-- AIModule — AI/Behavior Tree
+- AIModule — AI/Behavior Tree + NavMesh
 - UMG — UI/HUD
+- MetaHuman — 角色创建（可选，参考 3D 美术管线评估）
 
 ## Architecture Decisions Log
 
@@ -93,6 +93,8 @@ src_ue5/
 - [ADR-005: Fixed Room Size](../docs/architecture/adr-005-fixed-room-size.md) — Accepted
 - [ADR-006: DeltaTime-Based Combat Timing](../docs/architecture/adr-006-deltatime-combat.md) — Accepted
 - [ADR-007: GAS for Combat System](../docs/architecture/adr-007-gas-combat.md) — Accepted
+- [ADR-008: Camera System](../docs/architecture/adr-008-camera-system.md) — Accepted (4 modes: Free/Locked/Dodge/Ultimate)
+- [ADR-009: Lock-on System](../docs/architecture/adr-009-lock-on.md) — Accepted (越肩视角 + 锁定跟随)
 
 ## Engine Specialists
 
