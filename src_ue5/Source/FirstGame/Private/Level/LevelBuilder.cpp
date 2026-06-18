@@ -5,6 +5,7 @@
 
 #include "Dungeon/DungeonFlow.h"
 #include "Dungeon/DungeonRoom.h"
+#include "Door/DoorActor.h"
 #include "Characters/BaseEnemy.h"
 #include "Characters/PlayerCharacter.h"
 #include "DataAssets/CharacterDataFactory.h"
@@ -327,6 +328,39 @@ void ALevelBuilder::BuildDungeonFlow()
 		}
 	}
 
+	// 3. 在房间之间生成门 (最后一个房间后不需要门)
+	for (int32 i = 0; i < TotalRooms - 1; ++i)
+	{
+		if (!SpawnedRooms.IsValidIndex(i)) continue;
+
+		// 门位置: 当前房间和下一房间之间的中点
+		const float CurrentRoomX = i * (RoomExtent.Y + RoomGapDistance);
+		const float NextRoomX = (i + 1) * (RoomExtent.Y + RoomGapDistance);
+		const float DoorX = (CurrentRoomX + NextRoomX) * 0.5f;
+		const FVector DoorLocation(DoorX, 0.f, FloorThickness + 250.f);  // 门底部在地面上
+
+		ADoorActor* Door = World->SpawnActor<ADoorActor>(
+			ADoorActor::StaticClass(),
+			DoorLocation,
+			FRotator::ZeroRotator,
+			SpawnParams
+		);
+
+		if (Door)
+		{
+			Door->Tags.AddUnique(LevelBuilderTags::ChildTag);
+			ChildActors.Add(Door);
+			SpawnedDoors.Add(Door);
+
+			// 门属于前一个房间的出口
+			SpawnedRooms[i]->ExitDoor = Door;
+
+			LogBuild(FString::Printf(
+				TEXT("BuildDungeonFlow: 在房间 %d 和 %d 之间生成门 (位置=%s)"),
+				i, i + 1, *DoorLocation.ToString()));
+		}
+	}
+
 	// 3. 初始化 DungeonFlow（喂入所有房间）
 	if (DungeonFlow && SpawnedRooms.Num() > 0)
 	{
@@ -565,6 +599,7 @@ void ALevelBuilder::CleanupChildren()
 	}
 	ChildActors.Empty();
 	SpawnedRooms.Empty();
+	SpawnedDoors.Empty();
 	DungeonFlow = nullptr;
 }
 

@@ -10,6 +10,7 @@
 
 class ABaseEnemy;
 class AWaveManager;
+class ADoorActor;
 
 UENUM(BlueprintType)
 enum class ERoomType : uint8
@@ -57,6 +58,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Room")
 	FOnRoomCleared OnRoomCleared;
+
+	/** 出口门 (Clear 后开启, 让玩家进入下一房间) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room")
+	ADoorActor* ExitDoor;
 
 	// ─── 波次配置 ────────────────────────────────────────────────────
 	/** 高级模式: 自定义波次 (如果设置, 则忽略 EnemyClasses) */

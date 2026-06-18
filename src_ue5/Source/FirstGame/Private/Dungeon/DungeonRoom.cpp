@@ -3,6 +3,7 @@
 #include "FirstGame.h"
 #include "Dungeon/DungeonRoom.h"
 #include "Dungeon/WaveManager.h"
+#include "Door/DoorActor.h"
 #include "Characters/BaseEnemy.h"
 #include "Subsystems/SignalBusFunctionLibrary.h"
 
@@ -81,6 +82,13 @@ void ADungeonRoom::ClearRoom()
 
 	bIsCleared = true;
 	UE_LOG(LogTemp, Log, TEXT("DungeonRoom %d CLEARED!"), RoomIndex);
+
+	// 开启出口门 (让玩家进入下一房间)
+	if (ExitDoor)
+	{
+		ExitDoor->Open();
+		UE_LOG(LogTemp, Log, TEXT("DungeonRoom %d: 出口门已开启"), RoomIndex);
+	}
 
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 	if (SignalBus)

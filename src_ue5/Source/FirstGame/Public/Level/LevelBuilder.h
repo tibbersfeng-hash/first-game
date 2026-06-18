@@ -13,6 +13,7 @@ class ADungeonRoom;
 class ABaseEnemy;
 class APlayerStart;
 class APlayerCharacter;
+class ADoorActor;
 class UCameraComponent;
 class UUserWidget;
 class UCharacterDataAsset;
@@ -121,6 +122,10 @@ public:
 	/** 生成的所有房间 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Runtime")
 	TArray<ADungeonRoom*> SpawnedRooms;
+
+	/** 生成的所有门 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Runtime")
+	TArray<ADoorActor*> SpawnedDoors;
 
 	/** 所有 Spawn 出的子 Actor（用于清理）*/
 	UPROPERTY()
