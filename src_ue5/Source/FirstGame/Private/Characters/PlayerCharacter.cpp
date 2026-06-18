@@ -7,6 +7,9 @@
 #include "Subsystems/SignalBusFunctionLibrary.h"
 #include "Subsystems/CombatDataSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Camera/CameraController.h"
 #include "AbilitySystemComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -25,6 +28,27 @@ APlayerCharacter::APlayerCharacter()
 	// Create HurtBox (damage receiving)
 	PlayerHurtBox = CreateDefaultSubobject<UHurtBoxComponent>(TEXT("PlayerHurtBox"));
 	PlayerHurtBox->SetupAttachment(RootComponent);
+
+	// ─── Camera (ADR-008) ────────────────────────────────────────────
+	// SpringArm: 相机伸缩杆 (负责距离/碰撞/平滑跟随)
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 250.f;           // 自由模式默认距离
+	CameraBoom->SocketOffset = FVector(0.f, 0.f, 80.f);  // 相机高度 (稍高于角色)
+	CameraBoom->bUsePawnControlRotation = true;    // 跟随 Controller 旋转
+	CameraBoom->bDoCollisionTest = true;           // 启用碰撞避免穿墙
+	CameraBoom->bEnableCameraLag = true;           // 平滑跟随
+	CameraBoom->CameraLagSpeed = 10.f;
+	CameraBoom->bEnableCameraRotationLag = true;   // 旋转平滑
+	CameraBoom->CameraRotationLagSpeed = 5.f;
+
+	// Camera: 第三人称视角
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	FollowCamera->SetFieldOfView(65.f);            // 自由模式默认 FOV
+
+	// CameraController: 管理 4 种相机模式
+	CameraController = CreateDefaultSubobject<UCameraController>(TEXT("CameraController"));
 
 	// Default stats
 	CurrentHealth = 100.f;
@@ -51,6 +75,13 @@ void APlayerCharacter::BeginPlay()
 
 	SetState("Idle");
 	UE_LOG(LogTemp, Log, TEXT("PlayerCharacter initialized in 2.5D mode"));
+
+	// 初始化 CameraController (传入 SpringArm 和 Camera)
+	if (CameraController && CameraBoom && FollowCamera)
+	{
+		CameraController->Initialize(CameraBoom, FollowCamera);
+		UE_LOG(LogTemp, Log, TEXT("PlayerCharacter: CameraController 已初始化"));
+	}
 }
 
 void APlayerCharacter::Tick(float DeltaTime)

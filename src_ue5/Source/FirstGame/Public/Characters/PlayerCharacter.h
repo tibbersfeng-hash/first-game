@@ -12,6 +12,9 @@ class UAbilitySystemComponent;
 class UCharacterDataAsset;
 class UHitBoxComponent;
 class UHurtBoxComponent;
+class USpringArmComponent;
+class UCameraComponent;
+class UCameraController;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerStateChanged, class APlayerCharacter*, Player, FName, NewState);
 
@@ -118,6 +121,24 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UHurtBoxComponent* PlayerHurtBox;
+
+	// ─── Camera (ADR-008) ────────────────────────────────────────────
+	/** SpringArm: 相机伸缩杆, 负责距离/碰撞/平滑跟随 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	USpringArmComponent* CameraBoom;
+
+	/** Camera: 第三人称视角 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UCameraComponent* FollowCamera;
+
+	/** CameraController: 管理 4 种相机模式切换 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UCameraController* CameraController;
+
+public:
+	/** 获取相机控制器 (便于外部切换模式) */
+	UFUNCTION(BlueprintPure, Category = "Camera")
+	UCameraController* GetCameraController() const { return CameraController; }
 
 private:
 	// ─── State ───────────────────────────────────────────────────────
