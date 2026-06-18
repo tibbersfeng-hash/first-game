@@ -16,6 +16,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UCameraController;
 class ULockOnComponent;
+class UComboManager;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerStateChanged, class APlayerCharacter*, Player, FName, NewState);
 
@@ -123,8 +124,7 @@ protected:
 	void SetState(FName NewState);
 
 	// ─── Combat Helpers ──────────────────────────────────────────────
-	void ResetCombo();
-	void UpdateCombo();
+	// (ComboManager 已接管连招管理, 不再需要 ResetCombo/UpdateCombo)
 
 	// ─── Lock-On Helpers ─────────────────────────────────────────────
 	UFUNCTION()
@@ -160,6 +160,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	ULockOnComponent* LockOnComponent;
 
+	/** ComboManager: 连招管理器 (ADR-007) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UComboManager* ComboManager;
+
 public:
 	/** 获取相机控制器 (便于外部切换模式) */
 	UFUNCTION(BlueprintPure, Category = "Camera")
@@ -170,7 +174,6 @@ private:
 	UPROPERTY()
 	FName CurrentState = "Idle";
 
-	float ComboTimer = 0.f;
 	float HitStopTimer = 0.f;
 	bool bIsInHitStop = false;
 

@@ -11,6 +11,7 @@
 #include "Camera/CameraComponent.h"
 #include "Camera/CameraController.h"
 #include "LockOn/LockOnComponent.h"
+#include "Combat/ComboManager.h"
 #include "GameFramework/PlayerController.h"
 #include "AbilitySystemComponent.h"
 
@@ -55,6 +56,9 @@ APlayerCharacter::APlayerCharacter()
 	// LockOnComponent: 目标锁定系统 (ADR-009)
 	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
 
+	// ComboManager: 连招管理器 (ADR-007)
+	ComboManager = CreateDefaultSubobject<UComboManager>(TEXT("ComboManager"));
+
 	// Default stats
 	CurrentHealth = 100.f;
 	CurrentEnergy = 100.f;
@@ -94,6 +98,13 @@ void APlayerCharacter::BeginPlay()
 		LockOnComponent->OnLockChanged.AddDynamic(this, &APlayerCharacter::OnLockTargetChanged);
 		UE_LOG(LogTemp, Log, TEXT("PlayerCharacter: LockOnComponent 已初始化"));
 	}
+
+	// ComboManager 已在构造函数中创建，无需额外初始化
+	if (ComboManager)
+	{
+		UE_LOG(LogTemp, Log, TEXT("PlayerCharacter: ComboManager 已初始化 (窗口:%.1fs)"),
+			ComboManager->ComboWindowTime);
+	}
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -112,15 +123,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 		return; // Skip all logic during hit stop
 	}
 
-	// Combo reset timer
-	if (CurrentComboCount > 0)
-	{
-		ComboTimer -= DeltaTime;
-		if (ComboTimer <= 0.f)
-		{
-			ResetCombo();
-		}
-	}
+	// Combo reset timer — 由 ComboManager 的 TickComponent 处理
+	// 同步 HUD 显示用的连击计数
+	CurrentComboCount = ComboManager ? ComboManager->GetCurrentCount() : 0;
 
 	// Energy regen
 	if (CharacterData && CurrentEnergy < CharacterData->MaxEnergy)
@@ -181,7 +186,13 @@ void APlayerCharacter::PerformLightAttack()
 	if (!ConsumeEnergy(CharacterData->EnergyCostPerAttack)) return;
 
 	SetState("Attacking");
-	UpdateCombo();
+
+	// 通过 ComboManager 注册命中
+	if (ComboManager)
+	{
+		ComboManager->RegisterHit("LightAttack");
+		CurrentComboCount = ComboManager->GetCurrentCount();
+	}
 
 	UE_LOG(LogTemp, Log, TEXT("Light Attack %d: Damage=%.0f, Startup=%.1f"), Index + 1, Move.Damage, Move.StartupFrames);
 
@@ -211,7 +222,13 @@ void APlayerCharacter::PerformHeavyAttack()
 	if (!ConsumeEnergy(CharacterData->EnergyCostPerAttack * 2.f)) return;
 
 	SetState("Attacking");
-	ResetCombo();
+
+	// 重攻击打断连招
+	if (ComboManager)
+	{
+		ComboManager->ResetCombo();
+		CurrentComboCount = 0;
+	}
 
 	UE_LOG(LogTemp, Log, TEXT("Heavy Attack: Damage=%.0f"), Move.Damage);
 
@@ -236,7 +253,13 @@ void APlayerCharacter::PerformSpecialMove()
 	if (!ConsumeEnergy(Cost)) return;
 
 	SetState("SpecialAttacking");
-	ResetCombo();
+
+	// 必杀技打断连招
+	if (ComboManager)
+	{
+		ComboManager->ResetCombo();
+		CurrentComboCount = 0;
+	}
 
 	UE_LOG(LogTemp, Log, TEXT("SPECIAL MOVE: Damage=%.0f!"), Move.Damage);
 
@@ -381,29 +404,6 @@ void APlayerCharacter::SetState(FName NewState)
 		CurrentState = NewState;
 		OnStateChanged.Broadcast(this, NewState);
 		UE_LOG(LogTemp, Log, TEXT("State: %s -> %s"), *OldState.ToString(), *NewState.ToString());
-	}
-}
-
-void APlayerCharacter::ResetCombo()
-{
-	if (CurrentComboCount > 0)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Combo reset (was %d)"), CurrentComboCount);
-		CurrentComboCount = 0;
-		ComboTimer = 0.f;
-	}
-}
-
-void APlayerCharacter::UpdateCombo()
-{
-	CurrentComboCount++;
-	ComboTimer = 1.5f; // Reset timeout
-	UE_LOG(LogTemp, Log, TEXT("Combo: %d"), CurrentComboCount);
-
-	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
-	if (SignalBus)
-	{
-		SignalBus->OnComboUpdated.Broadcast(this, CurrentComboCount);
 	}
 }
 
