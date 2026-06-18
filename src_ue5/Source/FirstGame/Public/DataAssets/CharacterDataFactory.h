@@ -33,6 +33,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Data Factory")
 	static UCharacterDataAsset* CreateKiguemaruData(UObject* Outer);
 
+	/** Create default enemy data (CandyZombie-like, for generic enemies without specific class) */
+	UFUNCTION(BlueprintCallable, Category = "Data Factory")
+	static UCharacterDataAsset* CreateDefaultEnemyData(UObject* Outer);
+
 	/** Get default light attack values from GDD */
 	static struct FAttackMoveData GetDefaultLightAttack(int32 Index);
 

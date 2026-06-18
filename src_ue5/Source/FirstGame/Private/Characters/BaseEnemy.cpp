@@ -3,6 +3,7 @@
 #include "FirstGame.h"
 #include "Characters/BaseEnemy.h"
 #include "DataAssets/CharacterDataAsset.h"
+#include "DataAssets/CharacterDataFactory.h"
 #include "Combat/HitBoxComponent.h"
 #include "Combat/HurtBoxComponent.h"
 #include "Subsystems/SignalBusFunctionLibrary.h"
@@ -34,6 +35,17 @@ void ABaseEnemy::BeginPlay()
 	{
 		MoveComp->bConstrainToPlane = true;
 		MoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
+	}
+
+	// 如果没有外部数据 (WaveManager/DungeonRoom 没传), 用默认敌人数据
+	if (!EnemyData)
+	{
+		UCharacterDataAsset* DefaultData = UCharacterDataFactory::CreateDefaultEnemyData(this);
+		if (DefaultData)
+		{
+			InitializeEnemy(DefaultData);
+			UE_LOG(LogTemp, Log, TEXT("BaseEnemy: 使用默认敌人数据 (CandyZombie)"));
+		}
 	}
 
 	SetState("Idle");

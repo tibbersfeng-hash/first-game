@@ -201,3 +201,54 @@ UCharacterDataAsset* UCharacterDataFactory::CreateKiguemaruData(UObject* Outer)
 	UE_LOG(LogTemp, Log, TEXT("Created Kiguemaru DataAsset (HP:%.0f, DMG:%.0f)"), Data->MaxHealth, Data->MaxHealth);
 	return Data;
 }
+
+UCharacterDataAsset* UCharacterDataFactory::CreateDefaultEnemyData(UObject* Outer)
+{
+	UCharacterDataAsset* Data = NewObject<UCharacterDataAsset>(Outer);
+	if (!Data) return nullptr;
+
+	// 基础敌人数据 (CandyZombie 风格)
+	// GDD: design/gdd/enemy-ai.md
+	Data->CharacterId = FName(TEXT("CandyZombie"));
+	Data->DisplayName = FText::FromString(TEXT("糖果僵尸"));
+
+	// Stats (CandyZombie: 慢速弱鸡)
+	Data->MaxHealth = 30.f;
+	Data->MaxEnergy = 0.f;
+	Data->MoveSpeed = 150.f;
+	Data->JumpForce = 0.f;
+	Data->Gravity = 2000.f;
+	Data->EnergyRegenRate = 0.f;
+	Data->EnergyCostPerAttack = 0.f;
+
+	// Light attack (简单的一击)
+	FAttackMoveData EnemyAttack;
+	EnemyAttack.MoveName = FName(TEXT("Bite"));
+	EnemyAttack.Damage = 8.f;
+	EnemyAttack.StartupFrames = 5.f;      // 出招慢
+	EnemyAttack.ActiveFrames = 4.f;
+	EnemyAttack.RecoveryFrames = 8.f;     // 收招慢
+	EnemyAttack.HitStopFrames = 3.f;
+	EnemyAttack.Knockback = FVector2D(150.f, 50.f);
+	EnemyAttack.bLaunchesEnemy = false;
+	Data->LightAttacks.Add(EnemyAttack);
+
+	// Heavy attack (无)
+	Data->HeavyAttack = FAttackMoveData();
+	Data->HeavyAttack.MoveName = FName(TEXT("None"));
+
+	// Special move (无)
+	Data->SpecialMove = FAttackMoveData();
+	Data->SpecialMove.MoveName = FName(TEXT("None"));
+
+	// Dodge (无)
+	Data->DodgeMove = FAttackMoveData();
+	Data->DodgeMove.MoveName = FName(TEXT("None"));
+
+	Data->HitStunDuration = 0.3f;
+	Data->KnockbackResistance = 0.2f;    // 轻甲, 容易被击退
+
+	UE_LOG(LogTemp, Log, TEXT("Created Default Enemy DataAsset (HP:%.0f, DMG:%.0f)"),
+		Data->MaxHealth, EnemyAttack.Damage);
+	return Data;
+}
