@@ -11,7 +11,15 @@ import os
 
 # 配置
 HUIKONG_BASE_PATH = "/Game/Characters/Huikong"
-FBX_SOURCE_PATH = "/root/autodl-tmp/project/first-game/design/assets/output/3d/huikong"
+
+# FBX 源路径 — 基于 UE5 项目目录自动检测
+# 把 FBX 文件放到 src_ue5/Content/_fbx_staging/ 目录下即可
+try:
+    _project_dir = unreal.Paths.project_dir()  # 例如 /Users/Tibers/game/first-game/src_ue5/
+    FBX_SOURCE_PATH = os.path.join(_project_dir, "Content", "_fbx_staging")
+except:
+    # fallback: 手动指定路径
+    FBX_SOURCE_PATH = "/Users/Tibers/game/first-game/src_ue5/Content/_fbx_staging"
 
 def log(msg):
     unreal.log(f"[Huikong Import] {msg}")
@@ -102,7 +110,12 @@ def import_animations():
     success_count = 0
 
     for cn_name, en_name in animations:
-        fbx_path = f"{FBX_SOURCE_PATH}/motions/{cn_name}/model_1.fbx"
+        # 支持两种路径格式: 平铺或子目录
+        fbx_path = f"{FBX_SOURCE_PATH}/{en_name}.fbx"
+        if not os.path.exists(fbx_path):
+            fbx_path = f"{FBX_SOURCE_PATH}/{cn_name}.fbx"
+        if not os.path.exists(fbx_path):
+            fbx_path = f"{FBX_SOURCE_PATH}/motions/{cn_name}/model_1.fbx"
         dest_path = f"{HUIKONG_BASE_PATH}/Animations/{en_name}"
 
         if not os.path.exists(fbx_path):
