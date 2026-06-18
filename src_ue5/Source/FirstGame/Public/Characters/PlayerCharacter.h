@@ -1,5 +1,5 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
-// Player Character — 2.5D side-scrolling fighter
+// Player Character — 3D third-person action fighter
 
 #pragma once
 
@@ -117,8 +117,9 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// ─── 2D Movement ─────────────────────────────────────────────────
-	void Move2D(float Value);
+	// ─── 3D Movement ─────────────────────────────────────────────────
+	void Move2D(float Value);     // 前后移动（相机/锁定相对）
+	void Strafe(float Value);     // 左右移动（环绕锁定目标）
 	void Jump2D();
 
 	// ─── State Transitions ───────────────────────────────────────────
@@ -187,6 +188,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* MoveAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* StrafeAction;    // 3D: 左右移动/环绕
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* JumpActionInput;

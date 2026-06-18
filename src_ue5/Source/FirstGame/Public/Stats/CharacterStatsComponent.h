@@ -104,6 +104,12 @@ public:
 	float BaseMaxEnergy = 100.f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Stats|Base")
+	float BaseMaxStamina = 100.f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Stats|Base")
+	float BaseStaminaRegenRate = 30.f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Stats|Base")
 	float BaseMoveSpeed = 300.f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Stats|Base")
@@ -121,6 +127,12 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	float GetMaxEnergy() const;
+
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	float GetMaxStamina() const;
+
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	float GetStaminaRegenRate() const;
 
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	float GetMoveSpeed() const;
@@ -142,6 +154,12 @@ public:
 	float GetCurrentEnergy() const { return CurrentEnergy; }
 
 	UFUNCTION(BlueprintPure, Category = "Stats")
+	float GetCurrentStamina() const { return CurrentStamina; }
+
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	float GetStaminaPercent() const;
+
+	UFUNCTION(BlueprintPure, Category = "Stats")
 	float GetHealthPercent() const;
 
 	UFUNCTION(BlueprintPure, Category = "Stats")
@@ -152,6 +170,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void SetCurrentEnergy(float NewEnergy);
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void SetCurrentStamina(float NewStamina);
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void RegenerateStamina(float DeltaTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void Heal(float Amount);
@@ -180,6 +204,9 @@ public:
 	FOnStatChanged OnEnergyChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
+	FOnStatChanged OnStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Stats")
 	FOnStatChanged OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
@@ -201,10 +228,13 @@ private:
 
 	float CurrentHealth = 100.f;
 	float CurrentEnergy = 100.f;
+	float CurrentStamina = 100.f;
 
 	/** 原始资产值 (不被等级缩放修改) */
 	float AssetMaxHealth = 100.f;
 	float AssetMaxEnergy = 100.f;
+	float AssetMaxStamina = 100.f;
+	float AssetStaminaRegenRate = 30.f;
 	float AssetMoveSpeed = 300.f;
 	float AssetJumpForce = 600.f;
 	float AssetKnockbackResistance = 0.5f;
@@ -213,6 +243,8 @@ private:
 	/** 缓存的最终数值 (脏位模式) */
 	mutable float CachedMaxHealth = -1.f;
 	mutable float CachedMaxEnergy = -1.f;
+	mutable float CachedMaxStamina = -1.f;
+	mutable float CachedStaminaRegenRate = -1.f;
 	mutable float CachedMoveSpeed = -1.f;
 	mutable float CachedJumpForce = -1.f;
 	mutable float CachedKnockbackResistance = -1.f;

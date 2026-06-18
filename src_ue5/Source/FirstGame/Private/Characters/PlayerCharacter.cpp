@@ -1,4 +1,5 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
+// Player Character — 3D third-person action fighter
 
 #include "FirstGame.h"
 #include "Characters/PlayerCharacter.h"
@@ -78,16 +79,17 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Apply 2D plane constraint (lock to XZ plane for side-scrolling)
+	// ─── 3D Movement: 移除 2D 平面约束 ───────────────────────────
+	// 3D 第三人称: 全向移动，不再锁定到 XZ 平面
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
-		MoveComp->bConstrainToPlane = true;
-		MoveComp->SetPlaneConstraintNormal(FVector(0.f, 1.f, 0.f)); // Lock Y axis
-		MoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
+		MoveComp->bConstrainToPlane = false;
+		MoveComp->bUseControllerDesiredRotation = true;  // 朝向控制器旋转方向
+		MoveComp->RotationRate = FRotator(0.f, 540.f, 0.f); // 转身速度
 	}
 
 	SetState("Idle");
-	UE_LOG(LogTemp, Log, TEXT("PlayerCharacter initialized in 2.5D mode"));
+	UE_LOG(LogTemp, Log, TEXT("PlayerCharacter initialized in 3D mode"));
 
 	// 初始化 CameraController (传入 SpringArm 和 Camera)
 	if (CameraController && CameraBoom && FollowCamera)
@@ -138,9 +140,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Input bindings will be configured via Enhanced Input System in production
-	// Placeholder bindings for testing
-	PlayerInputComponent->BindAxis("Move2D", this, &APlayerCharacter::Move2D);
+	// 3D Input bindings (Enhanced Input System in production)
+	// WASD: Move2D = 前后, Strafe = 左右
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::Move2D);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::Strafe);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump2D);
 	PlayerInputComponent->BindAction("LightAttack", IE_Pressed, this, &APlayerCharacter::PerformLightAttack);
 	PlayerInputComponent->BindAction("HeavyAttack", IE_Pressed, this, &APlayerCharacter::PerformHeavyAttack);
@@ -292,16 +295,55 @@ void APlayerCharacter::PerformDodge()
 {
 	if (!CanAct()) return;
 
+	// ── 3D Dodge: 方向闪避 ────────────────────────────────────────
+	// 基于最后移动方向 or 相机方向
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	FVector DodgeDir = GetActorForwardVector();
+
+	if (PC)
+	{
+		FRotator CameraRot = PC->GetControlRotation();
+		FRotator YawRotation(0.f, CameraRot.Yaw, 0.f);
+		DodgeDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	}
+
+	// 锁定模式下: 闪避方向相对锁定目标
+	if (LockOnComponent && LockOnComponent->IsLockedOn())
+	{
+		AActor* Target = LockOnComponent->GetLockedTarget();
+		if (Target)
+		{
+			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+			DodgeDir = FVector(ToTarget.X, ToTarget.Y, 0.f).GetSafeNormal();
+		}
+	}
+
+	// 体力检查
+	if (StatsComponent)
+	{
+		const float StaminaCost = 15.f;
+		if (StatsComponent->GetCurrentStamina() < StaminaCost)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Dodge failed: not enough stamina"));
+			return;
+		}
+		StatsComponent->SetCurrentStamina(StatsComponent->GetCurrentStamina() - StaminaCost);
+	}
+
 	SetState("Dodging");
 
-	// Brief invincibility + dash
-	UE_LOG(LogTemp, Log, TEXT("Dodge!"));
+	// 位移: 3m 闪避距离
+	const float DodgeDistance = 300.f; // cm
+	AddMovementInput(DodgeDir, 1.f);
 
+	// Dodge 持续时间: 13f @ 60fps = 216ms
 	FTimerHandle Handle;
 	GetWorldTimerManager().SetTimer(Handle, [this]()
 	{
 		SetState("Idle");
-	}, 0.3f, false);
+	}, 0.216f, false);
+
+	UE_LOG(LogTemp, Log, TEXT("Dodge! Dir: %s"), *DodgeDir.ToString());
 }
 
 void APlayerCharacter::JumpAction()
@@ -421,14 +463,64 @@ void APlayerCharacter::SetState(FName NewState)
 	}
 }
 
-// ─── Movement ────────────────────────────────────────────────────────
+// ─── 3D Movement ───────────────────────────────────────────────────
 
 void APlayerCharacter::Move2D(float Value)
 {
 	if (!CanAct() && CurrentState != "Dodging") return;
 
-	const FVector Direction = FVector(Value, 0.f, 0.f);
-	AddMovementInput(Direction, Value);
+	// 3D: 基于相机方向的前后移动
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (!PC) return;
+
+	FRotator CameraRot = PC->GetControlRotation();
+	FRotator YawRotation(0.f, CameraRot.Yaw, 0.f);
+	const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+	// 锁定模式下: 前后 = 接近/远离目标
+	if (LockOnComponent && LockOnComponent->IsLockedOn())
+	{
+		AActor* Target = LockOnComponent->GetLockedTarget();
+		if (Target)
+		{
+			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+			FVector Forward = FVector(ToTarget.X, ToTarget.Y, 0.f).GetSafeNormal();
+			AddMovementInput(Forward, Value);
+		}
+	}
+	else
+	{
+		AddMovementInput(ForwardDir, Value);
+	}
+}
+
+/** 3D 横向移动（环绕锁定目标） */
+void APlayerCharacter::Strafe(float Value)
+{
+	if (!CanAct() && CurrentState != "Dodging") return;
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (!PC) return;
+
+	// 锁定模式下: 左右 = 环绕目标
+	if (LockOnComponent && LockOnComponent->IsLockedOn())
+	{
+		AActor* Target = LockOnComponent->GetLockedTarget();
+		if (Target)
+		{
+			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+			FVector Forward = FVector(ToTarget.X, ToTarget.Y, 0.f).GetSafeNormal();
+			FVector Right = FVector::CrossProduct(FVector::UpVector, Forward).GetSafeNormal();
+			AddMovementInput(Right, Value);
+		}
+	}
+	else
+	{
+		FRotator CameraRot = PC->GetControlRotation();
+		FRotator YawRotation(0.f, CameraRot.Yaw, 0.f);
+		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(RightDir, Value);
+	}
 }
 
 void APlayerCharacter::Jump2D()

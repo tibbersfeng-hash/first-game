@@ -70,6 +70,12 @@ public:
 	float MaxEnergy = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
+	float MaxStamina = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
+	float StaminaRegenRate = 30.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
 	float MoveSpeed = 300.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
@@ -100,6 +106,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float EnergyCostPerAttack = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	float StaminaCostPerDodge = 15.f;
 
 	// ─── Defense ─────────────────────────────────────────────────────
 

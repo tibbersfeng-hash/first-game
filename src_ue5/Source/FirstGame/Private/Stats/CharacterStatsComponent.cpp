@@ -39,6 +39,9 @@ void UCharacterStatsComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 				}
 			}
 		}
+
+		// ─ 体力自动回复 (30/s) ────────────────────────────────────
+		RegenerateStamina(DeltaTime);
 	}
 }
 
@@ -57,19 +60,29 @@ void UCharacterStatsComponent::LoadFromDataAsset(UCharacterDataAsset* InDataAsse
 	AssetKnockbackResistance = DataAsset->KnockbackResistance;
 	AssetEnergyRegenRate = DataAsset->EnergyRegenRate;
 
+	// 体力从 DataAsset 加载（如存在），否则用默认值
+	if (DataAsset->MaxStamina > 0.f)
+	{
+		AssetMaxStamina = DataAsset->MaxStamina;
+		AssetStaminaRegenRate = DataAsset->StaminaRegenRate > 0.f ? DataAsset->StaminaRegenRate : 30.f;
+	}
+
 	// 同步 Base* 字段 (供蓝图/编辑器查看)
 	BaseMaxHealth = ApplyLevelToBase(AssetMaxHealth);
 	BaseMaxEnergy = ApplyLevelToBase(AssetMaxEnergy);
+	BaseMaxStamina = ApplyLevelToBase(AssetMaxStamina);
 	BaseMoveSpeed = ApplyLevelToBase(AssetMoveSpeed);
 	BaseJumpForce = ApplyLevelToBase(AssetJumpForce);
 	BaseKnockbackResistance = ApplyLevelToBase(AssetKnockbackResistance);
 	BaseEnergyRegenRate = ApplyLevelToBase(AssetEnergyRegenRate);
+	BaseStaminaRegenRate = ApplyLevelToBase(AssetStaminaRegenRate);
 
 	InvalidateCache();
 
 	// 初始化运行时值
 	CurrentHealth = GetMaxHealth();
 	CurrentEnergy = GetMaxEnergy();
+	CurrentStamina = GetMaxStamina();
 
 	UE_LOG(LogTemp, Log, TEXT("Stats: Loaded from %s (HP:%.0f, Energy:%.0f, Speed:%.0f)"),
 		*DataAsset->CharacterId.ToString(), GetMaxHealth(), GetMaxEnergy(), GetMoveSpeed());
@@ -85,16 +98,19 @@ void UCharacterStatsComponent::SetLevel(int32 NewLevel)
 	// Bug #1 fix: 从原始资产值重新计算, 不原地累积
 	BaseMaxHealth = ApplyLevelToBase(AssetMaxHealth);
 	BaseMaxEnergy = ApplyLevelToBase(AssetMaxEnergy);
+	BaseMaxStamina = ApplyLevelToBase(AssetMaxStamina);
 	BaseMoveSpeed = ApplyLevelToBase(AssetMoveSpeed);
 	BaseJumpForce = ApplyLevelToBase(AssetJumpForce);
 	BaseKnockbackResistance = ApplyLevelToBase(AssetKnockbackResistance);
 	BaseEnergyRegenRate = ApplyLevelToBase(AssetEnergyRegenRate);
+	BaseStaminaRegenRate = ApplyLevelToBase(AssetStaminaRegenRate);
 
 	InvalidateCache();
 
-	// 等级提升时补满 HP/Energy
+	// 等级提升时补满 HP/Energy/Stamina
 	CurrentHealth = GetMaxHealth();
 	CurrentEnergy = GetMaxEnergy();
+	CurrentStamina = GetMaxStamina();
 
 	OnMaxHealthChanged.Broadcast("LevelUp", GetMaxHealth());
 	OnMaxEnergyChanged.Broadcast("LevelUp", GetMaxEnergy());
@@ -140,6 +156,18 @@ float UCharacterStatsComponent::GetEnergyRegenRate() const
 	return CachedEnergyRegenRate;
 }
 
+float UCharacterStatsComponent::GetMaxStamina() const
+{
+	if (bCacheDirty) { CachedMaxStamina = CalculateStat(BaseMaxStamina, "MaxStamina"); }
+	return CachedMaxStamina;
+}
+
+float UCharacterStatsComponent::GetStaminaRegenRate() const
+{
+	if (bCacheDirty) { CachedStaminaRegenRate = CalculateStat(BaseStaminaRegenRate, "StaminaRegenRate"); }
+	return CachedStaminaRegenRate;
+}
+
 // ─── 运行时 HP/Energy ─────────────────────────────────────────────
 
 float UCharacterStatsComponent::GetHealthPercent() const
@@ -152,6 +180,12 @@ float UCharacterStatsComponent::GetEnergyPercent() const
 {
 	float MaxEnergy = GetMaxEnergy();
 	return MaxEnergy > 0.f ? FMath::Clamp(CurrentEnergy / MaxEnergy, 0.f, 1.f) : 0.f;
+}
+
+float UCharacterStatsComponent::GetStaminaPercent() const
+{
+	float MaxStamina = GetMaxStamina();
+	return MaxStamina > 0.f ? FMath::Clamp(CurrentStamina / MaxStamina, 0.f, 1.f) : 0.f;
 }
 
 void UCharacterStatsComponent::SetCurrentHealth(float NewHealth)
@@ -189,6 +223,33 @@ bool UCharacterStatsComponent::ConsumeEnergy(float Amount)
 	}
 	SetCurrentEnergy(CurrentEnergy - Amount);
 	return true;
+}
+
+// ─── 体力系统 ─────────────────────────────────────────────────────
+
+void UCharacterStatsComponent::SetCurrentStamina(float NewStamina)
+{
+	float OldStamina = CurrentStamina;
+	CurrentStamina = FMath::Clamp(NewStamina, 0.f, GetMaxStamina());
+	if (!FMath::IsNearlyEqual(OldStamina, CurrentStamina))
+	{
+		OnStaminaChanged.Broadcast("SetStamina", CurrentStamina);
+	}
+}
+
+void UCharacterStatsComponent::RegenerateStamina(float DeltaTime)
+{
+	float RegenRate = GetStaminaRegenRate();
+	float MaxStamina = GetMaxStamina();
+	if (RegenRate > 0.f && CurrentStamina < MaxStamina)
+	{
+		float OldStamina = CurrentStamina;
+		CurrentStamina = FMath::Clamp(CurrentStamina + RegenRate * DeltaTime, 0.f, MaxStamina);
+		if (!FMath::IsNearlyEqual(OldStamina, CurrentStamina))
+		{
+			OnStaminaChanged.Broadcast("StaminaRegen", CurrentStamina);
+		}
+	}
 }
 
 // ── 修正系统 ─────────────────────────────────────────────────────
@@ -283,10 +344,12 @@ void UCharacterStatsComponent::InvalidateCache()
 	bCacheDirty = true;
 	CachedMaxHealth = -1.f;
 	CachedMaxEnergy = -1.f;
+	CachedMaxStamina = -1.f;
 	CachedMoveSpeed = -1.f;
 	CachedJumpForce = -1.f;
 	CachedKnockbackResistance = -1.f;
 	CachedEnergyRegenRate = -1.f;
+	CachedStaminaRegenRate = -1.f;
 }
 
 void UCharacterStatsComponent::RemoveExpiredModifiers(float DeltaTime)
@@ -322,7 +385,9 @@ void UCharacterStatsComponent::ClampCurrentValues()
 {
 	float MaxHP = GetMaxHealth();
 	float MaxEnergy = GetMaxEnergy();
+	float MaxStamina = GetMaxStamina();
 
 	if (CurrentHealth > MaxHP) { CurrentHealth = MaxHP; }
 	if (CurrentEnergy > MaxEnergy) { CurrentEnergy = MaxEnergy; }
+	if (CurrentStamina > MaxStamina) { CurrentStamina = MaxStamina; }
 }
