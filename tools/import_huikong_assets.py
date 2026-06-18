@@ -63,8 +63,6 @@ def import_model():
 
     # 骨骼网格导入设置
     opts.skeletal_mesh_import_data = unreal.FbxSkeletalMeshImportData()
-    opts.skeletal_mesh_import_data.import_morph_targets = False
-    opts.skeletal_mesh_import_data.update_skeleton_reference_pose = False
 
     task.options = opts
 
@@ -144,9 +142,6 @@ def import_animations(skeleton):
         opts.import_as_skeletal = False
 
         opts.anim_sequence_import_data = unreal.FbxAnimSequenceImportData()
-        opts.anim_sequence_import_data.import_bone_tracks = True
-        opts.anim_sequence_import_data.remove_redundant_keys = True
-        opts.anim_sequence_import_data.import_custom_attribute = False
 
         task.options = opts
 
