@@ -1,5 +1,5 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
-// HUD Widget — UMG-based heads-up display
+// HUD Widget — UMG-based heads-up display (SignalBus 订阅)
 
 #pragma once
 
@@ -10,6 +10,7 @@
 class UProgressBar;
 class UTextBlock;
 class UImage;
+class USignalBusSubsystem;
 
 UCLASS()
 class FIRSTGAME_API UHUDWidget : public UUserWidget
@@ -18,6 +19,7 @@ class FIRSTGAME_API UHUDWidget : public UUserWidget
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 
 	// ─── Health Bar ──────────────────────────────────────────────────
 	UPROPERTY(meta = (BindWidget))
@@ -49,4 +51,29 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void UpdateRoom(int32 Current, int32 Total);
+
+	// ─── SignalBus 事件回调 ───────────────────────────────────────
+	UFUNCTION()
+	void OnPlayerHealthChanged(class AActor* Player, float NewHealth);
+
+	UFUNCTION()
+	void OnPlayerEnergyChanged(class AActor* Player, float NewEnergy);
+
+	UFUNCTION()
+	void OnComboUpdated(class AActor* Player, int32 CurrentCount);
+
+	UFUNCTION()
+	void OnRoomEntered(class AActor* Room);
+
+	UFUNCTION()
+	void OnRoomCleared(class AActor* Room);
+
+private:
+	// SignalBus 引用 (用于解绑)
+	UPROPERTY()
+	USignalBusSubsystem* CachedSignalBus = nullptr;
+
+	// 房间进度跟踪
+	int32 CurrentRoomIndex = 0;
+	int32 TotalRooms = 1;
 };

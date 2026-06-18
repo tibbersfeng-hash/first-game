@@ -310,6 +310,13 @@ void APlayerCharacter::AddEnergy(float Amount)
 {
 	float MaxEnergy = CharacterData ? CharacterData->MaxEnergy : 100.f;
 	CurrentEnergy = FMath::Clamp(CurrentEnergy + Amount, 0.f, MaxEnergy);
+
+	// 通知 HUD 能量变化
+	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+	if (SignalBus)
+	{
+		SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
+	}
 }
 
 bool APlayerCharacter::ConsumeEnergy(float Amount)
@@ -320,6 +327,13 @@ bool APlayerCharacter::ConsumeEnergy(float Amount)
 		return false;
 	}
 	CurrentEnergy -= Amount;
+
+	// 通知 HUD 能量变化
+	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+	if (SignalBus)
+	{
+		SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
+	}
 	return true;
 }
 
