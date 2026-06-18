@@ -66,20 +66,24 @@ CHARACTERS = {
         "name_cn": "慧空",
         "name_en": "Blazing Monkfist",
         "prompt": (
-            "Anime style young monk character, bald head with golden energy patterns on top, "
-            "red headband with long ribbons flowing behind, "
-            "large wooden prayer beads necklace, "
-            "dark blue cross-collar monk robe with white inner lining, "
-            "red wide sash belt, golden wrapped fists, "
-            "white leg wraps, dark grey shoes, "
-            "normal human proportions 7.5 heads tall, slender athletic build, "
-            "full body standing pose, clean white background"
+            "NOT chibi, NOT cartoon proportions, NOT super deformed, NOT big head, "
+            "realistic anime game character proportions like Genshin Impact and Honkai Impact 3rd, "
+            "young adult male monk character with normal human proportions (7.5 heads tall, approximately 185cm), "
+            "slender athletic lean build with visible but not exaggerated muscle definition, "
+            "bald head, red forehead mark (bindi), thick eyebrows, determined calm expression, "
+            "amber eyes, sharp jawline, wheat-colored skin, "
+            "navy blue sleeveless cross-collar monk robe with golden orange trim, "
+            "wide golden orange martial arts belt with two long flowing ribbons from the back, "
+            "white baggy martial arts pants tucked into dark brown boots, "
+            "golden bracers on forearms with hand wraps, fingerless gloves, "
+            "cel-shaded anime toon style, game-ready 3D character model, "
+            "full body T-pose standing, clean white background"
         ),
         "reference_image": None,
         "multi_view_images": None,
         "enable_pbr": True,
-        "face_count": 100000,
-        "model_version": "3.0",
+        "face_count": 150000,
+        "model_version": "3.1",
         "generate_type": "Normal",
         "result_format": "FBX",
         "rig_motions": [26, 27, 23, 34, 1, 8, 13],
