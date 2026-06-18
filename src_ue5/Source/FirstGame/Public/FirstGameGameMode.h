@@ -7,6 +7,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "FirstGameGameMode.generated.h"
 
+class ALevelBuilder;
+
 UCLASS()
 class FIRSTGAME_API AFirstGameGameMode : public AGameModeBase
 {
@@ -18,12 +20,21 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	/** 玩家角色 Class */
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<class APlayerCharacter> PlayerCharacterClass;
 
+	/** 默认地牢房间数 */
 	UPROPERTY(EditDefaultsOnly, Category = "Dungeon")
 	int32 TotalRooms = 5;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dungeon")
 	int32 CurrentRoomIndex = 0;
+
+	/** LevelBuilder Class（若指定，则自动 Spawn 一个构建可玩关卡）*/
+	UPROPERTY(EditDefaultsOnly, Category = "Level")
+	TSubclassOf<ALevelBuilder> LevelBuilderClass;
+
+	UPROPERTY()
+	ALevelBuilder* ActiveLevelBuilder;
 };

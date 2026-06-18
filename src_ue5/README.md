@@ -45,8 +45,9 @@ src_ue5/
     │   ├── Combat/              # HitBox, HurtBox
     │   ├── AI/                  # EnemyAIController
     │   ├── Dungeon/             # DungeonRoom, DungeonFlow
+    │   ├── Level/               # LevelBuilder (程序化关卡生成)
     │   ├── UI/                  # HUDWidget
-    │   ── DataAssets/          # CharacterDataAsset
+    │   └── DataAssets/          # CharacterDataAsset
     └── Private/                 # 实现文件
 ```
 
@@ -57,6 +58,58 @@ src_ue5/
 - **DataAsset** — 角色/敌人数据配置
 - **2D约束** — CharacterMovement 锁定 Y 轴平面
 - **Enhanced Input** — 键盘 + 手柄输入
+- **LevelBuilder** — 程序化关卡生成（详见下方）
+
+## LevelBuilder — 一键创建可玩关卡
+
+`ALevelBuilder` 是一个程序化关卡生成 Actor，能把**空关卡**直接变成**可玩关卡**。
+它在 `BeginPlay` 里自动构建：
+
+- 场地几何（地板 + 围墙 + 装饰柱，每房间不同配色）
+- 灯光（1 方向光 + N 点光）
+- 玩家出生点
+- DungeonFlow + N 个 DungeonRoom（自动填充敌人）
+- HUD Widget（挂到 PlayerController）
+
+### 用法 1: 自动模式（默认）
+
+`AFirstGameGameMode` 默认会 Spawn 一个 `ALevelBuilder`，PIE 即可进入可玩关卡。
+默认配置：3 个房间、每房间 3 个敌人、启用 Debug 日志。
+
+### 用法 2: Python 脚本（推荐）
+
+在 UE5 Editor 的 Python 控制台执行：
+
+```python
+exec(open(r'/path/to/tools/create_first_level.py').read())
+```
+
+脚本会创建 `/Game/Maps/FirstCombatMap` 并自动配置好一切。
+
+### 用法 3: 手动放置
+
+1. 在空关卡中 Place Actor → 搜索 `Level Builder`
+2. 在 Details 面板配置：
+   - `TotalRooms` — 房间数量
+   - `RoomExtent` — 单房间尺寸 (cm)
+   - `DefaultEnemyClass` — 默认敌人 Class
+   - `HUDWidgetClass` — HUD Widget Blueprint
+   - `bDebugMode` — 开启后在 Output Log 打印建造详情
+3. PIE 即可
+
+### 自定义配置（推荐做法）
+
+1. 在 Content Browser 右键 LevelBuilder Actor → `Create Blueprint based on this`
+2. 命名如 `BP_TestLevelBuilder`
+3. 在 Class Defaults 里修改所有参数
+4. GameMode Blueprint → Details → `LevelBuilderClass` → 选 `BP_TestLevelBuilder`
+
+之后每次新关卡都会自动使用你的自定义配置。
+
+### 清理
+
+LevelBuilder 在 `EndPlay` 时自动清理所有 Spawn 出的子 Actor。
+子 Actor 都带 `LevelBuilder.Child` Tag，便于搜索和手动清理。
 
 ## 操作方式
 
