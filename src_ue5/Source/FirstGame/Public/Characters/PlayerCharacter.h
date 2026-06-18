@@ -17,6 +17,7 @@ class UCameraComponent;
 class UCameraController;
 class ULockOnComponent;
 class UComboManager;
+class UCharacterStatsComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerStateChanged, class APlayerCharacter*, Player, FName, NewState);
 
@@ -163,6 +164,10 @@ protected:
 	/** ComboManager: 连招管理器 (ADR-007) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UComboManager* ComboManager;
+
+	/** CharacterStatsComponent: 运行时数值管理 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UCharacterStatsComponent* StatsComponent;
 
 public:
 	/** 获取相机控制器 (便于外部切换模式) */

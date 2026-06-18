@@ -12,6 +12,7 @@
 #include "Camera/CameraController.h"
 #include "LockOn/LockOnComponent.h"
 #include "Combat/ComboManager.h"
+#include "Stats/CharacterStatsComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "AbilitySystemComponent.h"
 
@@ -59,7 +60,10 @@ APlayerCharacter::APlayerCharacter()
 	// ComboManager: 连招管理器 (ADR-007)
 	ComboManager = CreateDefaultSubobject<UComboManager>(TEXT("ComboManager"));
 
-	// Default stats
+	// CharacterStatsComponent: 运行时数值管理
+	StatsComponent = CreateDefaultSubobject<UCharacterStatsComponent>(TEXT("StatsComponent"));
+
+	// Default stats (will be overridden by DataAsset)
 	CurrentHealth = 100.f;
 	CurrentEnergy = 100.f;
 	CurrentComboCount = 0;
@@ -127,11 +131,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	// 同步 HUD 显示用的连击计数
 	CurrentComboCount = ComboManager ? ComboManager->GetCurrentCount() : 0;
 
-	// Energy regen
-	if (CharacterData && CurrentEnergy < CharacterData->MaxEnergy)
-	{
-		AddEnergy(CharacterData->EnergyRegenRate * DeltaTime);
-	}
+	// Energy regen — 由 StatsComponent::TickComponent 处理
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -155,9 +155,21 @@ void APlayerCharacter::InitializeCharacter(UCharacterDataAsset* InDataAsset)
 	CharacterData = InDataAsset;
 	if (!CharacterData) return;
 
-	CurrentHealth = CharacterData->MaxHealth;
-	CurrentEnergy = CharacterData->MaxEnergy;
 	CurrentCharacterId = CharacterData->CharacterId;
+
+	// 通过 StatsComponent 加载数值
+	if (StatsComponent)
+	{
+		StatsComponent->LoadFromDataAsset(CharacterData);
+		CurrentHealth = StatsComponent->GetCurrentHealth();
+		CurrentEnergy = StatsComponent->GetCurrentEnergy();
+	}
+	else
+	{
+		// Fallback: 直接使用 DataAsset 数值
+		CurrentHealth = CharacterData->MaxHealth;
+		CurrentEnergy = CharacterData->MaxEnergy;
+	}
 
 	// Apply movement settings
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
@@ -165,10 +177,9 @@ void APlayerCharacter::InitializeCharacter(UCharacterDataAsset* InDataAsset)
 		MoveComp->MaxWalkSpeed = CharacterData->MoveSpeed;
 		MoveComp->GravityScale = CharacterData->Gravity / 980.f;
 		MoveComp->JumpZVelocity = CharacterData->JumpForce;
-		// MaxJumps handled via custom CanJump() override in production
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Character initialized: %s (HP:%.0f, SPD:%.0f)"),
+	UE_LOG(LogTemp, Log, TEXT("Character initialized: %s (HP:%.0f, Speed:%.0f)"),
 		*CharacterData->CharacterId.ToString(), CurrentHealth, CharacterData->MoveSpeed);
 }
 
@@ -303,7 +314,16 @@ void APlayerCharacter::JumpAction()
 
 void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 {
-	CurrentHealth = FMath::Clamp(CurrentHealth - Amount, 0.f, CharacterData ? CharacterData->MaxHealth : 100.f);
+	if (StatsComponent)
+	{
+		float OldHP = StatsComponent->GetCurrentHealth();
+		StatsComponent->SetCurrentHealth(OldHP - Amount);
+		CurrentHealth = StatsComponent->GetCurrentHealth();
+	}
+	else
+	{
+		CurrentHealth = FMath::Clamp(CurrentHealth - Amount, 0.f, CharacterData ? CharacterData->MaxHealth : 100.f);
+	}
 
 	UE_LOG(LogTemp, Log, TEXT("Player took %.0f damage. HP: %.0f"), Amount, CurrentHealth);
 
@@ -335,8 +355,16 @@ void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 
 void APlayerCharacter::Heal(float Amount)
 {
-	float MaxHP = CharacterData ? CharacterData->MaxHealth : 100.f;
-	CurrentHealth = FMath::Clamp(CurrentHealth + Amount, 0.f, MaxHP);
+	if (StatsComponent)
+	{
+		StatsComponent->Heal(Amount);
+		CurrentHealth = StatsComponent->GetCurrentHealth();
+	}
+	else
+	{
+		float MaxHP = CharacterData ? CharacterData->MaxHealth : 100.f;
+		CurrentHealth = FMath::Clamp(CurrentHealth + Amount, 0.f, MaxHP);
+	}
 }
 
 // ─── Hit Stop ────────────────────────────────────────────────────────
@@ -352,10 +380,18 @@ void APlayerCharacter::ApplyHitStop(float Duration)
 
 void APlayerCharacter::AddEnergy(float Amount)
 {
-	float MaxEnergy = CharacterData ? CharacterData->MaxEnergy : 100.f;
-	CurrentEnergy = FMath::Clamp(CurrentEnergy + Amount, 0.f, MaxEnergy);
+	if (StatsComponent)
+	{
+		float MaxEnergy = StatsComponent->GetMaxEnergy();
+		StatsComponent->SetCurrentEnergy(StatsComponent->GetCurrentEnergy() + Amount);
+		CurrentEnergy = StatsComponent->GetCurrentEnergy();
+	}
+	else
+	{
+		float MaxEnergy = CharacterData ? CharacterData->MaxEnergy : 100.f;
+		CurrentEnergy = FMath::Clamp(CurrentEnergy + Amount, 0.f, MaxEnergy);
+	}
 
-	// 通知 HUD 能量变化
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 	if (SignalBus)
 	{
@@ -365,24 +401,41 @@ void APlayerCharacter::AddEnergy(float Amount)
 
 bool APlayerCharacter::ConsumeEnergy(float Amount)
 {
-	if (CurrentEnergy < Amount)
+	if (StatsComponent)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Not enough energy: need %.0f, have %.0f"), Amount, CurrentEnergy);
-		return false;
+		bool bResult = StatsComponent->ConsumeEnergy(Amount);
+		CurrentEnergy = StatsComponent->GetCurrentEnergy();
+		if (bResult)
+		{
+			USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+			if (SignalBus)
+			{
+				SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
+			}
+		}
+		return bResult;
 	}
-	CurrentEnergy -= Amount;
+	else
+	{
+		if (CurrentEnergy < Amount)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Not enough energy: need %.0f, have %.0f"), Amount, CurrentEnergy);
+			return false;
+		}
+		CurrentEnergy -= Amount;
 
-	// 通知 HUD 能量变化
-	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
-	if (SignalBus)
-	{
-		SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
+		USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+		if (SignalBus)
+		{
+			SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
+		}
+		return true;
 	}
-	return true;
 }
 
 bool APlayerCharacter::HasEnoughEnergy(float Amount) const
 {
+	if (StatsComponent) { return StatsComponent->GetCurrentEnergy() >= Amount; }
 	return CurrentEnergy >= Amount;
 }
 
