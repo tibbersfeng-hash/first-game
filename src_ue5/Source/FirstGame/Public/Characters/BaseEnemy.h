@@ -56,6 +56,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void SetAggro(bool bInAggro) { bIsAggro = bInAggro; }
 
+	// ─── 掉落配置 ────────────────────────────────────────────────────
+	/** 死亡时掉落物品的概率 (0-1) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loot")
+	float DropChance = 0.3f;
+
+	/** 掉落物品的基础值 (HP 恢复量 / 能量恢复量) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loot")
+	float LootValue = 20.f;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

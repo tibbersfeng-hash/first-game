@@ -9,6 +9,7 @@
 #include "Subsystems/SignalBusFunctionLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Dungeon/LootItem.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -144,6 +145,41 @@ void ABaseEnemy::Die()
 	if (SignalBus)
 	{
 		SignalBus->OnEnemyDied.Broadcast(this);
+	}
+
+	// 掉落战利品 (按 DropChance 概率)
+	if (FMath::FRand() <= DropChance)
+	{
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.SpawnCollisionHandlingOverride =
+				ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+			// 在敌人位置稍微偏上生成 (避免和地板穿插)
+			FVector LootLocation = GetActorLocation() + FVector(0.f, 0.f, 50.f);
+
+			ALootItem* Loot = World->SpawnActor<ALootItem>(
+				ALootItem::StaticClass(),
+				LootLocation,
+				FRotator::ZeroRotator,
+				SpawnParams
+			);
+
+			if (Loot)
+			{
+				// 随机选择掉落类型 (50% 生命, 50% 能量)
+				ELootType LootType = (FMath::FRand() < 0.5f)
+					? ELootType::Health
+					: ELootType::Energy;
+				Loot->SetupLoot(LootType, LootValue);
+
+				UE_LOG(LogTemp, Log,
+					TEXT("Enemy 掉落战利品: Type=%d, Value=%.0f"),
+					(int)LootType, LootValue);
+			}
+		}
 	}
 
 	// Play death animation, then destroy
