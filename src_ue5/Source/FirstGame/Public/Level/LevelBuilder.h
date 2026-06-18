@@ -12,8 +12,10 @@ class ADungeonFlow;
 class ADungeonRoom;
 class ABaseEnemy;
 class APlayerStart;
+class APlayerCharacter;
 class UCameraComponent;
 class UUserWidget;
+class UCharacterDataAsset;
 
 /**
  * 程序化生成可玩关卡。
@@ -101,6 +103,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HUD")
 	TSubclassOf<UUserWidget> HUDWidgetClass;
 
+	// ─── 配置：玩家角色 ──────────────────────────────────────────────
+	/** 默认角色 ID (在 CharacterDataFactory 里注册的角色) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	FName DefaultCharacterId = FName(TEXT("Huikong"));
+
 	// ─── 配置：调试 ──────────────────────────────────────────────────
 	/** 调试模式：打印所有 Spawn 信息 + 显示房间边界 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Debug")
@@ -126,6 +133,7 @@ protected:
 	virtual void SetupPlayerStart();
 	virtual void BuildDungeonFlow();
 	virtual void SetupHUD();
+	virtual void InitializePlayer();
 
 	/** 生成单个房间的几何（地板 + 四面墙 + 可选柱子）*/
 	void BuildRoomGeometry(int32 RoomIndex, const FVector& RoomOrigin);

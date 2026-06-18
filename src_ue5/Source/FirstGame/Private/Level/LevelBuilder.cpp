@@ -6,6 +6,9 @@
 #include "Dungeon/DungeonFlow.h"
 #include "Dungeon/DungeonRoom.h"
 #include "Characters/BaseEnemy.h"
+#include "Characters/PlayerCharacter.h"
+#include "DataAssets/CharacterDataFactory.h"
+#include "DataAssets/CharacterDataAsset.h"
 
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
@@ -64,6 +67,9 @@ void ALevelBuilder::BeginPlay()
 
 	// 5. HUD
 	SetupHUD();
+
+	// 6. 初始化玩家角色 (赋予 CharacterData, 否则攻击/血量都不工作)
+	InitializePlayer();
 
 	LogBuild(FString::Printf(TEXT("=== LevelBuilder: 构建完成, 共生成 %d 个子 Actor ==="), ChildActors.Num()));
 
@@ -410,6 +416,74 @@ void ALevelBuilder::SetupHUD()
 		HUD->AddToViewport(0);
 		LogBuild(TEXT("SetupHUD: HUD Widget 已添加到 Viewport"));
 	}
+}
+
+// ─── 玩家角色初始化 ────────────────────────────────────────────────────
+void ALevelBuilder::InitializePlayer()
+{
+	LogBuild(TEXT("InitializePlayer: 开始"));
+
+	// 找到场景中的 PlayerCharacter (由 GameMode 在 PlayerStart 处生成)
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	APlayerCharacter* Player = Cast<APlayerCharacter>(
+		UGameplayStatics::GetPlayerPawn(this, 0)
+	);
+
+	if (!Player)
+	{
+		// 没找到 PlayerPawn, 尝试搜索所有 Actor
+		for (TActorIterator<APlayerCharacter> It(World); It; ++It)
+		{
+			Player = *It;
+			break;
+		}
+	}
+
+	if (!Player)
+	{
+		LogBuild(TEXT("InitializePlayer: 未找到 PlayerCharacter, 跳过"));
+		return;
+	}
+
+	// 用 CharacterDataFactory 创建角色数据
+	UCharacterDataAsset* DataAsset = nullptr;
+	if (DefaultCharacterId == FName(TEXT("Huikong")))
+	{
+		DataAsset = UCharacterDataFactory::CreateHuikongData(Player);
+	}
+	else if (DefaultCharacterId == FName(TEXT("Tangtang")))
+	{
+		DataAsset = UCharacterDataFactory::CreateTangtangData(Player);
+	}
+	else if (DefaultCharacterId == FName(TEXT("Kiguemaru")))
+	{
+		DataAsset = UCharacterDataFactory::CreateKiguemaruData(Player);
+	}
+	else
+	{
+		// 默认用 Huikong
+		LogBuild(FString::Printf(
+			TEXT("InitializePlayer: 未知角色 ID '%s', 使用 Huikong"),
+			*DefaultCharacterId.ToString()));
+		DataAsset = UCharacterDataFactory::CreateHuikongData(Player);
+	}
+
+	if (!DataAsset)
+	{
+		LogBuild(TEXT("InitializePlayer: CharacterDataFactory 创建失败"));
+		return;
+	}
+
+	// 初始化角色 (设置血量/能量/移动速度/攻击数据)
+	Player->InitializeCharacter(DataAsset);
+
+	LogBuild(FString::Printf(
+		TEXT("InitializePlayer: 角色 '%s' 已初始化 (HP:%.0f, Speed:%.0f)"),
+		*DefaultCharacterId.ToString(),
+		DataAsset->MaxHealth,
+		DataAsset->MoveSpeed));
 }
 
 // ─── 工具方法 ───────────────────────────────────────────────────────────
