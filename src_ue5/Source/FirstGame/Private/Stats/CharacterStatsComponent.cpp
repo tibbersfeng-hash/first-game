@@ -2,6 +2,8 @@
 // Character Stats Component — 运行时数值管理实现
 
 #include "Stats/CharacterStatsComponent.h"
+#include "Subsystems/SignalBusFunctionLibrary.h"
+#include "Subsystems/SignalBusSubsystem.h"
 
 UCharacterStatsComponent::UCharacterStatsComponent()
 {
@@ -20,13 +22,21 @@ void UCharacterStatsComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	if (DataAsset)
 	{
 		float RegenRate = GetEnergyRegenRate();
-		if (RegenRate > 0.f && CurrentEnergy < GetMaxEnergy())
+		float MaxEnergy = GetMaxEnergy();
+		if (RegenRate > 0.f && CurrentEnergy < MaxEnergy)
 		{
 			float OldEnergy = CurrentEnergy;
-			CurrentEnergy = FMath::Clamp(CurrentEnergy + RegenRate * DeltaTime, 0.f, GetMaxEnergy());
+			CurrentEnergy = FMath::Clamp(CurrentEnergy + RegenRate * DeltaTime, 0.f, MaxEnergy);
 			if (!FMath::IsNearlyEqual(OldEnergy, CurrentEnergy))
 			{
 				OnEnergyChanged.Broadcast("EnergyRegen", CurrentEnergy);
+
+				// Bug #4 fix: 同时广播到 SignalBus，确保 HUD 能收到挂机回能事件
+				USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+				if (SignalBus)
+				{
+					SignalBus->OnPlayerEnergyChanged.Broadcast(GetOwner(), CurrentEnergy);
+				}
 			}
 		}
 	}
@@ -39,16 +49,23 @@ void UCharacterStatsComponent::LoadFromDataAsset(UCharacterDataAsset* InDataAsse
 	DataAsset = InDataAsset;
 	if (!DataAsset) { return; }
 
-	// 加载基础数值
-	BaseMaxHealth = DataAsset->MaxHealth;
-	BaseMaxEnergy = DataAsset->MaxEnergy;
-	BaseMoveSpeed = DataAsset->MoveSpeed;
-	BaseJumpForce = DataAsset->JumpForce;
-	BaseKnockbackResistance = DataAsset->KnockbackResistance;
-	BaseEnergyRegenRate = DataAsset->EnergyRegenRate;
+	// 保存原始资产值 (Bug #1 fix: 不被等级缩放原地修改)
+	AssetMaxHealth = DataAsset->MaxHealth;
+	AssetMaxEnergy = DataAsset->MaxEnergy;
+	AssetMoveSpeed = DataAsset->MoveSpeed;
+	AssetJumpForce = DataAsset->JumpForce;
+	AssetKnockbackResistance = DataAsset->KnockbackResistance;
+	AssetEnergyRegenRate = DataAsset->EnergyRegenRate;
 
-	// 应用等级成长
-	ApplyLevelScaling();
+	// 同步 Base* 字段 (供蓝图/编辑器查看)
+	BaseMaxHealth = ApplyLevelToBase(AssetMaxHealth);
+	BaseMaxEnergy = ApplyLevelToBase(AssetMaxEnergy);
+	BaseMoveSpeed = ApplyLevelToBase(AssetMoveSpeed);
+	BaseJumpForce = ApplyLevelToBase(AssetJumpForce);
+	BaseKnockbackResistance = ApplyLevelToBase(AssetKnockbackResistance);
+	BaseEnergyRegenRate = ApplyLevelToBase(AssetEnergyRegenRate);
+
+	InvalidateCache();
 
 	// 初始化运行时值
 	CurrentHealth = GetMaxHealth();
@@ -62,8 +79,18 @@ void UCharacterStatsComponent::LoadFromDataAsset(UCharacterDataAsset* InDataAsse
 
 void UCharacterStatsComponent::SetLevel(int32 NewLevel)
 {
+	int32 OldLevel = CharacterLevel;
 	CharacterLevel = FMath::Max(1, NewLevel);
-	ApplyLevelScaling();
+
+	// Bug #1 fix: 从原始资产值重新计算, 不原地累积
+	BaseMaxHealth = ApplyLevelToBase(AssetMaxHealth);
+	BaseMaxEnergy = ApplyLevelToBase(AssetMaxEnergy);
+	BaseMoveSpeed = ApplyLevelToBase(AssetMoveSpeed);
+	BaseJumpForce = ApplyLevelToBase(AssetJumpForce);
+	BaseKnockbackResistance = ApplyLevelToBase(AssetKnockbackResistance);
+	BaseEnergyRegenRate = ApplyLevelToBase(AssetEnergyRegenRate);
+
+	InvalidateCache();
 
 	// 等级提升时补满 HP/Energy
 	CurrentHealth = GetMaxHealth();
@@ -72,39 +99,45 @@ void UCharacterStatsComponent::SetLevel(int32 NewLevel)
 	OnMaxHealthChanged.Broadcast("LevelUp", GetMaxHealth());
 	OnMaxEnergyChanged.Broadcast("LevelUp", GetMaxEnergy());
 
-	UE_LOG(LogTemp, Log, TEXT("Stats: Level %d → %d (MaxHP:%.0f)"), CharacterLevel - 1, CharacterLevel, GetMaxHealth());
+	UE_LOG(LogTemp, Log, TEXT("Stats: Level %d -> %d (MaxHP:%.0f)"), OldLevel, CharacterLevel, GetMaxHealth());
 }
 
-// ─── 最终数值计算 ──────────────────────────────────────────────────
+// ─── 最终数值计算 (Bug #7 fix: 脏位缓存) ───────────────────────────
 
 float UCharacterStatsComponent::GetMaxHealth() const
 {
-	return CalculateStat(BaseMaxHealth, "MaxHealth");
+	if (bCacheDirty) { CachedMaxHealth = CalculateStat(BaseMaxHealth, "MaxHealth"); }
+	return CachedMaxHealth;
 }
 
 float UCharacterStatsComponent::GetMaxEnergy() const
 {
-	return CalculateStat(BaseMaxEnergy, "MaxEnergy");
+	if (bCacheDirty) { CachedMaxEnergy = CalculateStat(BaseMaxEnergy, "MaxEnergy"); }
+	return CachedMaxEnergy;
 }
 
 float UCharacterStatsComponent::GetMoveSpeed() const
 {
-	return CalculateStat(BaseMoveSpeed, "MoveSpeed");
+	if (bCacheDirty) { CachedMoveSpeed = CalculateStat(BaseMoveSpeed, "MoveSpeed"); }
+	return CachedMoveSpeed;
 }
 
 float UCharacterStatsComponent::GetJumpForce() const
 {
-	return CalculateStat(BaseJumpForce, "JumpForce");
+	if (bCacheDirty) { CachedJumpForce = CalculateStat(BaseJumpForce, "JumpForce"); }
+	return CachedJumpForce;
 }
 
 float UCharacterStatsComponent::GetKnockbackResistance() const
 {
-	return CalculateStat(BaseKnockbackResistance, "KnockbackResistance");
+	if (bCacheDirty) { CachedKnockbackResistance = CalculateStat(BaseKnockbackResistance, "KnockbackResistance"); }
+	return CachedKnockbackResistance;
 }
 
 float UCharacterStatsComponent::GetEnergyRegenRate() const
 {
-	return CalculateStat(BaseEnergyRegenRate, "EnergyRegenRate");
+	if (bCacheDirty) { CachedEnergyRegenRate = CalculateStat(BaseEnergyRegenRate, "EnergyRegenRate"); }
+	return CachedEnergyRegenRate;
 }
 
 // ─── 运行时 HP/Energy ─────────────────────────────────────────────
@@ -149,21 +182,24 @@ void UCharacterStatsComponent::Heal(float Amount)
 
 bool UCharacterStatsComponent::ConsumeEnergy(float Amount)
 {
-	if (CurrentEnergy < Amount) { return false; }
+	if (CurrentEnergy < Amount)
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("Stats: Not enough energy: need %.0f, have %.0f"), Amount, CurrentEnergy);
+		return false;
+	}
 	SetCurrentEnergy(CurrentEnergy - Amount);
 	return true;
 }
 
-// ─── 修正系统 ─────────────────────────────────────────────────────
+// ── 修正系统 ─────────────────────────────────────────────────────
 
 void UCharacterStatsComponent::AddModifier(FName StatName, const FStatModifier& Modifier)
 {
 	FStatModifierList& List = StatModifiers.FindOrAdd(StatName);
-
-	// 移除同来源的旧修正
 	List.Modifiers.RemoveAll([&Modifier](const FStatModifier& M) { return M.SourceTag == Modifier.SourceTag; });
-
 	List.Modifiers.Add(Modifier);
+
+	InvalidateCache(); // Bug #7 fix: 修正变化时使缓存失效
 
 	UE_LOG(LogTemp, Verbose, TEXT("Stats: +%s modifier '%s' (%.1f)"),
 		*StatName.ToString(), *Modifier.SourceTag.ToString(), Modifier.Value);
@@ -177,6 +213,7 @@ void UCharacterStatsComponent::RemoveModifier(FName StatName, FName SourceTag)
 	int32 Removed = List->Modifiers.RemoveAll([SourceTag](const FStatModifier& M) { return M.SourceTag == SourceTag; });
 	if (Removed > 0)
 	{
+		InvalidateCache(); // Bug #7 fix
 		UE_LOG(LogTemp, Verbose, TEXT("Stats: Removed %d modifier(s) '%s' from %s"),
 			Removed, *SourceTag.ToString(), *StatName.ToString());
 	}
@@ -184,7 +221,11 @@ void UCharacterStatsComponent::RemoveModifier(FName StatName, FName SourceTag)
 
 void UCharacterStatsComponent::ClearModifiers(FName StatName)
 {
-	StatModifiers.Remove(StatName);
+	if (StatModifiers.Contains(StatName))
+	{
+		StatModifiers.Remove(StatName);
+		InvalidateCache();
+	}
 }
 
 TArray<FStatModifier> UCharacterStatsComponent::GetModifiers(FName StatName) const
@@ -225,36 +266,42 @@ float UCharacterStatsComponent::CalculateStat(float BaseValue, FName StatName) c
 		}
 	}
 
-	// Override 优先级最高
 	if (bHasOverride) { return OverrideValue; }
-
-	// Final = (Base + Flat) * (1 + Percent)
 	return (BaseValue + FlatSum) * (1.f + PercentSum);
 }
 
-void UCharacterStatsComponent::ApplyLevelScaling()
+// Bug #1 fix: 从原始值计算等级缩放, 不修改 Base* 字段
+float UCharacterStatsComponent::ApplyLevelToBase(float BaseValue) const
 {
-	if (CharacterLevel <= 1) { return; }
+	if (CharacterLevel <= 1) { return BaseValue; }
+	// Bug #8 helper: 移速成长较缓
+	return BaseValue * FMath::Pow(LevelGrowthFactor, CharacterLevel - 1);
+}
 
-	// 等级成长公式: Base * GrowthFactor^(Level-1)
-	float GrowthMultiplier = FMath::Pow(LevelGrowthFactor, CharacterLevel - 1);
-
-	BaseMaxHealth *= GrowthMultiplier;
-	BaseMaxEnergy *= GrowthMultiplier;
-	BaseMoveSpeed *= (1.f + (GrowthMultiplier - 1.f) * 0.3f); // 移速成长较缓
-	BaseJumpForce *= GrowthMultiplier;
+void UCharacterStatsComponent::InvalidateCache()
+{
+	bCacheDirty = true;
+	CachedMaxHealth = -1.f;
+	CachedMaxEnergy = -1.f;
+	CachedMoveSpeed = -1.f;
+	CachedJumpForce = -1.f;
+	CachedKnockbackResistance = -1.f;
+	CachedEnergyRegenRate = -1.f;
 }
 
 void UCharacterStatsComponent::RemoveExpiredModifiers(float DeltaTime)
 {
+	bool bAnyExpired = false;
 	for (auto It = StatModifiers.CreateIterator(); It; ++It)
 	{
 		FStatModifierList& List = It.Value();
-		List.Modifiers.RemoveAll([DeltaTime](FStatModifier& M)
+		List.Modifiers.RemoveAll([DeltaTime, &bAnyExpired](FStatModifier& M)
 		{
 			if (M.bPermanent) { return false; }
 			M.RemainingTime -= DeltaTime;
-			return M.RemainingTime <= 0.f;
+			bool bExpired = M.RemainingTime <= 0.f;
+			if (bExpired) { bAnyExpired = true; }
+			return bExpired;
 		});
 
 		if (List.Modifiers.Num() == 0)
@@ -263,8 +310,12 @@ void UCharacterStatsComponent::RemoveExpiredModifiers(float DeltaTime)
 		}
 	}
 
-	// 修正后钳制当前值
-	ClampCurrentValues();
+	// Bug #7 fix: 仅在修正实际过期时才重算和钳制
+	if (bAnyExpired)
+	{
+		InvalidateCache();
+		ClampCurrentValues();
+	}
 }
 
 void UCharacterStatsComponent::ClampCurrentValues()

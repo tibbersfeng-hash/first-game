@@ -138,6 +138,17 @@ private:
 	/** 设置新的锁定目标 (内部, 会广播委托) */
 	void SetLockTarget(AActor* NewTarget);
 
+	// ─── Bug #8 fix: FOV 辅助方法 (消除三处重复) ─────────────────────
+	/** 计算目标相对玩家前方的角度 (弧度) */
+	float GetAngleFromPlayerForward(const FVector& ToTarget) const;
+
+	/** 获取最大 FOV 半角 (弧度) */
+	float GetMaxFOVRad() const { return FMath::DegreesToRadians(LockFOV); }
+
+	/** Bug #2 helper: 缓存玩家位置和前方向量 (每 tick 更新一次) */
+	FVector CachedPlayerLocation = FVector::ZeroVector;
+	FVector CachedPlayerForward = FVector::ForwardVector;
+
 	// ─── 状态 ────────────────────────────────────────────────────────
 	/** 当前锁定目标 (WeakPtr, 死亡自动失效) */
 	UPROPERTY()

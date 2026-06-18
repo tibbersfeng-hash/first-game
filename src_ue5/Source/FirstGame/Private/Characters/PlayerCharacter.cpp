@@ -314,20 +314,25 @@ void APlayerCharacter::JumpAction()
 
 void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 {
-	if (StatsComponent)
-	{
-		float OldHP = StatsComponent->GetCurrentHealth();
-		StatsComponent->SetCurrentHealth(OldHP - Amount);
-		CurrentHealth = StatsComponent->GetCurrentHealth();
-	}
-	else
-	{
-		CurrentHealth = FMath::Clamp(CurrentHealth - Amount, 0.f, CharacterData ? CharacterData->MaxHealth : 100.f);
-	}
+	float OldHP = StatsComponent->GetCurrentHealth();
+	StatsComponent->SetCurrentHealth(OldHP - Amount);
+	CurrentHealth = StatsComponent->GetCurrentHealth();
 
 	UE_LOG(LogTemp, Log, TEXT("Player took %.0f damage. HP: %.0f"), Amount, CurrentHealth);
 
-	// Broadcast signal
+	// Bug #2 fix: 死亡检测独立于 SignalBus, 防止空指针时玩家以 0 HP 继续行动
+	if (CurrentHealth <= 0.f)
+	{
+		SetState("Dead");
+
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			PC->SetInputMode(FInputModeUIOnly());
+			PC->bShowMouseCursor = true;
+		}
+	}
+
+	// 广播信号
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 	if (SignalBus)
 	{
@@ -336,14 +341,6 @@ void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 		if (CurrentHealth <= 0.f)
 		{
 			SignalBus->OnPlayerDied.Broadcast(this);
-			SetState("Dead");
-
-			// 禁用输入
-			if (APlayerController* PC = Cast<APlayerController>(GetController()))
-			{
-				PC->SetInputMode(FInputModeUIOnly());
-				PC->bShowMouseCursor = true;
-			}
 		}
 		else
 		{
@@ -355,16 +352,8 @@ void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 
 void APlayerCharacter::Heal(float Amount)
 {
-	if (StatsComponent)
-	{
-		StatsComponent->Heal(Amount);
-		CurrentHealth = StatsComponent->GetCurrentHealth();
-	}
-	else
-	{
-		float MaxHP = CharacterData ? CharacterData->MaxHealth : 100.f;
-		CurrentHealth = FMath::Clamp(CurrentHealth + Amount, 0.f, MaxHP);
-	}
+	StatsComponent->Heal(Amount);
+	CurrentHealth = StatsComponent->GetCurrentHealth();
 }
 
 // ─── Hit Stop ────────────────────────────────────────────────────────
@@ -380,17 +369,8 @@ void APlayerCharacter::ApplyHitStop(float Duration)
 
 void APlayerCharacter::AddEnergy(float Amount)
 {
-	if (StatsComponent)
-	{
-		float MaxEnergy = StatsComponent->GetMaxEnergy();
-		StatsComponent->SetCurrentEnergy(StatsComponent->GetCurrentEnergy() + Amount);
-		CurrentEnergy = StatsComponent->GetCurrentEnergy();
-	}
-	else
-	{
-		float MaxEnergy = CharacterData ? CharacterData->MaxEnergy : 100.f;
-		CurrentEnergy = FMath::Clamp(CurrentEnergy + Amount, 0.f, MaxEnergy);
-	}
+	StatsComponent->SetCurrentEnergy(StatsComponent->GetCurrentEnergy() + Amount);
+	CurrentEnergy = StatsComponent->GetCurrentEnergy();
 
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 	if (SignalBus)
@@ -401,42 +381,23 @@ void APlayerCharacter::AddEnergy(float Amount)
 
 bool APlayerCharacter::ConsumeEnergy(float Amount)
 {
-	if (StatsComponent)
-	{
-		bool bResult = StatsComponent->ConsumeEnergy(Amount);
-		CurrentEnergy = StatsComponent->GetCurrentEnergy();
-		if (bResult)
-		{
-			USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
-			if (SignalBus)
-			{
-				SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
-			}
-		}
-		return bResult;
-	}
-	else
-	{
-		if (CurrentEnergy < Amount)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Not enough energy: need %.0f, have %.0f"), Amount, CurrentEnergy);
-			return false;
-		}
-		CurrentEnergy -= Amount;
+	bool bResult = StatsComponent->ConsumeEnergy(Amount);
+	CurrentEnergy = StatsComponent->GetCurrentEnergy();
 
+	if (bResult)
+	{
 		USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 		if (SignalBus)
 		{
 			SignalBus->OnPlayerEnergyChanged.Broadcast(this, CurrentEnergy);
 		}
-		return true;
 	}
+	return bResult;
 }
 
 bool APlayerCharacter::HasEnoughEnergy(float Amount) const
 {
-	if (StatsComponent) { return StatsComponent->GetCurrentEnergy() >= Amount; }
-	return CurrentEnergy >= Amount;
+	return StatsComponent->GetCurrentEnergy() >= Amount;
 }
 
 // ─── State Machine ───────────────────────────────────────────────────

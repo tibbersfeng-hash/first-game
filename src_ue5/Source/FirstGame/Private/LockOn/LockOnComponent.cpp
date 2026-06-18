@@ -43,6 +43,13 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	const float WorldTime = GetWorld()->GetTimeSeconds();
 
+	// Bug #7 fix: 缓存玩家变换, 避免每目标重复获取
+	if (PlayerOwner)
+	{
+		CachedPlayerLocation = PlayerOwner->GetActorLocation();
+		CachedPlayerForward = PlayerOwner->GetActorForwardVector();
+	}
+
 	// 定期更新目标缓存
 	if (WorldTime - LastCacheUpdateTime >= TargetCacheInterval)
 	{
@@ -198,11 +205,9 @@ void ULockOnComponent::UpdateLockableTargets()
 		const float HeightDiff = FMath::Abs(FVector::DotProduct(ToTarget, PlayerUp));
 		if (HeightDiff > LockHeightRange) { continue; }
 
-		// FOV 锥形检查
-		const FVector ToTargetNorm = ToTarget.GetSafeNormal();
-		const float DotProduct = FVector::DotProduct(ToTargetNorm, PlayerForward);
-		const float Angle = FMath::Acos(FMath::Clamp(DotProduct, -1.f, 1.f));
-		if (Angle > MaxFOVRad) { continue; }
+		// FOV 锥形检查 (Bug #8: 使用共享辅助方法)
+		const float FOVAngle = GetAngleFromPlayerForward(ToTarget);
+		if (FOVAngle > GetMaxFOVRad()) { continue; }
 
 		CachedTargets.Add(HitActor);
 	}
@@ -219,14 +224,12 @@ float ULockOnComponent::CalculateTargetPriority(AActor* Target) const
 	const float Distance = FVector::Dist(PlayerLoc, TargetLoc);
 	const float DistanceScore = 1.f - FMath::Clamp(Distance / LockRange, 0.f, 1.f);
 
-	// 2. 角度分数 (0-1, 越接近玩家前方越高)
-	const FVector PlayerForward = PlayerOwner->GetActorForwardVector();
-	const FVector ToTarget = (TargetLoc - PlayerLoc).GetSafeNormal();
-	const float DotProduct = FVector::DotProduct(ToTarget, PlayerForward);
-	const float Angle = FMath::Acos(FMath::Clamp(DotProduct, -1.f, 1.f));
-	const float MaxFOVRad = FMath::DegreesToRadians(LockFOV);
-	const float AngleScore = MaxFOVRad > 0.f
-		? 1.f - FMath::Clamp(Angle / MaxFOVRad, 0.f, 1.f)
+	// 2. 角度分数 (0-1, 越接近玩家前方越高) (Bug #8: 使用缓存变换 + 共享辅助)
+	const FVector ToTarget = TargetLoc - CachedPlayerLocation;
+	const float Angle = GetAngleFromPlayerForward(ToTarget);
+	const float MaxFOV = GetMaxFOVRad();
+	const float AngleScore = MaxFOV > 0.f
+		? 1.f - FMath::Clamp(Angle / MaxFOV, 0.f, 1.f)
 		: 0.f;
 
 	// 3. HP 分数 (0-1, HP 越低越高 — 优先收割残血)
@@ -260,15 +263,9 @@ bool ULockOnComponent::IsTargetInFOV(AActor* Target) const
 {
 	if (!Target || !PlayerOwner) { return false; }
 
-	const FVector PlayerLoc = PlayerOwner->GetActorLocation();
-	const FVector ToTarget = (Target->GetActorLocation() - PlayerLoc).GetSafeNormal();
-	const FVector PlayerForward = PlayerOwner->GetActorForwardVector();
-
-	const float DotProduct = FVector::DotProduct(ToTarget, PlayerForward);
-	const float Angle = FMath::Acos(FMath::Clamp(DotProduct, -1.f, 1.f));
-	const float MaxFOVRad = FMath::DegreesToRadians(LockFOV);
-
-	return Angle <= MaxFOVRad;
+	const FVector ToTarget = Target->GetActorLocation() - CachedPlayerLocation;
+	const float Angle = GetAngleFromPlayerForward(ToTarget);
+	return Angle <= GetMaxFOVRad();
 }
 
 AActor* ULockOnComponent::SelectBestTarget() const
@@ -281,6 +278,10 @@ AActor* ULockOnComponent::SelectBestTarget() const
 		if (!WeakTarget.IsValid()) { continue; }
 
 		AActor* Target = WeakTarget.Get();
+
+		// Bug #3 fix: 过滤已死亡/无效目标, 防止从过期缓存中选择死目标
+		if (!IsTargetValid(Target)) { continue; }
+
 		const float Score = CalculateTargetPriority(Target);
 		if (Score > BestScore)
 		{
@@ -393,4 +394,13 @@ void ULockOnComponent::SetLockTarget(AActor* NewTarget)
 {
 	CurrentTarget = NewTarget;
 	OnLockChanged.Broadcast(NewTarget);
+}
+
+// ─── Bug #8 fix: FOV 辅助方法 ──────────────────────────────────────
+
+float ULockOnComponent::GetAngleFromPlayerForward(const FVector& ToTarget) const
+{
+	const FVector ToTargetNorm = ToTarget.GetSafeNormal();
+	const float DotProduct = FVector::DotProduct(ToTargetNorm, CachedPlayerForward);
+	return FMath::Acos(FMath::Clamp(DotProduct, -1.f, 1.f));
 }

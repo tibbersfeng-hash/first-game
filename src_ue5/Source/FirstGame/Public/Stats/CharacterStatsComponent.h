@@ -188,11 +188,12 @@ public:
 private:
 	// ─── 内部 ────────────────────────────────────────────────────────
 	float CalculateStat(float BaseValue, FName StatName) const;
-	void ApplyLevelScaling();
+	float ApplyLevelToBase(float BaseValue) const;
+	void InvalidateCache();
 	void RemoveExpiredModifiers(float DeltaTime);
 	void ClampCurrentValues();
 
-	// ─── 状态 ────────────────────────────────────────────────────────
+	// ─── 状态 ───────────────────────────────────────────────────────
 	UPROPERTY()
 	UCharacterDataAsset* DataAsset;
 
@@ -200,6 +201,23 @@ private:
 
 	float CurrentHealth = 100.f;
 	float CurrentEnergy = 100.f;
+
+	/** 原始资产值 (不被等级缩放修改) */
+	float AssetMaxHealth = 100.f;
+	float AssetMaxEnergy = 100.f;
+	float AssetMoveSpeed = 300.f;
+	float AssetJumpForce = 600.f;
+	float AssetKnockbackResistance = 0.5f;
+	float AssetEnergyRegenRate = 10.f;
+
+	/** 缓存的最终数值 (脏位模式) */
+	mutable float CachedMaxHealth = -1.f;
+	mutable float CachedMaxEnergy = -1.f;
+	mutable float CachedMoveSpeed = -1.f;
+	mutable float CachedJumpForce = -1.f;
+	mutable float CachedKnockbackResistance = -1.f;
+	mutable float CachedEnergyRegenRate = -1.f;
+	mutable bool bCacheDirty = true;
 
 	/** 各属性名的修正列表 */
 	UPROPERTY()
