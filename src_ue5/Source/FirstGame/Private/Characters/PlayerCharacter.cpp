@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Camera/CameraController.h"
+#include "LockOn/LockOnComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "AbilitySystemComponent.h"
 
@@ -51,6 +52,9 @@ APlayerCharacter::APlayerCharacter()
 	// CameraController: 管理 4 种相机模式
 	CameraController = CreateDefaultSubobject<UCameraController>(TEXT("CameraController"));
 
+	// LockOnComponent: 目标锁定系统 (ADR-009)
+	LockOnComponent = CreateDefaultSubobject<ULockOnComponent>(TEXT("LockOnComponent"));
+
 	// Default stats
 	CurrentHealth = 100.f;
 	CurrentEnergy = 100.f;
@@ -82,6 +86,13 @@ void APlayerCharacter::BeginPlay()
 	{
 		CameraController->Initialize(CameraBoom, FollowCamera);
 		UE_LOG(LogTemp, Log, TEXT("PlayerCharacter: CameraController 已初始化"));
+	}
+
+	// 初始化 LockOn: 绑定目标变化回调
+	if (LockOnComponent)
+	{
+		LockOnComponent->OnLockChanged.AddDynamic(this, &APlayerCharacter::OnLockTargetChanged);
+		UE_LOG(LogTemp, Log, TEXT("PlayerCharacter: LockOnComponent 已初始化"));
 	}
 }
 
@@ -130,6 +141,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("HeavyAttack", IE_Pressed, this, &APlayerCharacter::PerformHeavyAttack);
 	PlayerInputComponent->BindAction("Special", IE_Pressed, this, &APlayerCharacter::PerformSpecialMove);
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &APlayerCharacter::PerformDodge);
+	PlayerInputComponent->BindAction("LockOn", IE_Pressed, this, &APlayerCharacter::LockOnTarget);
+	PlayerInputComponent->BindAction("SwitchLockOn", IE_Pressed, this, &APlayerCharacter::SwitchLockTargetNext);
 }
 
 void APlayerCharacter::InitializeCharacter(UCharacterDataAsset* InDataAsset)
@@ -408,4 +421,73 @@ void APlayerCharacter::Jump2D()
 {
 	if (!CanAct()) return;
 	Jump();
+}
+
+// ─── Lock-On (ADR-009) ───────────────────────────────────────────────
+
+void APlayerCharacter::LockOnTarget()
+{
+	if (!LockOnComponent) { return; }
+
+	// 已有锁定时 → 释放；无锁定时 → 锁定最近
+	if (LockOnComponent->IsLockedOn())
+	{
+		ReleaseLockOn();
+	}
+	else
+	{
+		LockOnComponent->LockOnNearest();
+	}
+}
+
+void APlayerCharacter::SwitchLockTarget(bool bNext /*= true*/)
+{
+	if (!LockOnComponent) { return; }
+
+	if (LockOnComponent->IsLockedOn())
+	{
+		LockOnComponent->SwitchTarget(bNext);
+	}
+	else
+	{
+		// 未锁定时按切换键 = 锁定最近
+		LockOnComponent->LockOnNearest();
+	}
+}
+
+void APlayerCharacter::SwitchLockTargetNext()
+{
+	SwitchLockTarget(true);
+}
+
+void APlayerCharacter::ReleaseLockOn()
+{
+	if (!LockOnComponent) { return; }
+	LockOnComponent->ReleaseLock();
+}
+
+void APlayerCharacter::OnLockTargetChanged(AActor* NewTarget)
+{
+	// 通知相机系统切换模式
+	if (CameraController)
+	{
+		if (NewTarget)
+		{
+			CameraController->SetMode(ECameraMode::Locked);
+			UE_LOG(LogTemp, Log, TEXT("LockOn: Camera → Locked mode (target: %s)"),
+				*NewTarget->GetActorLabel());
+		}
+		else
+		{
+			CameraController->SetMode(ECameraMode::Free);
+			UE_LOG(LogTemp, Log, TEXT("LockOn: Camera → Free mode"));
+		}
+	}
+
+	// 通知 HUD 锁定状态
+	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+	if (SignalBus)
+	{
+		SignalBus->OnLockOnTargetChanged.Broadcast(this, NewTarget);
+	}
 }

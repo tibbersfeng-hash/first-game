@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "LockOn/ILockableTarget.h"
 #include "BaseEnemy.generated.h"
 
 class UAbilitySystemComponent;
@@ -26,7 +27,7 @@ enum class EEnemyType : uint8
 };
 
 UCLASS()
-class FIRSTGAME_API ABaseEnemy : public ACharacter
+class FIRSTGAME_API ABaseEnemy : public ACharacter, public ILockableTarget
 {
 	GENERATED_BODY()
 
@@ -69,6 +70,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void SetAggro(bool bInAggro) { bIsAggro = bInAggro; }
+
+	// ─── ILockableTarget 实现 ────────────────────────────────────────
+	virtual float GetHPRatio_Implementation() const override;
+	virtual bool IsLockable_Implementation() const override;
+	virtual float GetLockPriority_Implementation() const override;
 
 	// ─── 掉落配置 ────────────────────────────────────────────────────
 	/** 死亡时掉落物品的概率 (0-1) */

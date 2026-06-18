@@ -79,4 +79,10 @@ public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnShowDamageNumber, const FDamageNumberData&, Data);
 	UPROPERTY(BlueprintAssignable, Category = "UI")
 	FOnShowDamageNumber OnShowDamageNumber;
+
+	// ─── Lock-On Events (ADR-009) ────────────────────────────────────
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLockOnTargetChanged, AActor*, Player, AActor*, NewTarget);
+	UPROPERTY(BlueprintAssignable, Category = "LockOn")
+	FOnLockOnTargetChanged OnLockOnTargetChanged;
 };

@@ -221,3 +221,30 @@ void ABaseEnemy::SetState(FName NewState)
 		OnStateChanged.Broadcast(this, NewState);
 	}
 }
+
+// ─── ILockableTarget 实现 ───────────────────────────────────────────
+
+float ABaseEnemy::GetHPRatio_Implementation() const
+{
+	const float MaxHP = EnemyData ? EnemyData->MaxHealth : 50.f;
+	return MaxHP > 0.f ? FMath::Clamp(CurrentHealth / MaxHP, 0.f, 1.f) : 0.f;
+}
+
+bool ABaseEnemy::IsLockable_Implementation() const
+{
+	// 死亡状态不可锁定
+	return CurrentState != "Dead" && CurrentHealth > 0.f;
+}
+
+float ABaseEnemy::GetLockPriority_Implementation() const
+{
+	// Boss 类型优先级更高 (ArmoredGum 是 Boss 类型)
+	switch (EnemyType)
+	{
+	case EEnemyType::ArmoredGum:    return 1.5f;  // Boss
+	case EEnemyType::ShadowNinja:   return 1.2f;  // Elite
+	case EEnemyType::Gingerbread:   return 1.0f;  // Normal
+	case EEnemyType::CandyZombie:   return 0.8f;  // Minion
+	default:                         return 1.0f;
+	}
+}

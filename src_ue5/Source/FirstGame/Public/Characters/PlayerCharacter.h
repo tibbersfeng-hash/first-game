@@ -15,6 +15,7 @@ class UHurtBoxComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UCameraController;
+class ULockOnComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerStateChanged, class APlayerCharacter*, Player, FName, NewState);
 
@@ -75,6 +76,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	void JumpAction();
 
+	// ─── Lock-On (ADR-009) ───────────────────────────────────────────
+	/** 锁定最近目标 (Tab/中键) */
+	UFUNCTION(BlueprintCallable, Category = "LockOn")
+	void LockOnTarget();
+
+	/** 切换锁定目标 */
+	UFUNCTION(BlueprintCallable, Category = "LockOn")
+	void SwitchLockTarget(bool bNext = true);
+
+	/** 释放锁定 */
+	UFUNCTION(BlueprintCallable, Category = "LockOn")
+	void ReleaseLockOn();
+
 	// ─── Damage ──────────────────────────────────────────────────────
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void ReceiveHitDamage(float Amount, AActor* DamageCauser);
@@ -112,6 +126,13 @@ protected:
 	void ResetCombo();
 	void UpdateCombo();
 
+	// ─── Lock-On Helpers ─────────────────────────────────────────────
+	UFUNCTION()
+	void OnLockTargetChanged(AActor* NewTarget);
+
+	/** 切换到下一个锁定目标 (输入绑定用无参版本) */
+	void SwitchLockTargetNext();
+
 	// ─── Components ──────────────────────────────────────────────────
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	class UAbilitySystemComponent* AbilitySystemComponent;
@@ -134,6 +155,10 @@ protected:
 	/** CameraController: 管理 4 种相机模式切换 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraController* CameraController;
+
+	/** LockOnComponent: 目标锁定系统 (ADR-009) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	ULockOnComponent* LockOnComponent;
 
 public:
 	/** 获取相机控制器 (便于外部切换模式) */
@@ -169,4 +194,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* DodgeAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* LockOnAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* SwitchLockOnAction;
 };
