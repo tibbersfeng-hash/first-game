@@ -11,6 +11,8 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/DirectionalLight.h"
 #include "Engine/PointLight.h"
+#include "Components/LightComponent.h"
+#include "Components/PointLightComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -207,8 +209,12 @@ void ALevelBuilder::BuildLighting()
 	);
 	if (DirLight)
 	{
-		DirLight->SetIntensity(DirectionalLightIntensity);
-		DirLight->SetLightColor(DirectionalLightColor);
+		if (ULightComponent* LightComp = DirLight->GetLightComponent())
+		{
+			LightComp->SetIntensity(DirectionalLightIntensity);
+			LightComp->SetLightColor(DirectionalLightColor);
+		}
+		DirLight->SetActorRotation(DirectionalLightRotation);
 		DirLight->Tags.AddUnique(LevelBuilderTags::ChildTag);
 		DirLight->Tags.AddUnique(LevelBuilderTags::LightTag);
 		ChildActors.Add(DirLight);
@@ -228,10 +234,13 @@ void ALevelBuilder::BuildLighting()
 		);
 		if (PointLight)
 		{
-			PointLight->SetIntensity(3000.f);
-			PointLight->SetAttenuationRadius(RoomExtent.Y * 0.8f);
-			PointLight->SetLightColor(FLinearColor(1.f, 0.9f, 0.75f));
-			PointLight->SetCastShadows(false);
+			if (UPointLightComponent* PLC = Cast<UPointLightComponent>(PointLight->GetLightComponent()))
+			{
+				PLC->SetIntensity(3000.f);
+				PLC->SetAttenuationRadius(RoomExtent.Y * 0.8f);
+				PLC->SetLightColor(FLinearColor(1.f, 0.9f, 0.75f));
+				PLC->SetCastShadows(false);
+			}
 			PointLight->Tags.AddUnique(LevelBuilderTags::ChildTag);
 			PointLight->Tags.AddUnique(LevelBuilderTags::LightTag);
 			ChildActors.Add(PointLight);
