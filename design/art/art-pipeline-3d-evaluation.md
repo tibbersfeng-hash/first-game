@@ -1,8 +1,9 @@
 # 3D 美术管线评估 — 格斗萌主
 
 > **Created**: 2026-06-17
-> **Status**: Draft (待评估)
-> **Scope**: 3 个 Q版三头身可玩职业 + 敌人 + 特效
+> **Last Updated**: 2026-06-18 (正常比例版)
+> **Status**: Active
+> **Scope**: 3 个动漫风格化可玩职业 + 敌人 + 特效
 
 ---
 
@@ -42,9 +43,9 @@
 ### 美术风格约束
 
 ```
-核心风格: 糖果炸裂风 + Q版三头身
-- 头身比: 3:1 (头占身高的 1/3)
-- 轮廓: 圆润可爱，无锐利边缘
+核心风格: 糖果炸裂风 + 动漫风格化
+- 头身比: 正常比例 6.5-7.5 头身
+- 轮廓: 保留角色个性特征（修长/娇小/壮实）
 - 着色: NPR/卡通渲染 (cel-shaded)
 - 色彩: 暗色地牢 + 糖果色高饱和技能
 - 特效: 夸张变形 + 粒子爆炸 + 镜头演出
@@ -437,13 +438,96 @@ UE5 的 NPR 选项：
 - Mixamo: https://www.mixamo.com/
 - Meshy: https://www.meshy.ai/
 - UE5 NPR 文档: https://dev.epicgames.com/documentation/
+- 腾讯云混元3D: https://cloud.tencent.com/product/hunyuan-3d
+
+---
+
+## 已落地的 AI 3D 工具：腾讯云混元3D (tccli ai3d)
+
+> **状态**: ✅ 已集成，脚本就绪
+> **工具**: `tools/generate_3d_models.py` + `tccli ai3d`
+> **日期**: 2026-06-18
+
+### 能力概览
+
+腾讯云混元3D 提供基于混元大模型的 AI 3D 生成能力，通过 `tccli` CLI 调用：
+
+| API | 能力 | 输入 | 输出 |
+|-----|------|------|------|
+| `SubmitHunyuanTo3DProJob` | 高质量3D生成 (专业版) | 文本/单图/多视角图 | FBX/GLB/OBJ/USDZ |
+| `SubmitHunyuanTo3DRapidJob` | 快速3D生成 (极速版) | 文本/单图 | FBX/GLB |
+| `SubmitAutoRiggingJob` | 自动绑骨蒙皮 + 48种预设动作 | FBX/GLB 模型 | 带骨骼FBX |
+| `SubmitHunyuan3DPartJob` | 组件自动拆分 | FBX 模型 | 拆分后部件 |
+
+### 关键参数
+
+- **模型版本**: 3.0（默认）/ 3.1（更新，支持顶/底视图）
+- **PBR 材质**: 可开启金属度/粗糙度/法线贴图
+- **面数**: 3,000 ~ 1,500,000
+- **生成类型**: Normal / LowPoly / Geometry(白模) / Sketch(草图→模型)
+- **多视角**: front/back/left/right + top/bottom (3.1)
+- **并发**: 专业版最多 3 路，绑骨 1 路
+
+### 使用方式
+
+```bash
+# 文生3D
+python3 tools/generate_3d_models.py --character huikong --mode text
+
+# 图生3D（基于2D参考图）
+python3 tools/generate_3d_models.py --character huikong --mode image --image-url <url>
+
+# 多视角生3D（精度最高）
+python3 tools/generate_3d_models.py --character huikong --mode multiview \
+    --front <url> --back <url> --left <url> --right <url>
+
+# 批量生成全部角色
+python3 tools/generate_3d_models.py --all-characters
+
+# 干跑（不调用API）
+python3 tools/generate_3d_models.py --character huikong --dry-run
+```
+
+### 在混合管线中的位置
+
+```
+2D定稿参考图 (wan2.7-image-pro)
+        ↓
+多视角图 (qwen-image-edit-max)
+        ↓
+┌──────────────────────────────┐
+│  tccli ai3d 文/图生3D        │ ← 此处已集成
+│  → FBX/GLB + PBR材质         │
+│  → 自动绑骨 + 预设动作        │
+└──────────────────────────────┘
+        ↓
+Blender 修正拓扑/UV (手动)
+        ↓
+UE5 NPR 卡通渲染 + Animation Blueprint
+```
+
+### 输出目录
+
+```
+design/assets/output/3d/
+├── huikong/
+│   ├── model_1.fbx          # 3D模型
+│   ├── preview_1.png         # 预览图
+│   ├── generation_log.json   # 生成记录
+│   └── motions/
+│       ├── 待机-1/model_1.fbx
+│       ├── 奔跑/model_1.fbx
+│       └── ...
+├── sugar/
+└── guizhan/
+```
 
 ---
 
 ## 下一步
 
 1. **立即**: 安装 Blender，创建 Mixamo 账户
-2. **本周**: 用 Meshy 试用账号生成 5 个 Q版 草稿
-3. **下周**: 选 1 个草稿，Blender 精修 + Mixamo 绑定
+2. **本周**: 用 tccli ai3d 生成 3 个角色基础模型 → 验证质量
+3. **下周**: Blender 修正 AI 生成的模型拓扑 → Mixamo 绑骨
 4. **第 3 周**: UE5 中测试动画 + NPR 效果
 5. **第 4 周**: P0 评审，决定是否继续方案 E

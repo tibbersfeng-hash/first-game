@@ -38,14 +38,36 @@ void ABaseEnemy::BeginPlay()
 		MoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
 	}
 
-	// 如果没有外部数据 (WaveManager/DungeonRoom 没传), 用默认敌人数据
+	// 如果没有外部数据, 根据 EnemyType 创建对应数据
 	if (!EnemyData)
 	{
-		UCharacterDataAsset* DefaultData = UCharacterDataFactory::CreateDefaultEnemyData(this);
-		if (DefaultData)
+		UCharacterDataAsset* Data = nullptr;
+		FString TypeName;
+
+		switch (EnemyType)
 		{
-			InitializeEnemy(DefaultData);
-			UE_LOG(LogTemp, Log, TEXT("BaseEnemy: 使用默认敌人数据 (CandyZombie)"));
+		case EEnemyType::CandyZombie:
+			Data = UCharacterDataFactory::CreateDefaultEnemyData(this);
+			TypeName = "CandyZombie";
+			break;
+		case EEnemyType::Gingerbread:
+			Data = UCharacterDataFactory::CreateGingerbreadData(this);
+			TypeName = "Gingerbread";
+			break;
+		case EEnemyType::ShadowNinja:
+			Data = UCharacterDataFactory::CreateShadowNinjaData(this);
+			TypeName = "ShadowNinja";
+			break;
+		case EEnemyType::ArmoredGum:
+			Data = UCharacterDataFactory::CreateArmoredGumData(this);
+			TypeName = "ArmoredGum";
+			break;
+		}
+
+		if (Data)
+		{
+			InitializeEnemy(Data);
+			UE_LOG(LogTemp, Log, TEXT("BaseEnemy: 使用 %s 数据"), *TypeName);
 		}
 	}
 

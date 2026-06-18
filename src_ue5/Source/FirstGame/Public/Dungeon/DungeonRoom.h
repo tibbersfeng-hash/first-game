@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Characters/BaseEnemy.h"
 #include "Dungeon/WaveManager.h"
 #include "DungeonRoom.generated.h"
 
@@ -52,6 +53,10 @@ public:
 	/** 简单模式: 直接罗列所有敌人 Class (会被自动分组为波次) */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Room")
 	TArray<TSubclassOf<ABaseEnemy>> EnemyClasses;
+
+	/** 默认敌人类型 (EnemyClasses 里的敌人会使用这个类型) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Room")
+	EEnemyType DefaultEnemyType = EEnemyType::CandyZombie;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Room")
 	bool bIsCleared = false;

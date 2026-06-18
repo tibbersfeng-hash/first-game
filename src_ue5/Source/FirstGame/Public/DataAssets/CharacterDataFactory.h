@@ -37,6 +37,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Data Factory")
 	static UCharacterDataAsset* CreateDefaultEnemyData(UObject* Outer);
 
+	/** Create Gingerbread enemy data (medium speed, medium HP) */
+	UFUNCTION(BlueprintCallable, Category = "Data Factory")
+	static UCharacterDataAsset* CreateGingerbreadData(UObject* Outer);
+
+	/** Create ShadowNinja enemy data (fast, low HP) */
+	UFUNCTION(BlueprintCallable, Category = "Data Factory")
+	static UCharacterDataAsset* CreateShadowNinjaData(UObject* Outer);
+
+	/** Create ArmoredGum enemy data (slow, high HP, high defense) */
+	UFUNCTION(BlueprintCallable, Category = "Data Factory")
+	static UCharacterDataAsset* CreateArmoredGumData(UObject* Outer);
+
 	/** Get default light attack values from GDD */
 	static struct FAttackMoveData GetDefaultLightAttack(int32 Index);
 

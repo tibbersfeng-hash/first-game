@@ -252,3 +252,136 @@ UCharacterDataAsset* UCharacterDataFactory::CreateDefaultEnemyData(UObject* Oute
 		Data->MaxHealth, EnemyAttack.Damage);
 	return Data;
 }
+
+UCharacterDataAsset* UCharacterDataFactory::CreateGingerbreadData(UObject* Outer)
+{
+	UCharacterDataAsset* Data = NewObject<UCharacterDataAsset>(Outer);
+	if (!Data) return nullptr;
+
+	// 姜饼人 — 中等敌人，速度适中，血量适中
+	Data->CharacterId = FName(TEXT("Gingerbread"));
+	Data->DisplayName = FText::FromString(TEXT("姜饼人"));
+
+	Data->MaxHealth = 50.f;
+	Data->MaxEnergy = 0.f;
+	Data->MoveSpeed = 220.f;
+	Data->JumpForce = 400.f;
+	Data->Gravity = 2000.f;
+	Data->EnergyRegenRate = 0.f;
+	Data->EnergyCostPerAttack = 0.f;
+
+	// Light attack — 拳击
+	FAttackMoveData Attack;
+	Attack.MoveName = FName(TEXT("Punch"));
+	Attack.Damage = 10.f;
+	Attack.StartupFrames = 4.f;
+	Attack.ActiveFrames = 4.f;
+	Attack.RecoveryFrames = 6.f;
+	Attack.HitStopFrames = 3.f;
+	Attack.Knockback = FVector2D(180.f, 60.f);
+	Attack.bLaunchesEnemy = false;
+	Data->LightAttacks.Add(Attack);
+
+	Data->HeavyAttack = FAttackMoveData();
+	Data->HeavyAttack.MoveName = FName(TEXT("None"));
+	Data->SpecialMove = FAttackMoveData();
+	Data->SpecialMove.MoveName = FName(TEXT("None"));
+	Data->DodgeMove = FAttackMoveData();
+	Data->DodgeMove.MoveName = FName(TEXT("None"));
+
+	Data->HitStunDuration = 0.35f;
+	Data->KnockbackResistance = 0.3f;
+
+	UE_LOG(LogTemp, Log, TEXT("Created Gingerbread DataAsset (HP:%.0f, SPD:%.0f)"),
+		Data->MaxHealth, Data->MoveSpeed);
+	return Data;
+}
+
+UCharacterDataAsset* UCharacterDataFactory::CreateShadowNinjaData(UObject* Outer)
+{
+	UCharacterDataAsset* Data = NewObject<UCharacterDataAsset>(Outer);
+	if (!Data) return nullptr;
+
+	// 暗影忍者 — 快速低血量，高闪避
+	Data->CharacterId = FName(TEXT("ShadowNinja"));
+	Data->DisplayName = FText::FromString(TEXT("暗影忍者"));
+
+	Data->MaxHealth = 35.f;
+	Data->MaxEnergy = 0.f;
+	Data->MoveSpeed = 350.f;
+	Data->JumpForce = 600.f;
+	Data->Gravity = 2000.f;
+	Data->EnergyRegenRate = 0.f;
+	Data->EnergyCostPerAttack = 0.f;
+
+	// Light attack — 快速匕首
+	FAttackMoveData Attack;
+	Attack.MoveName = FName(TEXT("Dagger"));
+	Attack.Damage = 8.f;
+	Attack.StartupFrames = 2.f;      // 出招快
+	Attack.ActiveFrames = 3.f;
+	Attack.RecoveryFrames = 4.f;     // 收招快
+	Attack.HitStopFrames = 2.f;
+	Attack.Knockback = FVector2D(120.f, 40.f);
+	Attack.bLaunchesEnemy = false;
+	Data->LightAttacks.Add(Attack);
+
+	Data->HeavyAttack = FAttackMoveData();
+	Data->HeavyAttack.MoveName = FName(TEXT("None"));
+	Data->SpecialMove = FAttackMoveData();
+	Data->SpecialMove.MoveName = FName(TEXT("None"));
+	Data->DodgeMove = FAttackMoveData();
+	Data->DodgeMove.MoveName = FName(TEXT("None"));
+
+	Data->HitStunDuration = 0.25f;   // 硬直短
+	Data->KnockbackResistance = 0.1f; // 轻甲，容易被击退
+
+	UE_LOG(LogTemp, Log, TEXT("Created ShadowNinja DataAsset (HP:%.0f, SPD:%.0f)"),
+		Data->MaxHealth, Data->MoveSpeed);
+	return Data;
+}
+
+UCharacterDataAsset* UCharacterDataFactory::CreateArmoredGumData(UObject* Outer)
+{
+	UCharacterDataAsset* Data = NewObject<UCharacterDataAsset>(Outer);
+	if (!Data) return nullptr;
+
+	// 装甲口香糖 — 慢速高血量高防御
+	Data->CharacterId = FName(TEXT("ArmoredGum"));
+	Data->DisplayName = FText::FromString(TEXT("装甲口香糖"));
+
+	Data->MaxHealth = 100.f;
+	Data->MaxEnergy = 0.f;
+	Data->MoveSpeed = 120.f;
+	Data->JumpForce = 300.f;
+	Data->Gravity = 2400.f;          // 重，跳得低
+	Data->EnergyRegenRate = 0.f;
+	Data->EnergyCostPerAttack = 0.f;
+
+	// Light attack — 重锤
+	FAttackMoveData Attack;
+	Attack.MoveName = FName(TEXT("Hammer"));
+	Attack.Damage = 15.f;
+	Attack.StartupFrames = 6.f;      // 出招慢
+	Attack.ActiveFrames = 5.f;
+	Attack.RecoveryFrames = 10.f;    // 收招慢
+	Attack.HitStopFrames = 4.f;
+	Attack.Knockback = FVector2D(250.f, 80.f);
+	Attack.bLaunchesEnemy = true;    // 可以击飞
+	Attack.LaunchForce = 300.f;
+	Data->LightAttacks.Add(Attack);
+
+	Data->HeavyAttack = FAttackMoveData();
+	Data->HeavyAttack.MoveName = FName(TEXT("None"));
+	Data->SpecialMove = FAttackMoveData();
+	Data->SpecialMove.MoveName = FName(TEXT("None"));
+	Data->DodgeMove = FAttackMoveData();
+	Data->DodgeMove.MoveName = FName(TEXT("None"));
+
+	Data->HitStunDuration = 0.4f;
+	Data->KnockbackResistance = 0.7f; // 重甲，难击退
+
+	UE_LOG(LogTemp, Log, TEXT("Created ArmoredGum DataAsset (HP:%.0f, DMG:%.0f, DEF:%.1f)"),
+		Data->MaxHealth, Attack.Damage, Data->KnockbackResistance);
+	return Data;
+}

@@ -17,6 +17,7 @@ class ADoorActor;
 class UCameraComponent;
 class UUserWidget;
 class UCharacterDataAsset;
+class USignalBusSubsystem;
 
 /**
  * 程序化生成可玩关卡。
@@ -104,6 +105,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HUD")
 	TSubclassOf<UUserWidget> HUDWidgetClass;
 
+	/** Death Widget Class (显示死亡 UI) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HUD")
+	TSubclassOf<UUserWidget> DeathWidgetClass;
+
 	// ─── 配置：玩家角色 ──────────────────────────────────────────────
 	/** 默认角色 ID (在 CharacterDataFactory 里注册的角色) */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player")
@@ -139,6 +144,7 @@ protected:
 	virtual void BuildDungeonFlow();
 	virtual void SetupHUD();
 	virtual void InitializePlayer();
+	virtual void SetupDeathHandling();
 
 	/** 生成单个房间的几何（地板 + 四面墙 + 可选柱子）*/
 	void BuildRoomGeometry(int32 RoomIndex, const FVector& RoomOrigin);
@@ -155,4 +161,12 @@ protected:
 
 	/** 记录调试日志 */
 	void LogBuild(const FString& Message) const;
+
+	/** 玩家死亡回调 */
+	UFUNCTION()
+	void OnPlayerDied(class AActor* Player);
+
+	/** SignalBus 引用 (用于解绑) */
+	UPROPERTY()
+	USignalBusSubsystem* CachedSignalBus = nullptr;
 };

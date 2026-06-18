@@ -71,6 +71,9 @@ void ADungeonRoom::StartRoom()
 	WaveManager->OnWaveCleared.AddDynamic(this, &ADungeonRoom::OnWaveCleared);
 	WaveManager->OnAllWavesCleared.AddDynamic(this, &ADungeonRoom::OnAllWavesCleared);
 
+	// 设置默认敌人类型
+	WaveManager->SetDefaultEnemyType(DefaultEnemyType);
+
 	// 配置并启动波次
 	WaveManager->SetupWaves(Waves);
 	WaveManager->StartWaves();

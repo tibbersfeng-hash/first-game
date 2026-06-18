@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Camera/CameraController.h"
+#include "GameFramework/PlayerController.h"
 #include "AbilitySystemComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -280,6 +281,13 @@ void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 		{
 			SignalBus->OnPlayerDied.Broadcast(this);
 			SetState("Dead");
+
+			// 禁用输入
+			if (APlayerController* PC = Cast<APlayerController>(GetController()))
+			{
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+			}
 		}
 		else
 		{

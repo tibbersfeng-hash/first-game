@@ -10,6 +10,9 @@
 #include "Characters/PlayerCharacter.h"
 #include "DataAssets/CharacterDataFactory.h"
 #include "DataAssets/CharacterDataAsset.h"
+#include "Subsystems/SignalBusFunctionLibrary.h"
+#include "Subsystems/SignalBusSubsystem.h"
+#include "UI/DeathWidget.h"
 
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
@@ -43,6 +46,9 @@ ALevelBuilder::ALevelBuilder()
 	// 用一个空 SceneComponent 做根，方便整体变换
 	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
+
+	// 默认使用 UDeathWidget
+	DeathWidgetClass = UDeathWidget::StaticClass();
 }
 
 void ALevelBuilder::BeginPlay()
@@ -71,6 +77,9 @@ void ALevelBuilder::BeginPlay()
 
 	// 6. 初始化玩家角色 (赋予 CharacterData, 否则攻击/血量都不工作)
 	InitializePlayer();
+
+	// 7. 设置死亡处理 (订阅 OnPlayerDied 事件)
+	SetupDeathHandling();
 
 	LogBuild(FString::Printf(TEXT("=== LevelBuilder: 构建完成, 共生成 %d 个子 Actor ==="), ChildActors.Num()));
 
@@ -395,6 +404,29 @@ ADungeonRoom* ALevelBuilder::BuildDungeonRoom(int32 RoomIndex, const FVector& Ro
 	Room->RoomIndex = RoomIndex;
 	Room->RoomType = (RoomIndex == TotalRooms - 1 && bBossOnFinalRoom) ? ERoomType::Boss : ERoomType::Combat;
 
+	// 根据房间索引设置不同的敌人类型
+	// 房间 0: CandyZombie (简单)
+	// 房间 1: Gingerbread (中等)
+	// 房间 2+: ShadowNinja 或 ArmoredGum (困难)
+	// Boss 房: ArmoredGum (高血量)
+	if (Room->RoomType == ERoomType::Boss)
+	{
+		Room->DefaultEnemyType = EEnemyType::ArmoredGum;
+	}
+	else if (RoomIndex == 0)
+	{
+		Room->DefaultEnemyType = EEnemyType::CandyZombie;
+	}
+	else if (RoomIndex == 1)
+	{
+		Room->DefaultEnemyType = EEnemyType::Gingerbread;
+	}
+	else
+	{
+		// 后续房间随机使用 ShadowNinja 或 ArmoredGum
+		Room->DefaultEnemyType = (RoomIndex % 2 == 0) ? EEnemyType::ShadowNinja : EEnemyType::ArmoredGum;
+	}
+
 	// 给房间填充敌人 Class
 	if (DefaultEnemyClass)
 	{
@@ -417,9 +449,10 @@ ADungeonRoom* ALevelBuilder::BuildDungeonRoom(int32 RoomIndex, const FVector& Ro
 	}
 
 	LogBuild(FString::Printf(
-		TEXT("BuildDungeonRoom[%d]: 类型=%s, 敌人=%d, 每波=%d, 位置=%s"),
+		TEXT("BuildDungeonRoom[%d]: 类型=%s, 敌人类型=%d, 敌人=%d, 每波=%d, 位置=%s"),
 		RoomIndex,
 		Room->RoomType == ERoomType::Boss ? TEXT("Boss") : TEXT("Combat"),
+		(int)Room->DefaultEnemyType,
 		Room->EnemyClasses.Num(),
 		Room->EnemiesPerWave,
 		*RoomActorLoc.ToString()
@@ -614,3 +647,52 @@ void ALevelBuilder::LogBuild(const FString& Message) const
 		UE_LOG(LogTemp, Verbose, TEXT("[LevelBuilder] %s"), *Message);
 	}
 }
+
+void ALevelBuilder::SetupDeathHandling()
+{
+	LogBuild(TEXT("SetupDeathHandling: 订阅玩家死亡事件"));
+
+	// 获取 SignalBus
+	CachedSignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
+	if (!CachedSignalBus)
+	{
+		LogBuild(TEXT("SetupDeathHandling: SignalBus 不可用"));
+		return;
+	}
+
+	// 订阅 OnPlayerDied
+	CachedSignalBus->OnPlayerDied.AddDynamic(this, &ALevelBuilder::OnPlayerDied);
+	LogBuild(TEXT("SetupDeathHandling: 已订阅 OnPlayerDied"));
+}
+
+void ALevelBuilder::OnPlayerDied(AActor* Player)
+{
+	UE_LOG(LogTemp, Log, TEXT("LevelBuilder: 玩家死亡!"));
+
+	if (!DeathWidgetClass)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("LevelBuilder: DeathWidgetClass 未配置"));
+		return;
+	}
+
+	// 获取 PlayerController
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if (!PC)
+	{
+		UE_LOG(LogTemp, Error, TEXT("LevelBuilder: 找不到 PlayerController"));
+		return;
+	}
+
+	// 创建并显示 DeathWidget
+	UUserWidget* DeathWidget = CreateWidget<UUserWidget>(PC, DeathWidgetClass);
+	if (DeathWidget)
+	{
+		DeathWidget->AddToViewport(10);  // 高优先级
+		UE_LOG(LogTemp, Log, TEXT("LevelBuilder: DeathWidget 已显示"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("LevelBuilder: 无法创建 DeathWidget"));
+	}
+}
+

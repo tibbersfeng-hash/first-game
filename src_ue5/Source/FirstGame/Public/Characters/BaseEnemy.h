@@ -15,6 +15,16 @@ class UCharacterDataAsset;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEnemyStateChanged, class ABaseEnemy*, Enemy, FName, NewState);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDied, class ABaseEnemy*, Enemy);
 
+/** 敌人类型 */
+UENUM(BlueprintType)
+enum class EEnemyType : uint8
+{
+	CandyZombie    UMETA(DisplayName = "Candy Zombie"),
+	Gingerbread    UMETA(DisplayName = "Gingerbread"),
+	ShadowNinja    UMETA(DisplayName = "Shadow Ninja"),
+	ArmoredGum     UMETA(DisplayName = "Armored Gum")
+};
+
 UCLASS()
 class FIRSTGAME_API ABaseEnemy : public ACharacter
 {
@@ -22,6 +32,10 @@ class FIRSTGAME_API ABaseEnemy : public ACharacter
 
 public:
 	ABaseEnemy();
+
+	/** 敌人类型 (决定使用哪种数据) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy")
+	EEnemyType EnemyType = EEnemyType::CandyZombie;
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitializeEnemy(UCharacterDataAsset* InDataAsset);

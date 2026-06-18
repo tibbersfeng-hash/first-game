@@ -67,6 +67,7 @@ void AWaveManager::SpawnCurrentWave()
 			ABaseEnemy* Enemy = GetWorld()->SpawnActor<ABaseEnemy>(EnemyClass, SpawnPos, FRotator::ZeroRotator, SpawnParams);
 			if (Enemy)
 			{
+				Enemy->EnemyType = DefaultEnemyType;
 				ActiveEnemies.Add(Enemy);
 				Enemy->OnEnemyDied.AddDynamic(this, &AWaveManager::OnEnemyDied);
 			}

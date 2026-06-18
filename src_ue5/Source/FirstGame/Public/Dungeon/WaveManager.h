@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Characters/BaseEnemy.h"
 #include "WaveManager.generated.h"
 
 class ABaseEnemy;
@@ -62,6 +63,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Wave")
 	bool AreAllWavesComplete() const { return bAllWavesComplete; }
 
+	/** Set default enemy type for this wave manager */
+	UFUNCTION(BlueprintCallable, Category = "Wave")
+	void SetDefaultEnemyType(EEnemyType InType) { DefaultEnemyType = InType; }
+
 	UPROPERTY(BlueprintAssignable, Category = "Wave")
 	FOnWaveStarted OnWaveStarted;
 
@@ -95,4 +100,8 @@ private:
 
 	UPROPERTY()
 	TArray<ABaseEnemy*> ActiveEnemies;
+
+	/** Default enemy type for spawned enemies */
+	UPROPERTY()
+	EEnemyType DefaultEnemyType = EEnemyType::CandyZombie;
 };
