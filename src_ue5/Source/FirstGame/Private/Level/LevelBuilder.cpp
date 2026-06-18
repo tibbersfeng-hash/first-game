@@ -362,6 +362,13 @@ ADungeonRoom* ALevelBuilder::BuildDungeonRoom(int32 RoomIndex, const FVector& Ro
 		if (Room->RoomType == ERoomType::Boss)
 		{
 			EnemyCount *= 2;  // Boss 房敌人加倍
+			// Boss 房所有敌人一波出, 更有压迫感
+			Room->EnemiesPerWave = EnemyCount;
+		}
+		else
+		{
+			// 普通房: 默认 3 个一波, DungeonRoom 自动切分
+			Room->EnemiesPerWave = FMath::Min(3, EnemyCount);
 		}
 		for (int32 E = 0; E < EnemyCount; ++E)
 		{
@@ -370,10 +377,11 @@ ADungeonRoom* ALevelBuilder::BuildDungeonRoom(int32 RoomIndex, const FVector& Ro
 	}
 
 	LogBuild(FString::Printf(
-		TEXT("BuildDungeonRoom[%d]: 类型=%s, 敌人=%d, 位置=%s"),
+		TEXT("BuildDungeonRoom[%d]: 类型=%s, 敌人=%d, 每波=%d, 位置=%s"),
 		RoomIndex,
 		Room->RoomType == ERoomType::Boss ? TEXT("Boss") : TEXT("Combat"),
 		Room->EnemyClasses.Num(),
+		Room->EnemiesPerWave,
 		*RoomActorLoc.ToString()
 	));
 
