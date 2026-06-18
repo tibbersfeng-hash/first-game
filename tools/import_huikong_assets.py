@@ -1,5 +1,5 @@
 """
-UE5 Editor Python 脚本 - 自动导入 Huikong 3D 资产
+UE5 Editor Python 脚本 - 自动导入 Huikong 3D 资产 (UE5.7 兼容版)
 
 使用方法:
   在 UE5 Editor 的 Python 控制台执行:
@@ -10,218 +10,209 @@ import unreal
 import os
 
 # 配置
-HUIKONG_BASE_PATH = "/Game/Characters/Huikong"
+HUIKONG_BASE = "/Game/Characters/Huikong"
 
-# FBX 源路径 — 基于 UE5 项目目录自动检测
-# 把 FBX 文件放到 src_ue5/Content/_fbx_staging/ 目录下即可
+# FBX 源路径
 try:
-    _project_dir = unreal.Paths.project_dir()  # 例如 /Users/Tibers/game/first-game/src_ue5/
-    FBX_SOURCE_PATH = os.path.join(_project_dir, "Content", "_fbx_staging")
+    _proj = unreal.ProjectDirs.project_dir()
 except:
-    # fallback: 手动指定路径
-    FBX_SOURCE_PATH = "/Users/Tibers/game/first-game/src_ue5/Content/_fbx_staging"
+    try:
+        _proj = unreal.Paths.project_dir()
+    except:
+        _proj = "/Users/Tibers/game/first-game/src_ue5/"
+FBX_SRC = os.path.join(_proj, "Content", "_fbx_staging")
 
 def log(msg):
-    unreal.log(f"[Huikong Import] {msg}")
+    unreal.log(f"[Huikong] {msg}")
 
-def create_directories():
-    """创建目录结构"""
-    log("创建目录结构...")
+def ensure_dirs():
+    for d in ["Mesh", "Skeleton", "Physics", "Animations", "ABP", "Materials"]:
+        path = f"{HUIKONG_BASE}/{d}"
+        if not unreal.EditorAssetLibrary.does_directory_exist(path):
+            unreal.EditorAssetLibrary.make_directory(path)
+            log(f"  创建: {path}")
 
-    dirs = [
-        f"{HUIKONG_BASE_PATH}/Mesh",
-        f"{HUIKONG_BASE_PATH}/Skeleton",
-        f"{HUIKONG_BASE_PATH}/Physics",
-        f"{HUIKONG_BASE_PATH}/Animations",
-        f"{HUIKONG_BASE_PATH}/ABP",
-        f"{HUIKONG_BASE_PATH}/Materials",
-    ]
-
-    for dir_path in dirs:
-        if not unreal.EditorAssetLibrary.does_directory_exist(dir_path):
-            unreal.EditorAssetLibrary.make_directory(dir_path)
-            log(f"  创建: {dir_path}")
-
-    log("目录创建完成")
-
-def import_base_mesh():
-    """导入基础模型"""
-    log("导入基础模型...")
-
-    fbx_path = f"{FBX_SOURCE_PATH}/model_3.fbx"
-    dest_path = f"{HUIKONG_BASE_PATH}/Mesh/SM_Huikong"
-
-    if not os.path.exists(fbx_path):
-        log(f"错误: FBX 文件不存在: {fbx_path}")
+def import_model():
+    """导入武僧模型 (SkeletalMesh, 含骨骼)"""
+    fbx = os.path.join(FBX_SRC, "model_3.fbx")
+    if not os.path.exists(fbx):
+        log(f"错误: 找不到 {fbx}")
         return False
 
-    # 创建导入任务
+    log(f"导入模型: {fbx}")
+
     task = unreal.AssetImportTask()
-    task.filename = fbx_path
-    task.destination_path = f"{HUIKONG_BASE_PATH}/Mesh"
-    task.destination_name = "SM_Huikong"
+    task.filename = fbx
+    task.destination_path = f"{HUIKONG_BASE}/Mesh"
+    task.destination_name = "SKM_Huikong"
     task.automated = True
     task.replace_existing = True
     task.save = True
 
-    # FBX 导入选项
-    options = unreal.FbxImportUI()
-    options.import_mesh = True
-    options.import_textures = False
-    options.import_materials = False
-    options.import_animations = False
-    options.override_full_name = True
-    options.mesh_type_to_import = unreal.FBXMeshTypeToImport.STATIC_MESH
+    opts = unreal.FbxImportUI()
+    opts.import_mesh = True
+    opts.import_textures = False
+    opts.import_materials = False
+    opts.import_animations = False
+    opts.override_full_name = True
+    opts.skeleton = None  # 从 FBX 自动创建
 
-    # 骨骼设置
-    options.skeleton = None  # 稍后创建
+    # UE5.7 枚举: unreal.FBXImportType.FBXIT_SKELETAL_MESH / FBXIT_STATIC_MESH / FBXIT_ANIMATION
+    opts.mesh_type_to_import = unreal.FBXImportType.FBXIT_SKELETAL_MESH
+    opts.import_as_skeletal = True
 
-    # 静态网格设置
-    options.static_mesh_import_data = unreal.FbxStaticMeshImportData()
-    options.static_mesh_import_data.combine_meshes = True
-    options.static_mesh_import_data.auto_generate_collision = True
-    options.static_mesh_import_data.remove_degenerates = True
+    # 骨骼网格导入设置
+    opts.skeletal_mesh_import_data = unreal.FbxSkeletalMeshImportData()
+    opts.skeletal_mesh_import_data.import_morph_targets = False
+    opts.skeletal_mesh_import_data.update_skeleton_reference_pose = False
 
-    task.options = options
+    task.options = opts
 
-    # 执行导入
     try:
         unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
-        log(f"  成功: {dest_path}")
+        log("  模型导入完成")
         return True
     except Exception as e:
-        log(f"  失败: {e}")
+        log(f"  模型导入失败: {e}")
         return False
 
-def import_animations():
-    """导入动画文件"""
-    log("导入动画文件...")
+def find_skeleton():
+    """查找已创建的骨骼"""
+    candidates = [
+        f"{HUIKONG_BASE}/Mesh/SKM_Huikong_Skeleton",
+        f"{HUIKONG_BASE}/Skeleton/SK_Huikong",
+        f"{HUIKONG_BASE}/Mesh/SK_Huikong",
+    ]
+    # 也搜索 Mesh 目录下所有 Skeleton 资产
+    mesh_assets = unreal.EditorAssetLibrary.list_assets(f"{HUIKONG_BASE}/Mesh", recursive=False)
+    for asset_path in mesh_assets:
+        if "Skeleton" in asset_path or asset_path.endswith("_Skeleton"):
+            candidates.insert(0, asset_path)
 
-    animations = [
-        ("待机-1", "Anim_Huikong_Idle_01"),
-        ("待机-2", "Anim_Huikong_Idle_02"),
-        ("走路-1", "Anim_Huikong_Walk_01"),
-        ("奔跑", "Anim_Huikong_Run_01"),
-        ("回旋踢", "Anim_Huikong_LightAttack_01"),
-        ("受击", "Anim_Huikong_HitReaction"),
-        ("落地", "Anim_Huikong_Landing"),
+    for path in candidates:
+        if unreal.EditorAssetLibrary.does_asset_exist(path):
+            skel = unreal.load_asset(path)
+            log(f"  找到骨骼: {path}")
+            return skel, path
+
+    return None, None
+
+def import_animations(skeleton):
+    """导入所有动画"""
+    anims = [
+        ("Anim_Huikong_Idle_01", "待机-1"),
+        ("Anim_Huikong_Idle_02", "待机-2"),
+        ("Anim_Huikong_Walk_01", "走路-1"),
+        ("Anim_Huikong_Run_01", "奔跑"),
+        ("Anim_Huikong_LightAttack_01", "回旋踢"),
+        ("Anim_Huikong_HitReaction", "受击"),
+        ("Anim_Huikong_Landing", "落地"),
     ]
 
-    success_count = 0
+    ok = 0
+    for en_name, cn_name in anims:
+        # 查找 FBX 文件
+        fbx = None
+        for candidate in [f"{en_name}.fbx", f"{cn_name}.fbx"]:
+            p = os.path.join(FBX_SRC, candidate)
+            if os.path.exists(p):
+                fbx = p
+                break
 
-    for cn_name, en_name in animations:
-        # 支持两种路径格式: 平铺或子目录
-        fbx_path = f"{FBX_SOURCE_PATH}/{en_name}.fbx"
-        if not os.path.exists(fbx_path):
-            fbx_path = f"{FBX_SOURCE_PATH}/{cn_name}.fbx"
-        if not os.path.exists(fbx_path):
-            fbx_path = f"{FBX_SOURCE_PATH}/motions/{cn_name}/model_1.fbx"
-        dest_path = f"{HUIKONG_BASE_PATH}/Animations/{en_name}"
-
-        if not os.path.exists(fbx_path):
-            log(f"  跳过: {fbx_path} (不存在)")
+        if not fbx:
+            log(f"  跳过 {en_name}: 文件不存在")
             continue
 
-        # 创建导入任务
+        log(f"  导入动画: {os.path.basename(fbx)} -> {en_name}")
+
         task = unreal.AssetImportTask()
-        task.filename = fbx_path
-        task.destination_path = f"{HUIKONG_BASE_PATH}/Animations"
+        task.filename = fbx
+        task.destination_path = f"{HUIKONG_BASE}/Animations"
         task.destination_name = en_name
         task.automated = True
         task.replace_existing = True
         task.save = True
 
-        # FBX 导入选项
-        options = unreal.FbxImportUI()
-        options.import_mesh = False
-        options.import_textures = False
-        options.import_materials = False
-        options.import_animations = True
-        options.override_full_name = True
-        options.animation_type = unreal.FBXAnimationTypeToImport.ANIMATION
+        opts = unreal.FbxImportUI()
+        opts.import_mesh = False
+        opts.import_textures = False
+        opts.import_materials = False
+        opts.import_animations = True
+        opts.override_full_name = True
+        opts.skeleton = skeleton
+        opts.mesh_type_to_import = unreal.FBXImportType.FBXIT_ANIMATION
+        opts.import_as_skeletal = False
 
-        # 骨骼设置 - 需要先导入模型并创建骨骼
-        # 这里假设骨骼已经存在
-        skeleton_path = f"{HUIKONG_BASE_PATH}/Skeleton/SK_Huikong"
-        if unreal.EditorAssetLibrary.does_asset_exist(skeleton_path):
-            options.skeleton = unreal.load_asset(skeleton_path)
-        else:
-            log(f"  警告: 骨骼不存在: {skeleton_path}")
-            log(f"  请先导入基础模型并创建骨骼")
-            continue
+        opts.anim_sequence_import_data = unreal.FbxAnimSequenceImportData()
+        opts.anim_sequence_import_data.import_bone_tracks = True
+        opts.anim_sequence_import_data.remove_redundant_keys = True
+        opts.anim_sequence_import_data.import_custom_attribute = False
 
-        # 动画导入设置
-        options.animation_import_data = unreal.FbxAnimSequenceImportData()
-        options.animation_import_data.import_custom_attribute = False
-        options.animation_import_data.import_bone_tracks = True
-        options.animation_import_data.remove_redundant_keys = True
+        task.options = opts
 
-        task.options = options
-
-        # 执行导入
         try:
             unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
-            log(f"  成功: {dest_path}")
-            success_count += 1
+            log(f"  成功: {en_name}")
+            ok += 1
         except Exception as e:
-            log(f"  失败: {e}")
+            log(f"  失败 {en_name}: {e}")
 
-    log(f"动画导入完成: {success_count}/{len(animations)} 成功")
-    return success_count == len(animations)
+    log(f"动画导入: {ok}/{len(anims)} 成功")
+    return ok
 
-def create_skeleton():
-    """创建骨骼（如果基础模型导入时未自动创建）"""
-    log("检查骨骼...")
-
-    skeleton_path = f"{HUIKONG_BASE_PATH}/Skeleton/SK_Huikong"
-
-    if unreal.EditorAssetLibrary.does_asset_exist(skeleton_path):
-        log(f"  骨骼已存在: {skeleton_path}")
-        return True
-
-    # 尝试从导入的网格体创建骨骼
-    mesh_path = f"{HUIKONG_BASE_PATH}/Mesh/SM_Huikong"
-    if not unreal.EditorAssetLibrary.does_asset_exist(mesh_path):
-        log(f"  错误: 网格体不存在: {mesh_path}")
-        log(f"  请先导入基础模型")
-        return False
-
-    log("  需要从基础模型创建骨骼")
-    log("  请在 UE5 Editor 中手动操作:")
-    log("    1. 打开 SM_Huikong")
-    log("    2. Asset Actions → Create Skeleton")
-    log("    3. 保存为 SK_Huikong")
-
-    return False
+def move_skeleton(skel_path):
+    """把骨骼移到 Skeleton 目录"""
+    dest = f"{HUIKONG_BASE}/Skeleton/SK_Huikong"
+    if skel_path == dest:
+        return dest
+    if unreal.EditorAssetLibrary.does_asset_exist(dest):
+        return dest
+    try:
+        unreal.EditorAssetLibrary.rename_asset(skel_path, dest)
+        log(f"  骨骼移动到: {dest}")
+        return dest
+    except:
+        return skel_path
 
 def main():
-    log("=" * 60)
+    log("=" * 50)
     log("开始导入 Huikong 3D 资产")
-    log("=" * 60)
+    log(f"FBX 路径: {FBX_SRC}")
+
+    if not os.path.exists(FBX_SRC):
+        log(f"错误: 目录不存在!")
+        log("请把 FBX 文件放到: src_ue5/Content/_fbx_staging/")
+        return
+
+    files = [f for f in os.listdir(FBX_SRC) if f.endswith('.fbx')]
+    log(f"找到 {len(files)} 个 FBX: {files}")
+    log("=" * 50)
 
     # 1. 创建目录
-    create_directories()
+    ensure_dirs()
 
-    # 2. 导入基础模型
-    if not import_base_mesh():
-        log("基础模型导入失败，终止")
+    # 2. 导入模型
+    if not import_model():
         return
 
-    # 3. 创建骨骼
-    if not create_skeleton():
-        log("骨骼创建失败，终止")
+    # 3. 查找并移动骨骼
+    skel, skel_path = find_skeleton()
+    if not skel:
+        log("未找到骨骼！请手动:")
+        log("  1. 在 Content Browser 找到 SKM_Huikong")
+        log("  2. 双击打开 -> 查看 Skeleton")
+        log("  3. 右键 Skeleton -> Save As -> /Game/Characters/Huikong/Skeleton/SK_Huikong")
+        log("  然后重新运行此脚本")
         return
+
+    final_skel_path = move_skeleton(skel_path)
+    skeleton = unreal.load_asset(final_skel_path)
 
     # 4. 导入动画
-    import_animations()
+    import_animations(skeleton)
 
-    log("=" * 60)
+    log("=" * 50)
     log("导入完成！")
-    log("=" * 60)
-    log("下一步:")
-    log("  1. 创建 Physics Asset (PA_Huikong)")
-    log("  2. 创建 Animation Blueprint (ABP_Huikong)")
-    log("  3. 创建 NPR 材质 (M_Huikong_Toon)")
+    log("下一步: 创建 Physics Asset + Animation Blueprint + NPR 材质")
 
-if __name__ == "__main__":
-    main()
+main()
