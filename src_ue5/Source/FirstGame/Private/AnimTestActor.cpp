@@ -1,24 +1,27 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
 
-#include "FirstGame.h"
 #include "AnimTestActor.h"
+#include "FirstGame.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimInstance.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 AAnimTestActor::AAnimTestActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// 创建骨骼网格体组件
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	RootComponent = SkeletalMesh;
 
-	// 关键：设置为"使用动画资产"模式，这样 PlayAnimation() 才能直接播放
-	// EAnimationMode::AnimationSingleNode = "Use Animation Asset"
+	// "使用动画资产"模式
 	SkeletalMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 
-	// 默认值
+	// 禁用物理模拟，防止 PIE 时飞天
+	SkeletalMesh->SetSimulatePhysics(false);
+	SkeletalMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	AnimDurationOverride = 0.f;
 	BlendTime = 0.2f;
 	bAutoPlay = true;
@@ -31,7 +34,6 @@ void AAnimTestActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 构建动画队列：Idle → Walk → Run
 	AnimQueue.Empty();
 	if (IdleAnim)  AnimQueue.Add(IdleAnim);
 	if (WalkAnim)  AnimQueue.Add(WalkAnim);
@@ -39,97 +41,101 @@ void AAnimTestActor::BeginPlay()
 
 	if (AnimQueue.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[AnimTestActor] No animations assigned! Set Idle/Walk/Run in Details panel."));
+		UE_LOG(LogTemp, Warning, TEXT("[AnimTestActor] No animations assigned!"));
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] BeginPlay: %d animation(s) queued"), AnimQueue.Num());
+	UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] BeginPlay: %d anim(s)"), AnimQueue.Num());
 
-	for (int32 i = 0; i < AnimQueue.Num(); ++i)
-	{
-		UE_LOG(LogTemp, Log, TEXT("[AnimTestActor]   [%d] %s (%.2fs)"),
-			i,
-			AnimQueue[i] ? *AnimQueue[i]->GetName() : TEXT("null"),
-			AnimQueue[i] ? AnimQueue[i]->GetPlayLength() : 0.f);
-	}
-
-	if (bAutoPlay)
+	if (bAutoPlay && !HasAnyFlags(RF_ClassDefaultObject))
 	{
 		PlayAnimSequence(AnimQueue[0]);
 
 		if (SwitchInterval > 0.f)
 		{
-			GetWorldTimerManager().SetTimer(
-				CycleTimerHandle,
-				this,
-				&AAnimTestActor::AdvanceToNextAnim,
-				SwitchInterval,
-				true
-			);
-			UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Auto-switch every %.1fs"), SwitchInterval);
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				World->GetTimerManager().SetTimer(
+					CycleTimerHandle,
+					this,
+					&AAnimTestActor::AdvanceToNextAnim,
+					SwitchInterval,
+					true
+				);
+				UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Timer set: %.1fs"), SwitchInterval);
+			}
 		}
 	}
 }
 
 void AAnimTestActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::EndPlay(EndPlayReason);
-
+	// 先清定时器（防止回调访问已销毁对象）
 	if (CycleTimerHandle.IsValid())
 	{
-		GetWorldTimerManager().ClearTimer(CycleTimerHandle);
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			World->GetTimerManager().ClearTimer(CycleTimerHandle);
+		}
+		CycleTimerHandle.Invalidate();
 	}
 
-	StopAll();
+	// 清空动画队列（防止悬空指针）
+	AnimQueue.Empty();
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void AAnimTestActor::PlayAnimSequence(UAnimSequence* Anim)
 {
-	if (!Anim || !SkeletalMesh)
+	if (!Anim || !SkeletalMesh || !IsValid(SkeletalMesh))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[AnimTestActor] PlayAnimSequence: null anim or mesh"));
 		return;
 	}
 
-	// PlayAnimation 自动替换当前动画
+	// 安全检查：确保 AnimInstance 有效
+	UAnimInstance* AnimInst = SkeletalMesh->GetAnimInstance();
+	if (!AnimInst || !IsValid(AnimInst))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[AnimTestActor] No valid AnimInstance"));
+		return;
+	}
+
 	SkeletalMesh->PlayAnimation(Anim, true);
 	CurrentAnimName = FName(*Anim->GetName());
-	UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Playing: %s (looping)"), *CurrentAnimName.ToString());
+	UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Playing: %s"), *CurrentAnimName.ToString());
 }
 
 void AAnimTestActor::AdvanceToNextAnim()
 {
-	if (AnimQueue.IsEmpty()) return;
+	// 安全检查：PIE 结束时可能 Actor 正在被销毁
+	if (!IsValid(this) || AnimQueue.IsEmpty())
+	{
+		return;
+	}
 
 	CurrentAnimIndex = (CurrentAnimIndex + 1) % AnimQueue.Num();
 	UAnimSequence* NextAnim = AnimQueue[CurrentAnimIndex];
 
-	UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Switching to: %s"),
-		NextAnim ? *NextAnim->GetName() : TEXT("null"));
-	PlayAnimSequence(NextAnim);
+	if (NextAnim && IsValid(NextAnim))
+	{
+		UE_LOG(LogTemp, Log, TEXT("[AnimTestActor] Switch: %s"), *NextAnim->GetName());
+		PlayAnimSequence(NextAnim);
+	}
 }
 
-void AAnimTestActor::PlayIdle()
-{
-	if (IdleAnim) { CurrentAnimIndex = 0; PlayAnimSequence(IdleAnim); }
-}
-
-void AAnimTestActor::PlayWalk()
-{
-	if (WalkAnim) { CurrentAnimIndex = 1; PlayAnimSequence(WalkAnim); }
-}
-
-void AAnimTestActor::PlayRun()
-{
-	if (RunAnim) { CurrentAnimIndex = 2; PlayAnimSequence(RunAnim); }
-}
+void AAnimTestActor::PlayIdle()  { if (IdleAnim)  { CurrentAnimIndex = 0; PlayAnimSequence(IdleAnim); } }
+void AAnimTestActor::PlayWalk()  { if (WalkAnim)  { CurrentAnimIndex = 1; PlayAnimSequence(WalkAnim); } }
+void AAnimTestActor::PlayRun()   { if (RunAnim)   { CurrentAnimIndex = 2; PlayAnimSequence(RunAnim); } }
 
 void AAnimTestActor::StopAll()
 {
-	if (SkeletalMesh)
+	if (SkeletalMesh && IsValid(SkeletalMesh))
 	{
 		UAnimInstance* AnimInst = SkeletalMesh->GetAnimInstance();
-		if (AnimInst)
+		if (AnimInst && IsValid(AnimInst))
 		{
 			AnimInst->StopAllMontages(0.f);
 		}
@@ -137,7 +143,4 @@ void AAnimTestActor::StopAll()
 	CurrentAnimName = "None";
 }
 
-FName AAnimTestActor::GetCurrentAnimName() const
-{
-	return CurrentAnimName;
-}
+FName AAnimTestActor::GetCurrentAnimName() const { return CurrentAnimName; }
