@@ -310,7 +310,7 @@ void APlayerCharacter::PerformDodge()
 	// 锁定模式下: 闪避方向相对锁定目标
 	if (LockOnComponent && LockOnComponent->IsLockedOn())
 	{
-		AActor* Target = LockOnComponent->GetLockedTarget();
+		AActor* Target = LockOnComponent->GetCurrentTarget();
 		if (Target)
 		{
 			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
@@ -480,7 +480,7 @@ void APlayerCharacter::Move2D(float Value)
 	// 锁定模式下: 前后 = 接近/远离目标
 	if (LockOnComponent && LockOnComponent->IsLockedOn())
 	{
-		AActor* Target = LockOnComponent->GetLockedTarget();
+		AActor* Target = LockOnComponent->GetCurrentTarget();
 		if (Target)
 		{
 			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
@@ -505,7 +505,7 @@ void APlayerCharacter::Strafe(float Value)
 	// 锁定模式下: 左右 = 环绕目标
 	if (LockOnComponent && LockOnComponent->IsLockedOn())
 	{
-		AActor* Target = LockOnComponent->GetLockedTarget();
+		AActor* Target = LockOnComponent->GetCurrentTarget();
 		if (Target)
 		{
 			FVector ToTarget = (Target->GetActorLocation() - GetActorLocation()).GetSafeNormal();
