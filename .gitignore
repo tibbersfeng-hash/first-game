@@ -153,3 +153,11 @@ $RECYCLE.BIN/
 
 # Dev server (local only)
 server.py
+
+# Node.js / npm (local tooling artifacts)
+node_modules/
+package-lock.json
+package.json
+
+# Local scripts (not part of core project)
+scripts/
