@@ -3,15 +3,14 @@
 *Last updated: 2026-06-19 18:00*
 
 ## Current Phase
-**P0 原型 — ✅ 本地 UE5.7 编译通过，资产文件已导入，待运行时验证**
+**P0 原型 — ✅ 所有资产验证通过，待可视化测试**
 
 ## 环境信息
 - **云 GPU**: connect.nmb2.seetacloud.com:42491 ⚠️ **不可用（实例已停止）**
 - **本地 GPU**: ✅ RTX 3090 (24GB) — `/home/vipuser/`
 - **UE5**: 5.7 (本地安装) — 编译通过 (8.28s)
 - **项目路径**: `/home/vipuser/first-game/src_ue5/`
-- **编辑器启动**: ✅ 成功加载资产（LogSkinnedAsset 显示 SKM_Huikong 已加载）
-- **Python 脚本执行**: ⚠️ `-RunPythonScript` 参数在 `-nullrhi` 模式下未自动执行（需进一步调试）
+- **Python 脚本执行**: ✅ 通过 `init_unreal.py` + 环境变量 `FIRSTGAME_VERIFY_ASSETS=1` 触发
 
 ## ✅ 已完成
 
@@ -38,6 +37,10 @@
 - [x] 动画 FBX: Idle×2, Walk, Run, LightAttack, HitReaction, Landing
 - [x] ABP_Huikong 动画蓝图已创建 (GPU 服务器操作)
 - [x] AM_Huikong_* AnimSequence 已导入 (GPU 服务器操作)
+- [x] **资产验证通过** (2026-06-19 本地 UE5.7):
+  - ✅ SKM_Huikong (骨骼网格体) + Skeleton + 1 Material
+  - ✅ 7 个动画序列全部加载
+  - ✅ ABP_Huikong (动画蓝图) 加载成功
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
