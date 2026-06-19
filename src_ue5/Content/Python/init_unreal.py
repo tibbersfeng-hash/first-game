@@ -4,8 +4,99 @@ import sys
 
 unreal.log('[INIT] Minimal init')
 
+# 临时贴图导入钩子
+if os.environ.get('FIRSTGAME_IMPORT_TEXTURES') == '1':
+    unreal.log('[INIT] FIRSTGAME_IMPORT_TEXTURES detected, importing textures...')
+
+    def import_textures():
+        unreal.log('[IMPORT] Starting texture import...')
+
+        # 导入 metallic 和 roughness 贴图
+        textures_to_import = [
+            {
+                'source': '/home/vipuser/first-game/src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901_metallic.png',
+                'name': 'T_Huikong_Metallic',
+                'srgb': False
+            },
+            {
+                'source': '/home/vipuser/first-game/src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901_roughness.png',
+                'name': 'T_Huikong_Roughness',
+                'srgb': False
+            }
+        ]
+
+        task = unreal.AssetImportTask()
+        task.automated = True
+        task.save = True
+        task.replace_existing = True
+
+        for tex_info in textures_to_import:
+            task.filename = tex_info['source']
+            task.destination_path = '/Game/Characters/Huikong/Textures'
+
+            options = unreal.TextureImportTaskOptions()
+            options.compression_settings = unreal.TextureCompressionSettings.TC_DEFAULT
+            options.s_rgb = tex_info['srgb']
+            task.options = options
+
+            unreal.log(f"[IMPORT] Importing {tex_info['name']}...")
+            try:
+                unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+                unreal.log(f"[IMPORT] ✅ {tex_info['name']} imported")
+            except Exception as e:
+                unreal.log_error(f"[IMPORT] ❌ Failed: {e}")
+
+        unreal.log('[IMPORT] Texture import complete')
+        unreal.SystemLibrary.execute_console_command(None, 'quit')
+
+    import_textures()
+
+# 创建 NPR 材质钩子
+elif os.environ.get('FIRSTGAME_CREATE_NPR_MATERIAL') == '1':
+    unreal.log('[INIT] FIRSTGAME_CREATE_NPR_MATERIAL detected, creating NPR material...')
+
+    def create_npr_material():
+        unreal.log('[MATERIAL] Creating NPR cartoon material...')
+
+        # 创建材质
+        material_factory = unreal.MaterialFactoryNew()
+        material_path = '/Game/Characters/Huikong/Materials'
+        material_name = 'M_Huikong_NPR'
+
+        # 检查目录是否存在，不存在则创建
+        if not unreal.EditorAssetLibrary.does_directory_exist(material_path):
+            unreal.EditorAssetLibrary.make_directory(material_path)
+            unreal.log(f'[MATERIAL] Created directory: {material_path}')
+
+        full_material_path = f'{material_path}/{material_name}'
+
+        # 创建材质资产
+        material = unreal.AssetToolsHelpers.get_asset_tools().create_asset(
+            asset_name=material_name,
+            package_path=material_path,
+            asset_class=unreal.Material,
+            factory=material_factory
+        )
+
+        if not material:
+            unreal.log_error('[MATERIAL] ❌ Failed to create material')
+            return
+
+        unreal.log(f'[MATERIAL] ✅ Created material: {full_material_path}')
+
+        # 保存材质
+        try:
+            unreal.EditorAssetLibrary.save_asset(full_material_path)
+            unreal.log('[MATERIAL] ✅ Material saved')
+        except Exception as e:
+            unreal.log_error(f'[MATERIAL] ❌ Save failed: {e}')
+
+        unreal.SystemLibrary.execute_console_command(None, 'quit')
+
+    create_npr_material()
+
 # 临时验证钩子：检查环境变量 FIRSTGAME_VERIFY_ASSETS
-if os.environ.get('FIRSTGAME_VERIFY_ASSETS') == '1':
+elif os.environ.get('FIRSTGAME_VERIFY_ASSETS') == '1':
     unreal.log('[INIT] FIRSTGAME_VERIFY_ASSETS detected, running asset verification...')
 
     def verify_assets():
