@@ -41,6 +41,11 @@
   - ✅ SKM_Huikong (骨骼网格体) + Skeleton + 1 Material
   - ✅ 7 个动画序列全部加载
   - ✅ ABP_Huikong (动画蓝图) 加载成功
+- [x] **NPR 材质创建** (2026-06-19):
+  - ✅ M_Huikong_NPR 基础材质已创建
+  - ⏳ 待连接 Base Color 贴图
+  - ⏳ 待实现赛璐璐着色
+  - ⏳ 待添加描边效果
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
