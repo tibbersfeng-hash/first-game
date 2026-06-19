@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitBoxComponentConfigTest,
 	"FirstGame.Combat.HitBoxComponent.DefaultConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitBoxComponentConfigTest::RunTest(const FString& Parameters)
 {
@@ -21,9 +21,9 @@ bool FHitBoxComponentConfigTest::RunTest(const FString& Parameters)
 
 	// Default box extent from constructor: FVector(40.f, 10.f, 60.f)
 	FVector Extent = HitBox->GetScaledBoxExtent();
-	TestEqual("Default BoxExtent X", Extent.X, 40.f);
-	TestEqual("Default BoxExtent Y", Extent.Y, 10.f);
-	TestEqual("Default BoxExtent Z", Extent.Z, 60.f);
+	TestEqual("Default BoxExtent X", (double)Extent.X, (double)40.);
+	TestEqual("Default BoxExtent Y", (double)Extent.Y, (double)10.);
+	TestEqual("Default BoxExtent Z", (double)Extent.Z, (double)60.);
 
 	return true;
 }
@@ -33,7 +33,7 @@ bool FHitBoxComponentConfigTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitBoxComponentKnockbackTest,
 	"FirstGame.Combat.HitBoxComponent.KnockbackConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitBoxComponentKnockbackTest::RunTest(const FString& Parameters)
 {
@@ -59,7 +59,7 @@ bool FHitBoxComponentKnockbackTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitBoxActivationLogicTest,
 	"FirstGame.Combat.HitBoxComponent.ActivationLogic",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitBoxActivationLogicTest::RunTest(const FString& Parameters)
 {
@@ -103,7 +103,7 @@ bool FHitBoxActivationLogicTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitBoxSelfHitPreventionTest,
 	"FirstGame.Combat.HitBoxComponent.SelfHitPrevention",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitBoxSelfHitPreventionTest::RunTest(const FString& Parameters)
 {

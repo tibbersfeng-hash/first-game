@@ -8,6 +8,7 @@
 #include "Combat/HitStopManager.h"
 #include "DataAssets/CharacterDataAsset.h"
 #include "Subsystems/SignalBusTypes.h"
+#include "Dungeon/LootItem.h"
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test: Combat Flow — Hit → Combo → HitStop
@@ -15,7 +16,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCombatFlowIntegrationTest,
 	"FirstGame.Integration.CombatFlow",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCombatFlowIntegrationTest::RunTest(const FString& Parameters)
 {
@@ -68,7 +69,7 @@ bool FCombatFlowIntegrationTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageNumberFlowTest,
 	"FirstGame.Integration.DamageNumberFlow",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FDamageNumberFlowTest::RunTest(const FString& Parameters)
 {
@@ -114,7 +115,7 @@ bool FDamageNumberFlowTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCharacterDataToCombatTest,
 	"FirstGame.Integration.CharacterDataToCombat",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCharacterDataToCombatTest::RunTest(const FString& Parameters)
 {
@@ -177,7 +178,7 @@ bool FCharacterDataToCombatTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveLootIntegrationTest,
 	"FirstGame.Integration.WaveLoot",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveLootIntegrationTest::RunTest(const FString& Parameters)
 {
@@ -230,7 +231,7 @@ bool FWaveLootIntegrationTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(F2DPlaneConstraintTest,
 	"FirstGame.Integration.2DPlaneConstraint",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool F2DPlaneConstraintTest::RunTest(const FString& Parameters)
 {
@@ -253,20 +254,20 @@ bool F2DPlaneConstraintTest::RunTest(const FString& Parameters)
 	FVector NewPos = PlayerPos + Movement3D * MoveSpeed * DeltaTime;
 
 	// Y should remain 0
-	TestEqual("Y stays 0", NewPos.Y, 0.f);
+	TestEqual("Y stays 0", (double)NewPos.Y, (double)0.);
 
 	// X should increase
 	TestTrue("X increased", NewPos.X > PlayerPos.X);
 
 	// Z unchanged (no vertical input)
-	TestEqual("Z unchanged", NewPos.Z, PlayerPos.Z);
+	TestEqual("Z unchanged", (double)NewPos.Z, (double)PlayerPos.Z);
 
 	// Jump adds Z velocity
 	float JumpForce = 600.f;
 	FVector JumpVelocity(0.f, 0.f, JumpForce);
 	FVector AfterJump = NewPos + JumpVelocity * DeltaTime;
 
-	TestEqual("Y still 0 after jump", AfterJump.Y, 0.f);
+	TestEqual("Y still 0 after jump", (double)AfterJump.Y, (double)0.);
 	TestTrue("Z increased after jump", AfterJump.Z > NewPos.Z);
 
 	// Gravity pulls Z down
@@ -274,7 +275,7 @@ bool F2DPlaneConstraintTest::RunTest(const FString& Parameters)
 	FVector GravityVel(0.f, 0.f, -Gravity * DeltaTime);
 	FVector AfterGravity = AfterJump + GravityVel * DeltaTime;
 
-	TestEqual("Y still 0 with gravity", AfterGravity.Y, 0.f);
+	TestEqual("Y still 0 with gravity", (double)AfterGravity.Y, (double)0.);
 
 	return true;
 }

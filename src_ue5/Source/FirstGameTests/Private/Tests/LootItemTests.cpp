@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FLootTypeValuesTest,
 	"FirstGame.Dungeon.LootItem.LootTypeValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FLootTypeValuesTest::RunTest(const FString& Parameters)
 {
@@ -36,7 +36,7 @@ bool FLootTypeValuesTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FLootDropConfigDefaultsTest,
 	"FirstGame.Dungeon.LootItem.LootDropConfigDefaults",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FLootDropConfigDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -56,7 +56,7 @@ bool FLootDropConfigDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FLootDropConfigCustomTest,
 	"FirstGame.Dungeon.LootItem.LootDropConfigCustom",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FLootDropConfigCustomTest::RunTest(const FString& Parameters)
 {
@@ -85,7 +85,7 @@ bool FLootDropConfigCustomTest::RunTest(const FString& Parameters)
 // ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FLootTableCreationTest,
 	"FirstGame.Dungeon.LootItem.LootTableCreation",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FLootTableCreationTest::RunTest(const FString& Parameters)
 {
@@ -122,7 +122,7 @@ bool FLootTableCreationTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FLootDropChanceBoundaryTest,
 	"FirstGame.Dungeon.LootItem.DropChanceBoundaries",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FLootDropChanceBoundaryTest::RunTest(const FString& Parameters)
 {

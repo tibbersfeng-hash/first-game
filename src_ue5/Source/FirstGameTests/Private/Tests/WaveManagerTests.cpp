@@ -10,12 +10,12 @@
 // ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveManagerInitTest,
 	"FirstGame.Dungeon.WaveManager.Initialization",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveManagerInitTest::RunTest(const FString& Parameters)
 {
-	AWaveManager* WaveMgr = GetWorld()->SpawnActor<AWaveManager>();
-	TestNotNull("WaveManager should be spawned", WaveMgr);
+	AWaveManager* WaveMgr = NewObject<AWaveManager>(GetTransientPackage());
+	TestNotNull("WaveManager should be created", WaveMgr);
 
 	if (!WaveMgr) return false;
 
@@ -29,14 +29,14 @@ bool FWaveManagerInitTest::RunTest(const FString& Parameters)
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test: WaveManager SetupWaves
-// ─────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveManagerSetupTest,
 	"FirstGame.Dungeon.WaveManager.SetupWaves",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveManagerSetupTest::RunTest(const FString& Parameters)
 {
-	AWaveManager* WaveMgr = GetWorld()->SpawnActor<AWaveManager>();
+	AWaveManager* WaveMgr = NewObject<AWaveManager>(GetTransientPackage());
 	if (!WaveMgr) return false;
 
 	// Create wave configurations
@@ -73,22 +73,15 @@ bool FWaveManagerSetupTest::RunTest(const FString& Parameters)
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test: WaveManager Empty Waves — Auto-complete
-// ─────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveManagerEmptyWavesTest,
 	"FirstGame.Dungeon.WaveManager.EmptyWavesAutoComplete",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveManagerEmptyWavesTest::RunTest(const FString& Parameters)
 {
-	AWaveManager* WaveMgr = GetWorld()->SpawnActor<AWaveManager>();
+	AWaveManager* WaveMgr = NewObject<AWaveManager>(GetTransientPackage());
 	if (!WaveMgr) return false;
-
-	// Track if OnAllWavesCleared fires
-	bool bClearedFired = false;
-	WaveMgr->OnAllWavesCleared.AddUObject(WaveMgr, [](bool bVictory)
-	{
-		// In unit test, this validates the delegate fires
-	});
 
 	// Start waves with empty config
 	TArray<FWaveConfig> EmptyWaves;
@@ -106,7 +99,7 @@ bool FWaveManagerEmptyWavesTest::RunTest(const FString& Parameters)
 // ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveConfigDefaultsTest,
 	"FirstGame.Dungeon.WaveManager.WaveConfigDefaults",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveConfigDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -123,10 +116,10 @@ bool FWaveConfigDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 // Test: WaveManager Wave Index Progression Logic
 // Verifies the wave index logic without needing actual enemy spawning.
-// ─────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWaveManagerIndexLogicTest,
 	"FirstGame.Dungeon.WaveManager.IndexProgressionLogic",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FWaveManagerIndexLogicTest::RunTest(const FString& Parameters)
 {

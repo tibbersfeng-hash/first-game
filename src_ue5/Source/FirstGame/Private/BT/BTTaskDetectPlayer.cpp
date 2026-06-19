@@ -1,7 +1,7 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
 
-#include "FirstGame.h"
 #include "BT/BTTaskDetectPlayer.h"
+#include "FirstGame.h"
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetSystemLibrary.h"

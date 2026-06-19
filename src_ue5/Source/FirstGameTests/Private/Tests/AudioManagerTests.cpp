@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEAudioCategoryValuesTest,
 	"FirstGame.Subsystems.AudioManager.AudioCategoryValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FEAudioCategoryValuesTest::RunTest(const FString& Parameters)
 {
@@ -31,7 +31,7 @@ bool FEAudioCategoryValuesTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FVolumeClampTest,
 	"FirstGame.Subsystems.AudioManager.VolumeClamping",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FVolumeClampTest::RunTest(const FString& Parameters)
 {
@@ -62,7 +62,7 @@ bool FVolumeClampTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboSoundVolumeTest,
 	"FirstGame.Subsystems.AudioManager.ComboSoundVolume",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboSoundVolumeTest::RunTest(const FString& Parameters)
 {
