@@ -96,10 +96,18 @@ Saved/
 *.temp
 *.cache
 *.log
+*.bak
 __pycache__/
 *.pyc
 node_modules/
 .npm/
+
+# === UE5 Plugins (large / external — manage outside git) ===
+# McpAutomationBridge is a ~968MB generated plugin; keep out of the repo.
+src_ue5/Plugins/McpAutomationBridge/
+
+# === MCP / automation local config ===
+.mcp.json
 
 # === Archives ===
 *.zip
