@@ -167,3 +167,8 @@ elif os.environ.get('FIRSTGAME_SETUP_ANIMBP') == '1':
 elif os.environ.get('FIRSTGAME_TEST_LEVEL') == '1':
     unreal.log('[INIT] FIRSTGAME_TEST_LEVEL detected, creating monster test level...')
     import setup_test_level_monsters
+
+# ── Enemy Blueprint creation hook ────────────────────────────────────
+elif os.environ.get('FIRSTGAME_CREATE_ENEMY_BPS') == '1':
+    unreal.log('[INIT] FIRSTGAME_CREATE_ENEMY_BPS detected, creating enemy BPs...')
+    import create_enemy_bps
