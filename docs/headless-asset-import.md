@@ -1,79 +1,63 @@
 # UE5 Headless 资产导入方案
 
-> **状态**: 待验证（2026-06-19 更新）
+> **状态**: ✅ 已验证（2026-06-20 更新）
 > **适用**: GPU 服务器 Vulkan 显示不可用时的备选方案
 
-## 问题回顾
+## ⚠️ UE5.7 Python 脚本执行方法（重要）
 
-- Vulkan Swapchain 失败：容器环境无 DRM 访问
-- UE5.7 仅支持 Vulkan RHI，无法回退 OpenGL
-- 之前尝试：Game 模式 + Python → MaterialInstance 断言崩溃
-- 之前尝试：Editor 模式 + `-ExecutePythonScript` → 脚本不执行
+### 正确的命令行参数
 
-## 新方案：Editor 模式 + `-RunPythonScript`
-
-### 关键发现
-
-之前的错误：
-1. 用了旧语法 `-ExecutePythonScript`（UE4/早期 UE5 的 PythonEditorScript 插件语法）
-2. 在 Game 模式下运行（`GIsEditor=false` 导致材质断言崩溃）
-
-正确方式：
-- **Editor 模式**（默认）+ `-RunPythonScript`（UE5 标准语法）
-- `-unattended` 抑制 UI 弹窗
-- `-nullrhi` 跳过渲染（不需要 Vulkan surface）
-- `-stdout -FullStdOutLogOutput` 完整日志
-
-### 命令
+经过多次测试验证，UE5.7 中执行 Python 脚本的**唯一正确方法**：
 
 ```bash
-# 在 GPU 服务器上执行
-su - ueuser -c '
-/root/autodl-tmp/ue5/Engine/Binaries/Linux/UnrealEditor-Cmd \
-  /root/autodl-tmp/project/first-game/src_ue5/FirstGame.uproject \
-  -RunPythonScript="/root/autodl-tmp/project/first-game/src_ue5/Content/Python/import_skeletal_mesh.py" \
-  -stdout \
-  -FullStdOutLogOutput \
-  -unattended \
-  -nosplash \
-  -nullrhi
-'
+UnrealEditor-Cmd <ProjectPath> -run=PythonScript -script=<script.py> -stdout -nullrhi -unattended
 ```
 
-### 为什么这个应该能工作
+### 错误参数（不工作）
 
-| 之前的问题 | 现在的解决方案 |
-|---|---|
-| Game 模式 GIsEditor=false → 断言崩溃 | Editor 模式 GIsEditor=true → 断言通过 |
-| `-ExecutePythonScript` 无效 | `-RunPythonScript` 是 UE5 正确语法 |
-| Vulkan 渲染崩溃 | `-nullrhi` 跳过渲染 |
-| UI 弹窗阻塞 | `-unattended` 自动模式 |
+| 参数 | 状态 | 原因 |
+|---|---|---|
+| `-RunPythonScript=<path>` | ❌ 不工作 | UE5.7 不识别此参数，脚本不会执行 |
+| `-ExecutePythonScript=<path>` | ❌ 仅 GUI 模式 | 源码要求编辑器模式，commandlet/-nullrhi 下被拒绝 |
 
-### 风险
+### 源码依据
 
-1. `-nullrhi` + Editor 模式可能导致某些 Editor 子系统不可用
-2. AssetTools 的 FBX 导入可能依赖渲染上下文（概率低）
-3. 如果仍然崩溃，需要尝试 VirtualGL/TurboVNC 方案
+```cpp
+// PythonScriptPlugin/Source/.../EditorPythonExecuter.cpp:144
+const TCHAR* Match = TEXT("-ExecutePythonScript=");
 
-### 备选方案
+// 第 184 行检查
+UE_LOG(LogEditorPythonExecuter, Error, TEXT("-ExecutePythonScript cannot be used outside of the editor."));
+// 第 188 行检查
+UE_LOG(LogEditorPythonExecuter, Error, TEXT("-ExecutePythonScript cannot be used by a commandlet. Use -run=PythonScript instead?"));
+```
 
-如果 `-RunPythonScript + -nullrhi` 不可行：
+### 验证日志
 
-1. **VirtualGL + TurboVNC**
-   - VirtualGL 拦截 GL/Vulkan 调用，重定向到 GPU
-   - TurboVNC 提供虚拟 X server
-   - 与 TigerVNC 不同，专为 3D 加速设计
+```
+LogPythonScriptCommandlet: Display: Running Python script: /tmp/test_material_minimal.py
+[成功创建 M_Huikong_Test.uasset]
+```
 
-2. **UE5 Build Machine 模式**
-   ```bash
-   UnrealEditor-Cmd ... -buildmachine -nullrhi
-   ```
-   CI/CD 模式，可能更适合 headless 场景
+### 完整示例命令
 
-3. **自定义 Commandlet**
-   - 编写 C++ UCommandlet 子类
-   - 完全控制导入逻辑
-   - 不依赖 Python 插件
+```bash
+export DISPLAY=:99  # 或任何可用的 X server
+
+/home/vipuser/ue5/Engine/Binaries/Linux/UnrealEditor-Cmd \
+  /home/vipuser/first-game/src_ue5/FirstGame.uproject \
+  -run=PythonScript \
+  -script=/path/to/your_script.py \
+  -stdout -nullrhi -unattended
+```
+
+### DISPLAY 环境
+
+- ✅ **DISPLAY=:99** — Xvfb + x11vnc（端口 5902），已确认可用
+- ❌ DISPLAY=:1 — TigerVNC，截图全黑
+- ❌ DISPLAY=:10 — xrdp，截图全黑
+
+> **固定使用 DISPLAY=:99** 进行所有 UE5 编辑器操作。
 
 ## 导入脚本
 
@@ -91,20 +75,28 @@ su - ueuser -c '
 
 ## 验证步骤
 
+> ⚠️ 所有命令使用 `-run=PythonScript -script=<path>`，不是 `-RunPythonScript`。
+
 1. 先导入骨骼网格体：
    ```bash
-   UnrealEditor-Cmd ... -RunPythonScript="import_skeletal_mesh.py" -nullrhi -unattended
+   UnrealEditor-Cmd ... -run=PythonScript -script=import_skeletal_mesh.py -nullrhi -unattended
    ```
 2. 检查日志，确认 SKM_Huikong 导入成功
 3. 导入动画：
    ```bash
-   UnrealEditor-Cmd ... -RunPythonScript="import_all_anims_final.py" -nullrhi -unattended
+   UnrealEditor-Cmd ... -run=PythonScript -script=import_all_anims_final.py -nullrhi -unattended
    ```
 4. 创建 ABP：
    ```bash
-   UnrealEditor-Cmd ... -RunPythonScript="create_abp.py" -nullrhi -unattended
+   UnrealEditor-Cmd ... -run=PythonScript -script=create_abp.py -nullrhi -unattended
    ```
 5. 运行 AnimTest 关卡验证
+
+## UE5.7 Python API 注意事项
+
+- `unreal.ShadingModel` **不存在**（UE5.7 变更）
+- `MaterialEditingLibrary.connect_material_property()` 最多接受 **3 个参数**（不是 4 个）
+- 材质连接需要用 `connect_material_expression()` 或其他方式
 
 ## 参考
 
