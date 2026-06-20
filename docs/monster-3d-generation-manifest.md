@@ -10,10 +10,10 @@
 
 | 怪物 | 3D 模型 | 绑骨动作 | Blender 修正 | UE5 导入 | 状态 |
 |------|---------|---------|-------------|---------|------|
-| 糖果僵尸 | ✅ | ✅ 6/6 | ⬜ | ⬜ | ✅ 完成 |
-| 暴躁姜饼人 | ✅ | ✅ 6/6 |  | ⬜ | ✅ 完成 |
-| 暗影忍者糖 | ✅ | ✅ 6/6 | ⬜ | ⬜ | ✅ 完成 |
-| 铁甲口香糖 | ✅ | ✅ 6/6 | ⬜ | ⬜ | ✅ 完成 |
+| 糖果僵尸 | ✅ | ✅ 6/6 | ✅ | ✅ | ✅ 完成 |
+| 暴躁姜饼人 | ✅ | ✅ 6/6 | ✅ | ✅ | ✅ 完成 |
+| 暗影忍者糖 | ✅ | ✅ 6/6 | ✅ | ✅ | ✅ 完成 |
+| 铁甲口香糖 | ✅ | ✅ 6/6 | ✅ | ✅ | ✅ 完成 |
 
 ---
 
@@ -85,28 +85,24 @@
 
 ## 三、后续步骤
 
-### 阶段 1: 绑骨补完 (当前)
-- [ ] 暴躁姜饼人: 6 个动作
-- [ ] 暗影忍者糖: 6 个动作
-- [ ] 铁甲口香糖: 6 个动作
+### 阶段 1: 绑骨补完 ✅ 完成
+- [x] 暴躁姜饼人: 6 个动作
+- [x] 暗影忍者糖: 6 个动作
+- [x] 铁甲口香糖: 6 个动作
 
-**预计时间**: 每个怪物 ~30 分钟 (3D 重新生成 3 分钟 + 6 动作 × 4 分钟)
+### 阶段 2: Blender 修正 ✅ 完成 (2026-06-20)
+工具: `tools/blender_batch_fix_monsters.py` (Blender 4.0.2 headless)
 
-### 阶段 2: Blender 修正
-参考: `design/art/blender-monster-postprocess.md`
+每个怪物完成:
+- [x] 顶点合并 (remove_doubles, threshold 0.001m, ~10k verts removed)
+- [x] 法线重算 (bmesh recalc_face_normals)
+- [x] 骨骼验证 (28 bones each, 0 zero-length removed)
+- [x] LOD 生成 (LOD1: 50% faces, LOD2: 25% faces)
+- [x] UE5 FBX 导出 (add_leaf_bones=False, primary_bone_axis='Y')
 
-每个怪物需要:
-- [ ] 拓扑检查/修正 (15-30 min)
-- [ ] UV 展开修正 (10-20 min)
-- [ ] 材质清理 (5-10 min)
-- [ ] 骨骼验证 (10-15 min)
-- [ ] 比例/朝向调整 (5 min)
-- [ ] LOD 生成 (10 min)
-- [ ] 导出 UE5 FBX (2 min)
+**输出目录**: `design/assets/output/3d/{monster}/ue5_ready/`
 
-**预计时间**: 每怪物 1-1.5 小时，总计 4-6 小时
-
-### 阶段 3: UE5 导入
+### 阶段 3: UE5 导入 ⬜ 待进行
 参考: `design/art/ue5-monster-import-guide.md`
 
 每个怪物需要:

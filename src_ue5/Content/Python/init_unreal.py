@@ -147,3 +147,23 @@ elif os.environ.get('FIRSTGAME_VERIFY_ASSETS') == '1':
     # 注意：不能在线程中调用 Unreal API，必须使用定时器或延迟执行
     unreal.SystemLibrary.execute_console_command(None, 'obj dump SKM_Huikong')
     verify_assets()
+
+# ── Monster import hook ──────────────────────────────────────────────
+elif os.environ.get('FIRSTGAME_IMPORT_MONSTERS') == '1':
+    unreal.log('[INIT] FIRSTGAME_IMPORT_MONSTERS detected, importing candy dungeon monsters...')
+    import import_monsters
+
+# ── Monster material + AnimBP setup hook ─────────────────────────────
+elif os.environ.get('FIRSTGAME_SETUP_MONSTERS') == '1':
+    unreal.log('[INIT] FIRSTGAME_SETUP_MONSTERS detected, creating materials + AnimBPs...')
+    import setup_monsters
+
+# ── Monster BlendSpace + AnimBP config hook ──────────────────────────
+elif os.environ.get('FIRSTGAME_SETUP_ANIMBP') == '1':
+    unreal.log('[INIT] FIRSTGAME_SETUP_ANIMBP detected, configuring BlendSpaces + AnimBPs...')
+    import setup_animbp
+
+# ── Monster test level hook ──────────────────────────────────────────
+elif os.environ.get('FIRSTGAME_TEST_LEVEL') == '1':
+    unreal.log('[INIT] FIRSTGAME_TEST_LEVEL detected, creating monster test level...')
+    import setup_test_level_monsters

@@ -6,7 +6,7 @@
 UEquipmentManagerComponent::UEquipmentManagerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 
 	// 初始化装备槽位
 	FEquipmentSlot WeaponSlot;

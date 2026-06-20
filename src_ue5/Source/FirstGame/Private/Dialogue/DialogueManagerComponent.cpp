@@ -6,7 +6,7 @@
 UDialogueManagerComponent::UDialogueManagerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UDialogueManagerComponent::BeginPlay()
