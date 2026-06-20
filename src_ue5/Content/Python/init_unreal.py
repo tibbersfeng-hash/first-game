@@ -192,3 +192,8 @@ elif os.environ.get('FIRSTGAME_SPAWN_AND_SHOT') == '1':
 elif os.environ.get('FIRSTGAME_BETTER_SHOT') == '1':
     unreal.log('[INIT] FIRSTGAME_BETTER_SHOT detected, better spawn + screenshot...')
     import spawn_better_shot
+
+# ── Enemy spawn test hook ────────────────────────────────────────────
+elif os.environ.get('FIRSTGAME_SPAWN_ENEMY_TEST') == '1':
+    unreal.log('[INIT] FIRSTGAME_SPAWN_ENEMY_TEST detected, spawning enemies...')
+    import spawn_enemy_test
