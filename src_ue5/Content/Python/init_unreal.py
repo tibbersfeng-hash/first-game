@@ -172,3 +172,13 @@ elif os.environ.get('FIRSTGAME_TEST_LEVEL') == '1':
 elif os.environ.get('FIRSTGAME_CREATE_ENEMY_BPS') == '1':
     unreal.log('[INIT] FIRSTGAME_CREATE_ENEMY_BPS detected, creating enemy BPs...')
     import create_enemy_bps
+
+# ── NPR colored material instances hook ──────────────────────────────
+elif os.environ.get('FIRSTGAME_NPR_MATERIALS') == '1':
+    unreal.log('[INIT] FIRSTGAME_NPR_MATERIALS detected, creating NPR materials...')
+    import create_npr_materials
+
+# ── LOD configuration hook ───────────────────────────────────────────
+elif os.environ.get('FIRSTGAME_CONFIG_LODS') == '1':
+    unreal.log('[INIT] FIRSTGAME_CONFIG_LODS detected, configuring LODs...')
+    import configure_lods
