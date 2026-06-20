@@ -1,21 +1,19 @@
 # Session State — 格斗萌主
 
-*Last updated: 2026-06-20 17:00*
+*Last updated: 2026-06-19 18:00*
 
 ## Current Phase
-**P0 原型 — ✅ GPU 渲染验证通过，角色模型可见，待材质 flag 调整**
+**P0 原型 — 代码编译通过，资产导入方案就绪，待 GPU 服务器恢复**
 
-## 环境信息
-- **云 GPU**: connect.nmb2.seetacloud.com:42491 ⚠️ **不可用（实例已停止）**
-- **本地 GPU**: ✅ RTX 3090 (24GB) — `/home/vipuser/`
-- **UE5**: 5.7 (本地安装) — 编译通过 (8.28s)
-- **项目路径**: `/home/vipuser/first-game/src_ue5/`
-- **DISPLAY**: ✅ **固定使用 :99** (Xvfb + x11vnc, VNC 端口 5902)
-- **Python 脚本执行**: ✅ 通过 `-run=PythonScript -script=<path>` 执行（详见 docs/headless-asset-import.md）
+## 服务器信息
+- **地址**: connect.nmb2.seetacloud.com:42491 ⚠️ **当前连接被拒，实例可能已停止**
+- **GPU**: NVIDIA RTX 3090 (24GB)
+- **UE5**: 5.7.4 (CL-51494982)
+- **项目路径**: `/root/autodl-tmp/project/first-game/src_ue5/`
 
 ## ✅ 已完成
 
-### 代码系统 (93 C++ 文件, 编译通过)
+### 代码系统 (48+ C++ 文件, 编译通过)
 - [x] PlayerCharacter + BaseEnemy (GAS 集成)
 - [x] 第三人称相机系统 (ADR-008)
 - [x] Lock-On 目标锁定 (ADR-009)
@@ -30,13 +28,6 @@
 - [x] LevelBuilder 程序化关卡
 - [x] SignalBus 事件系统
 - [x] AnimTestActor 动画测试
-- [x] **新增子系统** (2026-06-20):
-  - [x] AchievementData + AchievementManagerComponent (成就系统)
-  - [x] DialogueData + DialogueManagerComponent (对话系统)
-  - [x] EquipmentAsset + EquipmentManagerComponent (装备系统)
-  - [x] SkillNodeData + SkillTreeComponent (技能树)
-  - [x] FriendManager (好友管理)
-  - [x] 修复: UENUM 属性默认值初始化 (EquipmentSlot::SlotType, FriendData::Status)
 
 ### 武僧 3D 资产
 - [x] AI 3D 生成 (150k faces → 重拓扑 40k faces)
@@ -45,20 +36,6 @@
 - [x] 动画 FBX: Idle×2, Walk, Run, LightAttack, HitReaction, Landing
 - [x] ABP_Huikong 动画蓝图已创建 (GPU 服务器操作)
 - [x] AM_Huikong_* AnimSequence 已导入 (GPU 服务器操作)
-- [x] **资产验证通过** (2026-06-19 本地 UE5.7):
-  - ✅ SKM_Huikong (骨骼网格体) + Skeleton + 1 Material
-  - ✅ 7 个动画序列全部加载
-  - ✅ ABP_Huikong (动画蓝图) 加载成功
-- [x] **NPR 材质创建** (2026-06-20):
-  - ✅ M_Huikong_NPR 完整赛璐璐着色材质已创建 (23K)
-  - ✅ 2-tone 阴影 (NdotL 阈值 0.3，设计稿参数)
-  - ✅ 节点图: TextureSample → Multiply(Shadow) → Lerp(CelBlend) → BaseColor
-  - ✅ **GPU 渲染验证通过** (2026-06-20):
-    - ✅ 发现 `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json` 可启用本地 GPU 渲染
-    - ✅ Vulkan swapchain 创建成功 (RTX 3090, VK_PRESENT_MODE_IMMEDIATE_KHR)
-    - ✅ SKM_Huikong 在 TestLevel_NPR 中正确加载并渲染
-    - ⏳ `bUsedWithSkeletalMesh` flag 需 GUI 编辑器手动设置（Python API 不可靠）
-    - 📸 截图: `docs/npr_gpu_render.png` (1920×1080)
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
@@ -105,16 +82,16 @@ Editor 模式 + `-RunPythonScript` + `-nullrhi` + `-unattended`
 |---|---|---|
 | Week 1 | AI 3D 生成 + Blender 修整 | ✅ 完成 |
 | Week 2 | 贴图 + 绑骨 + 动画 | ✅ 完成 (服务器端) |
-| Week 3 | 战斗动画 + NPR + 整合 | ✅ 完成 |
+| Week 3 | 战斗动画 + NPR + 整合 | ⏳ 待服务器恢复 |
 
 ### Week 3 待办
-- [x] 验证骨骼网格体导入
-- [ ] 验证动画播放 (待 GUI 调整)
-- [x] 创建/完善 Animation Blueprint
-- [x] 实现 NPR 卡通渲染材质 (2-tone + Rim + 高光)
-- [x] 实现描边 (Inverted Hull - M_Outline + 1.03 缩放)
-- [x] 整合测试关卡已创建 (TestLevel_Integration)
-- [x] P0 评审完成
+- [ ] 验证骨骼网格体导入
+- [ ] 验证动画播放
+- [ ] 创建/完善 Animation Blueprint
+- [ ] 实现 NPR 卡通渲染材质
+- [ ] 实现描边 (Inverted Hull)
+- [ ] 整合测试 (移动+攻击+锁定)
+- [ ] P0 评审
 
 ## 🔧 恢复后的操作步骤
 
@@ -135,42 +112,7 @@ bash /root/autodl-tmp/project/first-game/tools/run_headless_import.sh all
 bash /root/autodl-tmp/project/first-game/tools/run_headless_import.sh test
 ```
 
-## 🔧 GPU 渲染环境突破 (2026-06-20)
-
-### 关键发现
-设置以下环境变量后，UE5 编辑器可以在本地 GPU 上成功运行（无需云 GPU 服务器）：
-
-```bash
-export DISPLAY=:99
-export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
-```
-
-### 验证结果
-- ✅ Vulkan RHI 正常初始化（RTX 3090, VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU）
-- ✅ Swapchain 创建成功（VK_PRESENT_MODE_IMMEDIATE_KHR）
-- ✅ 编辑器正常启动、加载关卡、渲染场景
-- ✅ HighResShot 截图成功（1920×1080）
--  `UnrealEditor-Cmd`（commandlet 模式）模块加载崩溃 — 用完整 `UnrealEditor` 代替
-
-### 编辑器启动命令
-```bash
-export DISPLAY=:99
-export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
-
-# 加载指定关卡并执行 Python 脚本
-/home/vipuser/ue5/Engine/Binaries/Linux/UnrealEditor \
-  /home/vipuser/first-game/src_ue5/FirstGame.uproject \
-  /Game/Maps/TestLevel_NPR \
-  -nosplash -stdout -unattended \
-  -ExecutePythonScript=/path/to/script.py
-```
-
-### 限制
-- Python `unreal.log()` 输出在 `-unattended` 模式下不可见（不影响功能）
-- 材质 `bUsedWithSkeletalMesh` flag 无法通过 Python API 可靠修改
-- 编辑器偶尔崩溃（Signal 11），重试即可
-
 ## 📊 Git 状态
-- 最新 commit: `452da24 chore: .gitignore 排除调试材质迭代产物`
-- 已推送到 origin/main
-- 远程: `git@github.com:tibbersfeng-hash/first-game.git`
+- 最新 commit: `7ec0f3d chore: clean Build.cs deps + add FirstGameTests to Editor target`
+- 本地落后: 部分二进制资产 (FBX/uasset) 需通过 git fetch 或 scp 同步
+- 同步方式: `git fetch origin --filter=blob:limit=100k` (跳过大型二进制)
