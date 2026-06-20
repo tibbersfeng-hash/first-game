@@ -258,24 +258,29 @@ void ABaseEnemy::ConfigureMonsterAssets()
 {
 	FString MeshPath;
 	FString AnimBPPath;
+	FLinearColor MonsterColor(1.0f, 1.0f, 1.0f, 1.0f);  // Default white
 
 	switch (EnemyType)
 	{
 	case EEnemyType::CandyZombie:
 		MeshPath = TEXT("/Game/Monsters/CandyZombie/Mesh/SK_CandyZombie.SK_CandyZombie");
 		AnimBPPath = TEXT("/Game/Monsters/CandyZombie/ABP/ABP_CandyZombie.ABP_CandyZombie");
+		MonsterColor = FLinearColor(0.2f, 0.8f, 0.3f, 1.0f);  // Green
 		break;
 	case EEnemyType::Gingerbread:
 		MeshPath = TEXT("/Game/Monsters/Gingerbread/Mesh/SK_Gingerbread.SK_Gingerbread");
 		AnimBPPath = TEXT("/Game/Monsters/Gingerbread/ABP/ABP_Gingerbread.ABP_Gingerbread");
+		MonsterColor = FLinearColor(0.65f, 0.4f, 0.2f, 1.0f);  // Brown
 		break;
 	case EEnemyType::ShadowNinja:
 		MeshPath = TEXT("/Game/Monsters/ShadowNinja/Mesh/SK_ShadowNinja.SK_ShadowNinja");
 		AnimBPPath = TEXT("/Game/Monsters/ShadowNinja/ABP/ABP_ShadowNinja.ABP_ShadowNinja");
+		MonsterColor = FLinearColor(0.5f, 0.3f, 0.8f, 1.0f);  // Purple
 		break;
 	case EEnemyType::ArmoredGum:
 		MeshPath = TEXT("/Game/Monsters/ArmoredGum/Mesh/SK_ArmoredGum.SK_ArmoredGum");
 		AnimBPPath = TEXT("/Game/Monsters/ArmoredGum/ABP/ABP_ArmoredGum.ABP_ArmoredGum");
+		MonsterColor = FLinearColor(0.75f, 0.78f, 0.8f, 1.0f);  // Silver
 		break;
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Unknown EnemyType"));
@@ -288,6 +293,28 @@ void ABaseEnemy::ConfigureMonsterAssets()
 	{
 		GetMesh()->SetSkeletalMesh(LoadedMesh);
 		UE_LOG(LogTemp, Log, TEXT("BaseEnemy: Set mesh %s for EnemyType %d"), *MeshPath, (int32)EnemyType);
+
+		// Create Dynamic Material Instance with monster's signature color
+		const TArray<FSkeletalMaterial>& MatArray = LoadedMesh->GetMaterials();
+		UMaterialInterface* BaseMat = (MatArray.Num() > 0) ? MatArray[0].MaterialInterface : nullptr;
+		if (!BaseMat)
+		{
+			// Fallback to DefaultMaterial if mesh has no material
+			BaseMat = LoadObject<UMaterial>(nullptr, TEXT("/Engine/EngineMaterials/DefaultMaterial.DefaultMaterial"));
+		}
+
+		if (BaseMat)
+		{
+			UMaterialInstanceDynamic* DynMat = UMaterialInstanceDynamic::Create(BaseMat, this);
+			if (DynMat)
+			{
+				DynMat->SetVectorParameterValue(FName(TEXT("Base Color")), MonsterColor);
+				DynMat->SetVectorParameterValue(FName(TEXT("BaseColor")), MonsterColor);  // Try alternate name
+				GetMesh()->SetMaterial(0, DynMat);
+				UE_LOG(LogTemp, Log, TEXT("BaseEnemy: Applied dynamic material (R=%.2f G=%.2f B=%.2f)"),
+					MonsterColor.R, MonsterColor.G, MonsterColor.B);
+			}
+		}
 	}
 	else
 	{

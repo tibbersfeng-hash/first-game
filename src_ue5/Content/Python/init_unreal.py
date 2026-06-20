@@ -182,3 +182,13 @@ elif os.environ.get('FIRSTGAME_NPR_MATERIALS') == '1':
 elif os.environ.get('FIRSTGAME_CONFIG_LODS') == '1':
     unreal.log('[INIT] FIRSTGAME_CONFIG_LODS detected, configuring LODs...')
     import configure_lods
+
+# ── Spawn monsters + screenshot hook ────────────────────────────────
+elif os.environ.get('FIRSTGAME_SPAWN_AND_SHOT') == '1':
+    unreal.log('[INIT] FIRSTGAME_SPAWN_AND_SHOT detected, spawning + screenshot...')
+    import spawn_and_screenshot
+
+# ── Better spawn + lighting + screenshot hook ────────────────────────
+elif os.environ.get('FIRSTGAME_BETTER_SHOT') == '1':
+    unreal.log('[INIT] FIRSTGAME_BETTER_SHOT detected, better spawn + screenshot...')
+    import spawn_better_shot
