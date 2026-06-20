@@ -6,7 +6,7 @@
 USkillTreeComponent::USkillTreeComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 
 	AvailableSkillPoints = 0;
 }

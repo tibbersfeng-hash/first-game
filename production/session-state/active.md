@@ -1,15 +1,15 @@
 # Session State — 格斗萌主
 
-*Last updated: 2026-06-19 18:00*
+*Last updated: 2026-06-20 23:30*
 
 ## Current Phase
-**P0 原型 — 代码编译通过，资产导入方案就绪，待 GPU 服务器恢复**
+**P0 原型 — 4 怪物 UE5 导入完成 ✅，待可视化验证**
 
 ## 服务器信息
-- **地址**: connect.nmb2.seetacloud.com:42491 ⚠️ **当前连接被拒，实例可能已停止**
-- **GPU**: NVIDIA RTX 3090 (24GB)
-- **UE5**: 5.7.4 (CL-51494982)
-- **项目路径**: `/root/autodl-tmp/project/first-game/src_ue5/`
+- **本机 GPU**: NVIDIA RTX 3090 (24GB)
+- **UE5**: 5.7.4
+- **项目路径**: `/home/vipuser/first-game/src_ue5/`
+- **Blender**: 4.0.2 (本机 `/usr/bin/blender`)
 
 ## ✅ 已完成
 
@@ -36,6 +36,19 @@
 - [x] 动画 FBX: Idle×2, Walk, Run, LightAttack, HitReaction, Landing
 - [x] ABP_Huikong 动画蓝图已创建 (GPU 服务器操作)
 - [x] AM_Huikong_* AnimSequence 已导入 (GPU 服务器操作)
+
+### 糖果地牢 4 怪物 3D 资产 (2026-06-20)
+- [x] 混元3D AI 生成 4 怪物模型
+- [x] 混元绑骨 (每怪物 6 个动作: Idle/Walk/Attack/Hit/Death + 1)
+- [x] Blender 批量后处理 (`tools/blender_batch_fix_monsters.py`)
+  - 顶点合并 (~10k verts removed/monster)
+  - 法线重算 (bmesh fallback)
+  - 骨骼验证 (28 bones/monster)
+  - LOD 生成 (LOD1: 50%, LOD2: 25%)
+- [x] UE5-ready FBX 导出 (36 files: 4 mesh + 8 LOD + 24 anim)
+- [x] UE5 导入 (4 SkeletalMesh + 24 AnimSequence + 4 Material + 4 AnimBP = 40 uassets)
+- 输出: `Content/Monsters/{CandyZombie,Gingerbread,ShadowNinja,ArmoredGum}/`
+- 导入管线: `tools/import_monsters.sh` (Step 1=FBX, Step 2=Material+AnimBP)
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
