@@ -52,6 +52,26 @@ See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
 @.claude/docs/context-management.md
 
+## Project Memory
+
+> 项目级记忆，每次会话自动加载。详见 `.claude/memory/` 目录。
+
+- **项目概况**: `.claude/memory/first-game-project.md`
+- **本地 GPU 服务器**: `.claude/memory/first-game-on-local-gpu-server.md`
+- **UE5 渲染方案**: `.claude/memory/ue5-local-gpu-rendering-breakthrough.md`
+- **UE5 Python API 限制**: `.claude/memory/ue57-python-api-limitations.md`
+- **剩余任务清单**: `.claude/memory/first-game-remaining-blockers.md`
+
+### 关键记忆摘要
+
+**睡眠策略**: 本机性能很好 (Xeon + RTX 3090)，使用 `sleep 10` + 循环检查，不用长 sleep。
+
+**AnimBP 状态机**: 首选 C++ `UMonsterAnimInstance` 类（`Source/FirstGame/Public/Anim/`），完全绕过 Blueprint AnimGraph 编辑。
+
+**UE5 Editor GUI**: 可用，通过 `DISPLAY=:99` + `VK_ICD_FILENAMES=.../nvidia_icd.json` 启动。
+
+**Candy Dungeon 4 怪物**: 完整管线完成（52 uassets + C++ 动态材质 + 编辑器验证），分支 `monster-3d-pipeline`。
+
 ## 图片/美术资产生成
 
 > 使用百炼 CLI (`bailian`) 调用通义万相生成游戏美术资产。
