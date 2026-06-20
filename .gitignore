@@ -161,3 +161,7 @@ package.json
 
 # Local scripts (not part of core project)
 scripts/
+
+# === Debug/Test Materials (iteration artifacts, not production) ===
+src_ue5/Content/**/M_*Test*.uasset
+src_ue5/Content/**/M_Minimal*.uasset
