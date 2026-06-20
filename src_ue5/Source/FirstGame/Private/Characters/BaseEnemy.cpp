@@ -10,6 +10,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Dungeon/LootItem.h"
+#include "Anim/MonsterAnimInstance.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -249,6 +250,33 @@ float ABaseEnemy::GetLockPriority_Implementation() const
 	case EEnemyType::Gingerbread:   return 1.0f;  // Normal
 	case EEnemyType::CandyZombie:   return 0.8f;  // Minion
 	default:                         return 1.0f;
+	}
+}
+
+// ─── 动画控制 ──────────────────────────────────────────────────────
+
+UMonsterAnimInstance* ABaseEnemy::GetMonsterAnimInstance() const
+{
+	return Cast<UMonsterAnimInstance>(GetMesh()->GetAnimInstance());
+}
+
+void ABaseEnemy::PlayHitAnimation()
+{
+	UMonsterAnimInstance* AnimInst = GetMonsterAnimInstance();
+	if (AnimInst)
+	{
+		AnimInst->bIsHit = true;
+		UE_LOG(LogTemp, Log, TEXT("BaseEnemy: PlayHitAnimation"));
+	}
+}
+
+void ABaseEnemy::PlayDeathAnimation()
+{
+	UMonsterAnimInstance* AnimInst = GetMonsterAnimInstance();
+	if (AnimInst)
+	{
+		AnimInst->bIsDead = true;
+		UE_LOG(LogTemp, Log, TEXT("BaseEnemy: PlayDeathAnimation"));
 	}
 }
 
