@@ -38,7 +38,7 @@ struct FFriendData
 
 	/** 好友状态 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend")
-	EFriendStatus Status;
+	EFriendStatus Status = EFriendStatus::Offline;
 
 	/** 段位等级 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend")

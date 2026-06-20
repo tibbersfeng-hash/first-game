@@ -16,7 +16,7 @@ struct FEquipmentSlot
 	GENERATED_BODY()
 
 	UPROPERTY()
-	EEquipmentType SlotType;
+	EEquipmentType SlotType = EEquipmentType::Weapon;
 
 	UPROPERTY()
 	UEquipmentAsset* EquippedItem = nullptr;
