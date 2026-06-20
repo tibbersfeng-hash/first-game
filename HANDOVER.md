@@ -221,13 +221,14 @@ scp src_ue5/Source/FirstGame/Private/*.cpp gpu:/home/vipuser/first-game/src_ue5/
 | Week 4 | 战斗动画 + NPR + 整合 | ⏳ 待 GUI 编辑器验证 |
 
 ### Week 4 待办
-- [ ] GUI: 配置 AnimBP 状态机 (IdleLocomotion→Attack→Hit→Death)
-- [x] NPR 材质 MaterialInstance 创建 ✅ (4 个 MI_*_NPR)
-- [x] C++ 动态材质 ✅ (ConfigureMonsterAssets 自动创建彩色材质)
-- [x] 怪物可视化验证 ✅ (4 个怪物在 UE5 中可见，Xvfb 截图确认)
-- [x] 测试关卡 + 光照 ✅ (TestLevel_Monsters + 点光源/方向光/天光)
-- [ ] GUI: LOD 配置 (LOD1/LOD2 FBX 已存在, 需 GUI 导入)
-- [ ] 战斗整合测试 (玩家 vs 4 怪物)
+- [x] C++ 动态彩色材质 ✅ (ConfigureMonsterAssets 运行时自动创建)
+- [x] 怪物可视化验证 ✅ (4 个 ABaseEnemy 实例在编辑器中生成，截图确认)
+- [x] UE5 Editor GUI 可用 ✅ (Xvfb :99 + Vulkan 渲染)
+- [x] 测试关卡 + 光照 ✅ (TestLevel_Monsters + 方向光/天光)
+- [ ] GUI: AnimBP 状态机配置 (Idle↔Locomotion→Attack→Hit→Death)
+- [ ] GUI: NPR 完整参数 (2-tone + Rim Light + Outline — 需自定义父材质)
+- [ ] GUI: LOD 配置 (LOD1/LOD2 FBX 已存在)
+- [ ] 战斗整合测试 (玩家 vs 4 怪物实机)
 - [ ] P0 评审
 - [ ] 实现 NPR 卡通渲染材质 (2-3 tone + Rim Light + Outline)
 - [ ] 整合测试 (移动 + 攻击 + 锁定 + 相机)
