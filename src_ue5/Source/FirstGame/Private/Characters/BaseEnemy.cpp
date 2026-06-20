@@ -32,6 +32,9 @@ void ABaseEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Auto-configure SkeletalMesh + AnimBP based on EnemyType
+	ConfigureMonsterAssets();
+
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
 		MoveComp->bConstrainToPlane = true;
@@ -246,5 +249,60 @@ float ABaseEnemy::GetLockPriority_Implementation() const
 	case EEnemyType::Gingerbread:   return 1.0f;  // Normal
 	case EEnemyType::CandyZombie:   return 0.8f;  // Minion
 	default:                         return 1.0f;
+	}
+}
+
+// ─── 自动加载怪物资产 ──────────────────────────────────────────────
+
+void ABaseEnemy::ConfigureMonsterAssets()
+{
+	FString MeshPath;
+	FString AnimBPPath;
+
+	switch (EnemyType)
+	{
+	case EEnemyType::CandyZombie:
+		MeshPath = TEXT("/Game/Monsters/CandyZombie/Mesh/SK_CandyZombie.SK_CandyZombie");
+		AnimBPPath = TEXT("/Game/Monsters/CandyZombie/ABP/ABP_CandyZombie.ABP_CandyZombie");
+		break;
+	case EEnemyType::Gingerbread:
+		MeshPath = TEXT("/Game/Monsters/Gingerbread/Mesh/SK_Gingerbread.SK_Gingerbread");
+		AnimBPPath = TEXT("/Game/Monsters/Gingerbread/ABP/ABP_Gingerbread.ABP_Gingerbread");
+		break;
+	case EEnemyType::ShadowNinja:
+		MeshPath = TEXT("/Game/Monsters/ShadowNinja/Mesh/SK_ShadowNinja.SK_ShadowNinja");
+		AnimBPPath = TEXT("/Game/Monsters/ShadowNinja/ABP/ABP_ShadowNinja.ABP_ShadowNinja");
+		break;
+	case EEnemyType::ArmoredGum:
+		MeshPath = TEXT("/Game/Monsters/ArmoredGum/Mesh/SK_ArmoredGum.SK_ArmoredGum");
+		AnimBPPath = TEXT("/Game/Monsters/ArmoredGum/ABP/ABP_ArmoredGum.ABP_ArmoredGum");
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Unknown EnemyType"));
+		return;
+	}
+
+	// Load SkeletalMesh
+	USkeletalMesh* LoadedMesh = LoadObject<USkeletalMesh>(nullptr, *MeshPath);
+	if (LoadedMesh)
+	{
+		GetMesh()->SetSkeletalMesh(LoadedMesh);
+		UE_LOG(LogTemp, Log, TEXT("BaseEnemy: Set mesh %s for EnemyType %d"), *MeshPath, (int32)EnemyType);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load mesh %s"), *MeshPath);
+	}
+
+	// Load AnimBP class
+	UClass* AnimBPClass = LoadObject<UClass>(nullptr, *AnimBPPath);
+	if (AnimBPClass)
+	{
+		GetMesh()->SetAnimInstanceClass(AnimBPClass);
+		UE_LOG(LogTemp, Log, TEXT("BaseEnemy: Set AnimBP %s"), *AnimBPPath);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load AnimBP %s"), *AnimBPPath);
 	}
 }

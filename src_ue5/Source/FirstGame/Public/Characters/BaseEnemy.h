@@ -41,6 +41,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitializeEnemy(UCharacterDataAsset* InDataAsset);
 
+	/** 根据 EnemyType 自动加载对应的 SkeletalMesh + AnimBP */
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void ConfigureMonsterAssets();
+
 	UPROPERTY(BlueprintReadOnly, Category = "Stats")
 	float CurrentHealth;
 
