@@ -137,6 +137,130 @@ CHARACTERS = {
     },
 }
 
+# ─── Monster Definitions ────────────────────────────────────────────────────
+# P0 优先级: 糖果地牢 4 个普通怪
+# 参考 design/assets/output/*/ref.png 概念图
+
+MONSTERS = {
+    "candy_zombie": {
+        "name_cn": "糖果僵尸",
+        "name_en": "Candy Zombie",
+        "asset_id": "ASSET-037",
+        "type": "monster",
+        "level": "第一关",
+        "prompt": (
+            "Cel-shaded anime toon style game character, chibi 3-head-tall proportions "
+            "(head:body:legs = 1:1:1), candy dungeon enemy monster, "
+            "green semi-transparent slime-like blob body with soft rounded shapes, "
+            "three colorful swirly lollipops stuck into the top of the head like antennae "
+            "(one pink-orange swirl, one orange-yellow swirl, one blue-green swirl), "
+            "left eyeball hanging loose from eye socket on a thin string, "
+            "large round right eye with small pupil, mismatched eye sizes, "
+            "wide open mouth showing uneven crooked teeth, "
+            "tattered pink apron dress hanging on body, "
+            "stubby claw-like fingers, short stubby legs, "
+            "zombie shambling posture with arms slightly forward, "
+            "NPR cartoon rendering, clean cel-shaded outlines, "
+            "full body standing pose, clean white background"
+        ),
+        "enable_pbr": False,
+        "face_count": 80000,
+        "model_version": "3.0",
+        "generate_type": "Normal",
+        "result_format": "FBX",
+        "rig_motions": [26, 23, 32, 5, 8, 11],
+        # 待机-1, 走路-1, 慢跑, 二连击打(claw swipe), 受击, 受击倒地-1
+    },
+    "gingerbread": {
+        "name_cn": "暴躁姜饼人",
+        "name_en": "Angry Gingerbread",
+        "asset_id": "ASSET-038",
+        "type": "monster",
+        "level": "第一关",
+        "prompt": (
+            "Cel-shaded anime toon style game character, chibi 3-head-tall proportions "
+            "(head:body:legs = 1:1:1), candy dungeon enemy monster, "
+            "classic gingerbread cookie body shape with warm brown cookie color, "
+            "three white frosting dots as buttons in vertical line on chest, "
+            "angry furrowed eyebrows made of white frosting, scowling expression, "
+            "golden five-pointed star cookie decoration on top of head, "
+            "white icing crack and decoration lines across body, "
+            "both arms extended outward in throwing pose, "
+            "three candy corn projectiles floating near hands "
+            "(orange-yellow-white striped triangular candy), "
+            "rounded cookie limbs with icing details, "
+            "NPR cartoon rendering, clean cel-shaded outlines, "
+            "full body action pose, clean white background"
+        ),
+        "enable_pbr": False,
+        "face_count": 80000,
+        "model_version": "3.0",
+        "generate_type": "Normal",
+        "result_format": "FBX",
+        "rig_motions": [26, 23, 34, 3, 8, 11],
+        # 待机-1, 走路-1, 奔跑, 蓄力攻击(throw), 受击, 受击倒地-1
+    },
+    "shadow_ninja": {
+        "name_cn": "暗影忍者糖",
+        "name_en": "Shadow Ninja Candy",
+        "asset_id": "ASSET-039",
+        "type": "monster",
+        "level": "第二关",
+        "prompt": (
+            "Cel-shaded anime toon style game character, chibi 3-head-tall proportions "
+            "(head:body:legs = 1:1:1), candy dungeon enemy monster, "
+            "purple semi-transparent translucent ninja body with soft rounded shapes, "
+            "full face ninja hood and mask covering entire head, "
+            "glowing red angry eye slit through the mask, "
+            "long flowing purple sugar-thread cape billowing behind, "
+            "dynamic crouching ninja combat pose, low stance, "
+            "dual-wielding two pink crystal kunai daggers "
+            "(translucent pink candy-crystal blade shape), "
+            "one hand forward thrusting, one hand pulled back, "
+            "rounded blobby ninja anatomy, simple limbs, "
+            "NPR cartoon rendering, clean cel-shaded outlines, "
+            "full body combat pose, clean white background"
+        ),
+        "enable_pbr": False,
+        "face_count": 80000,
+        "model_version": "3.0",
+        "generate_type": "Normal",
+        "result_format": "FBX",
+        "rig_motions": [27, 24, 35, 1, 8, 11],
+        # 待机-2, 走路-2, 冲刺跑-1, 回旋踢(kick), 受击, 受击倒地-1
+    },
+    "armored_gum": {
+        "name_cn": "铁甲口香糖",
+        "name_en": "Armored Gum",
+        "asset_id": "ASSET-040",
+        "type": "monster",
+        "level": "第二关",
+        "prompt": (
+            "Cel-shaded anime toon style game character, chibi 2.5-head-tall proportions "
+            "(extra squat and tank-like, head:body:legs = 1:0.8:0.7), "
+            "candy dungeon enemy monster, tank class, "
+            "pink bubblegum body visible at joints and neck, "
+            "silver plate armor covering torso, shoulders, arms, and legs, "
+            "large pink transparent bubblegum bubble helmet as visor/face shield, "
+            "holding large multicolored hexagonal candy shield in left hand "
+            "(rainbow honeycomb pattern: pink, yellow, blue, green segments), "
+            "holding candy mace in right hand with large rainbow swirl ball "
+            "(circular ball with pink-orange-yellow-green-blue-red swirl pattern), "
+            "very wide sturdy tank-like stance, feet planted apart, "
+            "heavy armored build, short thick limbs, "
+            "NPR cartoon rendering, clean cel-shaded outlines, "
+            "full body defensive pose, clean white background"
+        ),
+        "enable_pbr": True,
+        "face_count": 100000,
+        "model_version": "3.0",
+        "generate_type": "Normal",
+        "result_format": "FBX",
+        "rig_motions": [26, 23, 32, 17, 8, 11],
+        # 待机-1, 走路-1, 慢跑, 连续击打(mace swing), 受击, 受击倒地-1
+    },
+}
+
 # ─── Pipeline ────────────────────────────────────────────────────────────────
 
 
@@ -439,9 +563,10 @@ class Hunyuan3DPipeline:
         image_url: str | None = None,
         multiview: dict | None = None,
         model_url: str | None = None,
+        entity_dict: dict | None = None,
     ) -> dict:
         """
-        完整生成单个角色的3D模型
+        完整生成单个角色/怪物的3D模型
 
         返回: {
             "char_key": str,
@@ -451,7 +576,17 @@ class Hunyuan3DPipeline:
             "status": "success" | "failed",
         }
         """
-        char = CHARACTERS[char_key]
+        if entity_dict is None:
+            # 自动查找: 先查角色，再查怪物
+            if char_key in CHARACTERS:
+                char = CHARACTERS[char_key]
+            elif char_key in MONSTERS:
+                char = MONSTERS[char_key]
+            else:
+                print(f"❌ 未知实体: {char_key}")
+                return {"char_key": char_key, "status": "failed"}
+        else:
+            char = entity_dict[char_key]
         output_dir = OUTPUT_DIR / char_key
         result = {
             "char_key": char_key,
@@ -463,7 +598,10 @@ class Hunyuan3DPipeline:
         }
 
         print(f"\n{'='*60}")
-        print(f"🎮 角色: {char['name_cn']} ({char['name_en']})")
+        entity_type = char.get("type", "character")
+        type_label = "👾 怪物" if entity_type == "monster" else "🎮 角色"
+        level_info = f" | {char['level']}" if char.get("level") else ""
+        print(f"{type_label}: {char['name_cn']} ({char['name_en']}){level_info}")
         print(f"{'='*60}")
 
         # ─── Step 1: 生成3D模型 ───
@@ -596,7 +734,7 @@ def parse_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
-    # 角色选择
+    # 角色/怪物选择
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
         "--character", "-c",
@@ -604,9 +742,24 @@ def parse_args():
         help="角色 key",
     )
     group.add_argument(
+        "--monster", "-m_char",
+        choices=list(MONSTERS.keys()),
+        help="怪物 key",
+    )
+    group.add_argument(
         "--all-characters",
         action="store_true",
         help="批量生成所有角色",
+    )
+    group.add_argument(
+        "--all-monsters",
+        action="store_true",
+        help="批量生成所有怪物",
+    )
+    group.add_argument(
+        "--all",
+        action="store_true",
+        help="批量生成所有角色和怪物",
     )
 
     # 模式
@@ -664,16 +817,25 @@ def main():
             "bottom": args.bottom,
         }
 
-    # 处理角色列表
-    if args.all_characters:
+    # 处理实体列表 (角色 + 怪物)
+    if args.all:
+        characters = list(CHARACTERS.keys()) + list(MONSTERS.keys())
+    elif args.all_characters:
         characters = list(CHARACTERS.keys())
+    elif args.all_monsters:
+        characters = list(MONSTERS.keys())
+    elif args.monster:
+        characters = [args.monster]
     else:
         characters = [args.character]
 
-    # 如果指定了 --motion，覆盖角色默认动作
+    # 如果指定了 --motion，覆盖实体默认动作
     if args.motion is not None:
         for char_key in characters:
-            CHARACTERS[char_key]["rig_motions"] = [args.motion]
+            if char_key in CHARACTERS:
+                CHARACTERS[char_key]["rig_motions"] = [args.motion]
+            elif char_key in MONSTERS:
+                MONSTERS[char_key]["rig_motions"] = [args.motion]
 
     results = []
     for char_key in characters:
