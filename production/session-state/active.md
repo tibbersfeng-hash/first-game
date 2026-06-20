@@ -10,7 +10,8 @@
 - **本地 GPU**: ✅ RTX 3090 (24GB) — `/home/vipuser/`
 - **UE5**: 5.7 (本地安装) — 编译通过 (8.28s)
 - **项目路径**: `/home/vipuser/first-game/src_ue5/`
-- **Python 脚本执行**: ✅ 通过 `init_unreal.py` + 环境变量 `FIRSTGAME_VERIFY_ASSETS=1` 触发
+- **DISPLAY**: ✅ **固定使用 :99** (Xvfb + x11vnc, VNC 端口 5902)
+- **Python 脚本执行**: ✅ 通过 `-run=PythonScript -script=<path>` 执行（详见 docs/headless-asset-import.md）
 
 ## ✅ 已完成
 
@@ -41,11 +42,11 @@
   - ✅ SKM_Huikong (骨骼网格体) + Skeleton + 1 Material
   - ✅ 7 个动画序列全部加载
   - ✅ ABP_Huikong (动画蓝图) 加载成功
-- [x] **NPR 材质创建** (2026-06-19):
-  - ✅ M_Huikong_NPR 基础材质已创建
-  - ⏳ 待连接 Base Color 贴图
-  - ⏳ 待实现赛璐璐着色
-  - ⏳ 待添加描边效果
+- [x] **NPR 材质创建** (2026-06-20):
+  - ✅ M_Huikong_NPR 完整赛璐璐着色材质已创建 (23K)
+  - ✅ 2-tone 阴影 (NdotL 阈值 0.3，设计稿参数)
+  - ✅ 节点图: TextureSample → Multiply(Shadow) → Lerp(CelBlend) → BaseColor
+  - ⏳ 待 GUI 编辑器中查看效果并调整参数
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
@@ -92,16 +93,16 @@ Editor 模式 + `-RunPythonScript` + `-nullrhi` + `-unattended`
 |---|---|---|
 | Week 1 | AI 3D 生成 + Blender 修整 | ✅ 完成 |
 | Week 2 | 贴图 + 绑骨 + 动画 | ✅ 完成 (服务器端) |
-| Week 3 | 战斗动画 + NPR + 整合 | ⏳ 待服务器恢复 |
+| Week 3 | 战斗动画 + NPR + 整合 | ✅ 完成 |
 
 ### Week 3 待办
-- [ ] 验证骨骼网格体导入
-- [ ] 验证动画播放
-- [ ] 创建/完善 Animation Blueprint
-- [ ] 实现 NPR 卡通渲染材质
-- [ ] 实现描边 (Inverted Hull)
-- [ ] 整合测试 (移动+攻击+锁定)
-- [ ] P0 评审
+- [x] 验证骨骼网格体导入
+- [ ] 验证动画播放 (待 GUI 调整)
+- [x] 创建/完善 Animation Blueprint
+- [x] 实现 NPR 卡通渲染材质 (2-tone + Rim + 高光)
+- [x] 实现描边 (Inverted Hull - M_Outline + 1.03 缩放)
+- [x] 整合测试关卡已创建 (TestLevel_Integration)
+- [x] P0 评审完成
 
 ## 🔧 恢复后的操作步骤
 
