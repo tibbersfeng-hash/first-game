@@ -1,7 +1,7 @@
 # first-game 项目交接文档
 
-> 最后更新: 2026-06-19
-> 项目路径: `/home/claude/.frontend/first-game`
+> 最后更新: 2026-06-21
+> 项目路径: `/home/vipuser/first-game`
 > UE5 源码: `src_ue5/`
 > 仓库: `git@github.com:tibbersfeng-hash/first-game.git` (SSH, HTTPS 被防火墙拦截)
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 当前状态 (2026-06-19)
+## 当前状态 (2026-06-21)
 
 ### ✅ 已完成
 
@@ -47,6 +47,16 @@
 - ABP_Huikong 动画蓝图已创建
 - 贴图: BaseColor/Normal/Metallic/Roughness (PBR)
 
+#### 糖果地牢 4 怪物 3D 管线 (2026-06-20/21)
+- 混元3D AI 生成 4 怪物模型 + 每怪物 6 绑骨动作
+- Blender 批量后处理 (`tools/blender_batch_fix_monsters.py`): 顶点合并/法线/LOD
+- UE5 headless 导入 (env hooks in `init_unreal.py`)
+- **48 个 uasset**: 4 SkeletalMesh + 4 Skeleton + 24 AnimSequence + 4 Material + 4 AnimBP + 4 BlendSpace + 4 Blueprint
+- C++ `ABaseEnemy::ConfigureMonsterAssets()` 根据 EEnemyType 自动加载 mesh + AnimBP
+- 资产位置: `Content/Monsters/{CandyZombie,Gingerbread,ShadowNinja,ArmoredGum}/`
+- 完整管线文档: `docs/monster-3d-generation-manifest.md`
+- 导入工具: `tools/import_monsters.sh` (4 步骤编排)
+
 #### 基础设施
 - GPU 服务器: RTX 3090 + UE5.7.4 + Vulkan SM5 ✅
 - 编译: `libUnrealEditor-FirstGame.so` (1.3MB) + `libUnrealEditor-FirstGameTests.so` (290KB)
@@ -76,11 +86,10 @@
 
 ---
 
-## GPU 云服务器
+## 本地 GPU 服务器（本机）
 
 | 项目 | 值 |
 |------|-----|
-| **SSH** | `ssh gpu` → `vipuser@180.127.11.169:22112` |
 | **项目路径** | `/home/vipuser/first-game/` |
 | **GPU** | NVIDIA RTX 3090 24GB (Driver 580.159.03) |
 | **CPU** | Intel Xeon Gold 6248R @ 3.00GHz |
@@ -208,11 +217,15 @@ scp src_ue5/Source/FirstGame/Private/*.cpp gpu:/home/vipuser/first-game/src_ue5/
 |------|------|------|
 | Week 1 | AI 3D 生成 + Blender 修整 | ✅ 完成 |
 | Week 2 | 贴图 + 绑骨 + 基础动画 | ✅ 完成 |
-| Week 3 | 战斗动画 + NPR + 整合 | ⏳ 待 Editor 崩溃修复 |
+| Week 3 | 糖果地牢 4 怪物完整管线 | ✅ 完成 (48 uassets) |
+| Week 4 | 战斗动画 + NPR + 整合 | ⏳ 待 GUI 编辑器验证 |
 
-### Week 3 待办
-- [ ] 修复 AssetEditorSubsystem 崩溃 (或绕过)
-- [ ] 完善 Animation Blueprint (BlendSpace + State Machine)
+### Week 4 待办
+- [ ] GUI 中配置 AnimBP 状态机 (Idle↔Locomotion→Attack→Hit→Death)
+- [ ] NPR 材质调优 (赛璐璐 2-tone + Rim Light + Outline)
+- [ ] LOD 配置 (LOD1/LOD2 在 SkeletalMesh 中关联)
+- [ ] 战斗整合测试 (玩家 vs 4 怪物)
+- [ ] 可视化验证 (放置怪物观察渲染)
 - [ ] 实现 NPR 卡通渲染材质 (2-3 tone + Rim Light + Outline)
 - [ ] 整合测试 (移动 + 攻击 + 锁定 + 相机)
 - [ ] P0 评审
