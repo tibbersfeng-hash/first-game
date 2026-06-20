@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FBaseEnemyDefaultStateTest,
 	"FirstGame.Characters.BaseEnemy.DefaultState",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FBaseEnemyDefaultStateTest::RunTest(const FString& Parameters)
 {
@@ -42,7 +42,7 @@ bool FBaseEnemyDefaultStateTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FBaseEnemyStateMachineTest,
 	"FirstGame.Characters.BaseEnemy.StateMachine",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FBaseEnemyStateMachineTest::RunTest(const FString& Parameters)
 {
@@ -90,7 +90,7 @@ bool FBaseEnemyStateMachineTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FBaseEnemyAggroLogicTest,
 	"FirstGame.Characters.BaseEnemy.AggroLogic",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FBaseEnemyAggroLogicTest::RunTest(const FString& Parameters)
 {
@@ -132,7 +132,7 @@ bool FBaseEnemyAggroLogicTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FEnemyTypesConfigTest,
 	"FirstGame.Characters.BaseEnemy.EnemyTypesConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FEnemyTypesConfigTest::RunTest(const FString& Parameters)
 {

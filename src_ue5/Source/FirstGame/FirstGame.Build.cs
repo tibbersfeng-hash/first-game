@@ -21,17 +21,11 @@ public class FirstGame : ModuleRules
 			"UMG",
 			"Slate",
 			"SlateCore",
-			"Paper2D",
-			"AIModule",
-			"GameplayCameras"
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"CoreUObject",
-			"Engine",
-			"Slate",
-			"SlateCore"
 		});
 
 		// Enable UE5 Live Coding for faster iteration

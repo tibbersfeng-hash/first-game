@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitStopManagerInitTest,
 	"FirstGame.Combat.HitStopManager.Initialization",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitStopManagerInitTest::RunTest(const FString& Parameters)
 {
@@ -41,7 +41,7 @@ bool FHitStopManagerInitTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitStopManagerRequestTest,
 	"FirstGame.Combat.HitStopManager.RequestHitStop",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitStopManagerRequestTest::RunTest(const FString& Parameters)
 {
@@ -69,7 +69,7 @@ bool FHitStopManagerRequestTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitStopManagerConfigTest,
 	"FirstGame.Combat.HitStopManager.Configuration",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitStopManagerConfigTest::RunTest(const FString& Parameters)
 {
@@ -98,7 +98,7 @@ bool FHitStopManagerConfigTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitStopManagerStackingLogicTest,
 	"FirstGame.Combat.HitStopManager.StackingLogic",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitStopManagerStackingLogicTest::RunTest(const FString& Parameters)
 {

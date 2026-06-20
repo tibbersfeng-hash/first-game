@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCharacterDataAssetDefaultsTest,
 	"FirstGame.DataAssets.CharacterDataAsset.DefaultValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCharacterDataAssetDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -44,7 +44,7 @@ bool FCharacterDataAssetDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCharacterDataAssetPrimaryIdTest,
 	"FirstGame.DataAssets.CharacterDataAsset.PrimaryAssetId",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCharacterDataAssetPrimaryIdTest::RunTest(const FString& Parameters)
 {
@@ -58,7 +58,7 @@ bool FCharacterDataAssetPrimaryIdTest::RunTest(const FString& Parameters)
 	FPrimaryAssetId AssetId = Data->GetPrimaryAssetId();
 
 	// Should have correct type and name
-	TestEqual("Asset type should be Character", AssetId.PrimaryAssetType, FName("Character"));
+	TestEqual("Asset type should be Character", AssetId.PrimaryAssetType.GetName(), FName("Character"));
 	TestEqual("Asset name should be Huikong", AssetId.PrimaryAssetName, FName("Huikong"));
 
 	return true;
@@ -69,7 +69,7 @@ bool FCharacterDataAssetPrimaryIdTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCharacterDataAssetCustomValuesTest,
 	"FirstGame.DataAssets.CharacterDataAsset.CustomValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCharacterDataAssetCustomValuesTest::RunTest(const FString& Parameters)
 {
@@ -90,11 +90,11 @@ bool FCharacterDataAssetCustomValuesTest::RunTest(const FString& Parameters)
 
 	// Configure as Tangtang (high energy, 3 jumps)
 	UCharacterDataAsset* Tangtang = NewObject<UCharacterDataAsset>(GetTransientPackage());
-	Tantang->CharacterId = FName("Tangtang");
-	Tantang->MaxHealth = 80.f;
-	Tantang->MaxEnergy = 120.f;
-	Tantang->MaxJumps = 3;
-	Tantang->EnergyRegenRate = 15.f;
+	Tangtang->CharacterId = FName("Tangtang");
+	Tangtang->MaxHealth = 80.f;
+	Tangtang->MaxEnergy = 120.f;
+	Tangtang->MaxJumps = 3;
+	Tangtang->EnergyRegenRate = 15.f;
 
 	TestEqual("Tangtang MaxHealth", Tangtang->MaxHealth, 80.f);
 	TestEqual("Tangtang MaxEnergy", Tangtang->MaxEnergy, 120.f);
@@ -120,7 +120,7 @@ bool FCharacterDataAssetCustomValuesTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAttackMoveDataDefaultsTest,
 	"FirstGame.DataAssets.AttackMoveData.DefaultValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FAttackMoveDataDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -134,9 +134,9 @@ bool FAttackMoveDataDefaultsTest::RunTest(const FString& Parameters)
 	TestEqual("Default HitStopFrames", AttackData.HitStopFrames, 5.f);
 	TestFalse("Default bLaunchesEnemy", AttackData.bLaunchesEnemy);
 	TestEqual("Default LaunchForce", AttackData.LaunchForce, 200.f);
-	TestEqual("Default Knockback X", AttackData.Knockback.X, 100.f);
-	TestEqual("Default Knockback Y", AttackData.Knockback.Y, -50.f);
-	TestEqual("Default MoveName", AttackData.MoveName, NAME_None);
+	TestEqual("Default Knockback X", (double)AttackData.Knockback.X, (double)100.);
+	TestEqual("Default Knockback Y", (double)AttackData.Knockback.Y, (double)-50.);
+	TestEqual("Default MoveName", AttackData.MoveName, FName(NAME_None));
 
 	return true;
 }
@@ -146,7 +146,7 @@ bool FAttackMoveDataDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAttackMoveDataCustomTest,
 	"FirstGame.DataAssets.AttackMoveData.CustomConfiguration",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FAttackMoveDataCustomTest::RunTest(const FString& Parameters)
 {
@@ -162,7 +162,7 @@ bool FAttackMoveDataCustomTest::RunTest(const FString& Parameters)
 	TestEqual("Custom MoveName", LightAttack.MoveName, FName("LightAttack1"));
 	TestEqual("Custom Damage", LightAttack.Damage, 8.f);
 	TestEqual("Custom StartupFrames", LightAttack.StartupFrames, 2.f);
-	TestEqual("Custom Knockback X", LightAttack.Knockback.X, 80.f);
+	TestEqual("Custom Knockback X", (double)LightAttack.Knockback.X, (double)80.);
 
 	// Heavy attack configuration
 	FAttackMoveData HeavyAttack;

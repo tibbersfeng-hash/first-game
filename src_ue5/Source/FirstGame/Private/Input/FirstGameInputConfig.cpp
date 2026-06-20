@@ -1,7 +1,7 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
 
-#include "FirstGame.h"
 #include "Input/FirstGameInputConfig.h"
+#include "FirstGame.h"
 
 TArray<UInputAction*> UFirstGameInputConfig::GetAllActions() const
 {

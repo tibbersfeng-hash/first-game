@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCombatAbilityDefaultsTest,
 	"FirstGame.Combat.CombatAbility.DefaultValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCombatAbilityDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -39,7 +39,7 @@ bool FCombatAbilityDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCombatAbilityFrameTimingTest,
 	"FirstGame.Combat.CombatAbility.FrameTiming",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCombatAbilityFrameTimingTest::RunTest(const FString& Parameters)
 {
@@ -82,7 +82,7 @@ bool FCombatAbilityFrameTimingTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCombatAbilityHeavyTimingTest,
 	"FirstGame.Combat.CombatAbility.HeavyAttackTiming",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCombatAbilityHeavyTimingTest::RunTest(const FString& Parameters)
 {
@@ -113,7 +113,7 @@ bool FCombatAbilityHeavyTimingTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCombatAbilityDamageConfigTest,
 	"FirstGame.Combat.CombatAbility.DamageConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FCombatAbilityDamageConfigTest::RunTest(const FString& Parameters)
 {
@@ -125,7 +125,7 @@ bool FCombatAbilityDamageConfigTest::RunTest(const FString& Parameters)
 
 	TestEqual("Light Damage", LightDamage, 8.f);
 	TestEqual("Light EnergyCost", LightEnergyCost, 5.f);
-	TestEqual("Light Knockback X", LightKnockback.X, 80.f);
+	TestEqual("Light Knockback X", (double)LightKnockback.X, (double)80.);
 	TestFalse("Light doesn't launch", LightLaunches);
 
 	// Heavy attack config
@@ -137,7 +137,7 @@ bool FCombatAbilityDamageConfigTest::RunTest(const FString& Parameters)
 
 	TestEqual("Heavy Damage", HeavyDamage, 25.f);
 	TestEqual("Heavy EnergyCost", HeavyEnergyCost, 15.f);
-	TestEqual("Heavy Knockback X", HeavyKnockback.X, 200.f);
+	TestEqual("Heavy Knockback X", (double)HeavyKnockback.X, (double)200.);
 	TestTrue("Heavy launches", HeavyLaunches);
 	TestEqual("Heavy LaunchForce", HeavyLaunchForce, 400.f);
 

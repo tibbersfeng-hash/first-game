@@ -11,5 +11,6 @@ public class FirstGameEditorTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
 		ExtraModuleNames.Add("FirstGame");
+		ExtraModuleNames.Add("FirstGameTests");
 	}
 }

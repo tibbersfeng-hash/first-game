@@ -1,7 +1,7 @@
 // Copyright 2026 格斗萌主 Team. All Rights Reserved.
 
-#include "FirstGame.h"
 #include "DataAssets/CharacterDataFactory.h"
+#include "FirstGame.h"
 #include "DataAssets/CharacterDataAsset.h"
 
 // ─── GDD Default Values ──────────────────────────────────────────────

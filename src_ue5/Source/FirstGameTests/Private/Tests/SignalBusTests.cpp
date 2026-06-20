@@ -11,7 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSignalBusDelegatesTest,
 	"FirstGame.Subsystems.SignalBus.Delegates",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FSignalBusDelegatesTest::RunTest(const FString& Parameters)
 {
@@ -64,7 +64,7 @@ bool FSignalBusDelegatesTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageNumberDataDefaultsTest,
 	"FirstGame.Subsystems.SignalBus.DamageNumberDataDefaults",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FDamageNumberDataDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -83,7 +83,7 @@ bool FDamageNumberDataDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageNumberDataCustomTest,
 	"FirstGame.Subsystems.SignalBus.DamageNumberDataCustom",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FDamageNumberDataCustomTest::RunTest(const FString& Parameters)
 {
@@ -96,9 +96,9 @@ bool FDamageNumberDataCustomTest::RunTest(const FString& Parameters)
 	TestEqual("Custom Damage", Data.Damage, 50.f);
 	TestTrue("Custom bIsCritical", Data.bIsCritical);
 	TestEqual("Custom TextColor R", Data.TextColor.R, 1.f);
-	TestEqual("Custom Location X", Data.WorldLocation.X, 100.f);
-	TestEqual("Custom Location Y", Data.WorldLocation.Y, 200.f);
-	TestEqual("Custom Location Z", Data.WorldLocation.Z, 300.f);
+	TestEqual("Custom Location X", Data.WorldLocation.X, 100.0);
+	TestEqual("Custom Location Y", Data.WorldLocation.Y, 200.0);
+	TestEqual("Custom Location Z", Data.WorldLocation.Z, 300.0);
 
 	return true;
 }
@@ -109,7 +109,7 @@ bool FDamageNumberDataCustomTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSignalBusEventFlowTest,
 	"FirstGame.Subsystems.SignalBus.EventFlowLogic",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FSignalBusEventFlowTest::RunTest(const FString& Parameters)
 {

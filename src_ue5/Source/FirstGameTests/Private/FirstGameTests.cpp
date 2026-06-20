@@ -2,7 +2,7 @@
 
 #include "FirstGameTests.h"
 #include "Misc/Paths.h"
-#include "HAL/PlatformFilemanager.h"
+#include "HAL/PlatformFileManager.h"
 
 void FFirstGameTestsModule::StartupModule()
 {

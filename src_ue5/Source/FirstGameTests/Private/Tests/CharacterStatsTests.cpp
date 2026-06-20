@@ -12,7 +12,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsDefaultConfigTest,
 	"FirstGame.Stats.CharacterStats.DefaultConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsDefaultConfigTest::RunTest(const FString& Parameters)
 {
@@ -34,7 +34,7 @@ bool FStatsDefaultConfigTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsLoadFromAssetTest,
 	"FirstGame.Stats.CharacterStats.LoadFromDataAsset",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsLoadFromAssetTest::RunTest(const FString& Parameters)
 {
@@ -72,7 +72,7 @@ bool FStatsLoadFromAssetTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsHealDamageTest,
 	"FirstGame.Stats.CharacterStats.HealDamage",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsHealDamageTest::RunTest(const FString& Parameters)
 {
@@ -87,7 +87,7 @@ bool FStatsHealDamageTest::RunTest(const FString& Parameters)
 	// Test damage (SetCurrentHealth below max)
 	Stats->SetCurrentHealth(50.f);
 	TestEqual("Health after damage", Stats->GetCurrentHealth(), 50.f);
-	TestNear("Health percent after damage", Stats->GetHealthPercent(), 0.5f, 0.01f);
+	TestEqual("Health percent after damage", Stats->GetHealthPercent(), 0.5f, 0.01f);
 
 	// Test heal
 	Stats->Heal(30.f);
@@ -110,7 +110,7 @@ bool FStatsHealDamageTest::RunTest(const FString& Parameters)
 	// Test death (HP = 0)
 	Stats->SetCurrentHealth(0.f);
 	TestEqual("Health at death", Stats->GetCurrentHealth(), 0.f);
-	TestNear("Health percent at death", Stats->GetHealthPercent(), 0.f, 0.01f);
+	TestEqual("Health percent at death", Stats->GetHealthPercent(), 0.f, 0.01f);
 
 	return true;
 }
@@ -120,7 +120,7 @@ bool FStatsHealDamageTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsFlatModifierTest,
 	"FirstGame.Stats.CharacterStats.FlatModifier",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsFlatModifierTest::RunTest(const FString& Parameters)
 {
@@ -154,7 +154,7 @@ bool FStatsFlatModifierTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsPercentModifierTest,
 	"FirstGame.Stats.CharacterStats.PercentModifier",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsPercentModifierTest::RunTest(const FString& Parameters)
 {
@@ -177,7 +177,7 @@ bool FStatsPercentModifierTest::RunTest(const FString& Parameters)
 	Stats->AddModifier("MoveSpeed", SpeedBoost2);
 
 	// 300 * (1 + 0.5 + 0.2) = 510
-	TestNear("MoveSpeed with +50% +20%", Stats->GetMoveSpeed(), 510.f, 0.1f);
+	TestEqual("MoveSpeed with +50% +20%", Stats->GetMoveSpeed(), 510.f, 0.1f);
 
 	return true;
 }
@@ -187,7 +187,7 @@ bool FStatsPercentModifierTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsOverrideModifierTest,
 	"FirstGame.Stats.CharacterStats.OverrideModifier",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsOverrideModifierTest::RunTest(const FString& Parameters)
 {
@@ -217,7 +217,7 @@ bool FStatsOverrideModifierTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsLevelScalingTest,
 	"FirstGame.Stats.CharacterStats.LevelScaling",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsLevelScalingTest::RunTest(const FString& Parameters)
 {
@@ -236,11 +236,11 @@ bool FStatsLevelScalingTest::RunTest(const FString& Parameters)
 
 	// Level 2: 100 * 1.1 = 110
 	Stats->SetLevel(2);
-	TestNear("Level 2 MaxHealth", Stats->GetMaxHealth(), 110.f, 1.f);
+	TestEqual("Level 2 MaxHealth", Stats->GetMaxHealth(), 110.f, 1.f);
 
 	// Level 5: 100 * 1.1^4 = 146.41
 	Stats->SetLevel(5);
-	TestNear("Level 5 MaxHealth", Stats->GetMaxHealth(), 146.41f, 1.f);
+	TestEqual("Level 5 MaxHealth", Stats->GetMaxHealth(), 146.41f, 1.f);
 
 	// Level should be at least 1
 	Stats->SetLevel(0);
@@ -254,7 +254,7 @@ bool FStatsLevelScalingTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FStatsModifierPriorityTest,
 	"FirstGame.Stats.CharacterStats.ModifierPriority",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FStatsModifierPriorityTest::RunTest(const FString& Parameters)
 {

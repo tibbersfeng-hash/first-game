@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerInitTest,
 	"FirstGame.Combat.ComboManager.Initialization",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerInitTest::RunTest(const FString& Parameters)
 {
@@ -32,7 +32,7 @@ bool FComboManagerInitTest::RunTest(const FString& Parameters)
 	TestEqual("Default max combo", Combo->MaxComboCount, 99);
 
 	// Default attack type should be NAME_None
-	TestEqual("Initial attack type", Combo->GetLastAttackType(), NAME_None);
+	TestEqual("Initial attack type", Combo->GetLastAttackType(), FName(NAME_None));
 
 	return true;
 }
@@ -42,7 +42,7 @@ bool FComboManagerInitTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerFirstHitTest,
 	"FirstGame.Combat.ComboManager.FirstHit",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerFirstHitTest::RunTest(const FString& Parameters)
 {
@@ -69,7 +69,7 @@ bool FComboManagerFirstHitTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerContinuationTest,
 	"FirstGame.Combat.ComboManager.ComboContinuation",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerContinuationTest::RunTest(const FString& Parameters)
 {
@@ -95,7 +95,7 @@ bool FComboManagerContinuationTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerMaxClampTest,
 	"FirstGame.Combat.ComboManager.MaxComboClamp",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerMaxClampTest::RunTest(const FString& Parameters)
 {
@@ -122,7 +122,7 @@ bool FComboManagerMaxClampTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerResetTest,
 	"FirstGame.Combat.ComboManager.ResetCombo",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerResetTest::RunTest(const FString& Parameters)
 {
@@ -140,7 +140,7 @@ bool FComboManagerResetTest::RunTest(const FString& Parameters)
 	// Should be back to zero
 	TestEqual("Count after reset", Combo->GetCurrentCount(), 0);
 	TestFalse("Should not be in combo after reset", Combo->IsInCombo());
-	TestEqual("Attack type after reset", Combo->GetLastAttackType(), NAME_None);
+	TestEqual("Attack type after reset", Combo->GetLastAttackType(), FName(NAME_None));
 
 	return true;
 }
@@ -150,7 +150,7 @@ bool FComboManagerResetTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerNextIndexTest,
 	"FirstGame.Combat.ComboManager.GetNextComboIndex",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerNextIndexTest::RunTest(const FString& Parameters)
 {
@@ -180,7 +180,7 @@ bool FComboManagerNextIndexTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FComboManagerWindowConfigTest,
 	"FirstGame.Combat.ComboManager.WindowConfiguration",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FComboManagerWindowConfigTest::RunTest(const FString& Parameters)
 {

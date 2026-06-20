@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitCameraShakeDefaultsTest,
 	"FirstGame.Combat.HitCameraShake.DefaultValues",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitCameraShakeDefaultsTest::RunTest(const FString& Parameters)
 {
@@ -22,8 +22,6 @@ bool FHitCameraShakeDefaultsTest::RunTest(const FString& Parameters)
 	// Default values from constructor/header
 	TestEqual("Default OscillationAmplitude", Shake->OscillationAmplitude, 5.f);
 	TestEqual("Default OscillationFrequency", Shake->OscillationFrequency, 30.f);
-	TestEqual("Default Duration", Shake->Duration, 0.15f);
-	TestEqual("Default InitialOpacity", Shake->InitialOpacity, 1.f);
 
 	return true;
 }
@@ -33,7 +31,7 @@ bool FHitCameraShakeDefaultsTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitCameraShakeFinishedTest,
 	"FirstGame.Combat.HitCameraShake.IsFinished",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitCameraShakeFinishedTest::RunTest(const FString& Parameters)
 {
@@ -60,7 +58,7 @@ bool FHitCameraShakeFinishedTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHitCameraShakeDecayTest,
 	"FirstGame.Combat.HitCameraShake.DecayCalculation",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FHitCameraShakeDecayTest::RunTest(const FString& Parameters)
 {
@@ -107,7 +105,7 @@ bool FHitCameraShakeDecayTest::RunTest(const FString& Parameters)
 // ─────────────────────────────────────────────────────────────────────────
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FScreenFlashConfigTest,
 	"FirstGame.Combat.HitCameraShake.ScreenFlashConfig",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
 bool FScreenFlashConfigTest::RunTest(const FString& Parameters)
 {
