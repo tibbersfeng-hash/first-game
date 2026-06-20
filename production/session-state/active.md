@@ -1,9 +1,9 @@
 # Session State — 格斗萌主
 
-*Last updated: 2026-06-20 23:30*
+*Last updated: 2026-06-21 00:00*
 
 ## Current Phase
-**P0 原型 — 4 怪物 UE5 导入完成 ✅，待可视化验证**
+**P0 原型 — 4 怪物完整管线完成 ✅ （48 uassets + 4 BP），待可视化验证**
 
 ## 服务器信息
 - **本机 GPU**: NVIDIA RTX 3090 (24GB)
@@ -47,8 +47,13 @@
   - LOD 生成 (LOD1: 50%, LOD2: 25%)
 - [x] UE5-ready FBX 导出 (36 files: 4 mesh + 8 LOD + 24 anim)
 - [x] UE5 导入 (4 SkeletalMesh + 24 AnimSequence + 4 Material + 4 AnimBP = 40 uassets)
+- [x] 4 BlendSpace1D (locomotion by Speed)
+- [x] 4 Enemy Blueprint (BP_CandyZombie etc., extend ABaseEnemy)
+- [x] C++ ConfigureMonsterAssets() 自动加载 mesh + AnimBP by EnemyType
+- **48 uassets** under Content/Monsters/
 - 输出: `Content/Monsters/{CandyZombie,Gingerbread,ShadowNinja,ArmoredGum}/`
-- 导入管线: `tools/import_monsters.sh` (Step 1=FBX, Step 2=Material+AnimBP)
+- 导入管线: `tools/import_monsters.sh` (4 steps)
+- Git 分支: `monster-3d-pipeline` (pushed)
 
 ### 测试框架
 - [x] FirstGameTests 模块 (17 个测试文件, 72+ 断言)
