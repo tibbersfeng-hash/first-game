@@ -12,6 +12,7 @@ class UAbilitySystemComponent;
 class UHitBoxComponent;
 class UHurtBoxComponent;
 class UCharacterDataAsset;
+class UMonsterAnimInstance;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEnemyStateChanged, class ABaseEnemy*, Enemy, FName, NewState);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDied, class ABaseEnemy*, Enemy);
@@ -68,6 +69,20 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	void Die();
+
+	// ─── 动画控制 ───────────────────────────────────────────────────
+
+	/** 获取 MonsterAnimInstance */
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	UMonsterAnimInstance* GetMonsterAnimInstance() const;
+
+	/** 触发受击动画 */
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void PlayHitAnimation();
+
+	/** 触发死亡动画 */
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void PlayDeathAnimation();
 
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	bool IsAggro() const { return bIsAggro; }
