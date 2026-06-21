@@ -65,14 +65,23 @@ else
     TMPDIR=$(mktemp -d)
     info "下载 ossutil..."
     if command -v curl &>/dev/null; then
-        curl -sfL "$OSSUTIL_URL" -o "$TMPDIR/ossutil.zip"
+        curl -L "$OSSUTIL_URL" -o "$TMPDIR/ossutil.zip" || { error "curl 下载失败"; exit 1; }
     elif command -v wget &>/dev/null; then
-        wget -q "$OSSUTIL_URL" -O "$TMPDIR/ossutil.zip"
+        wget -q "$OSSUTIL_URL" -O "$TMPDIR/ossutil.zip" || { error "wget 下载失败"; exit 1; }
     else
         error "需要 curl 或 wget 来下载 ossutil"
         exit 1
     fi
-    unzip -q -o "$TMPDIR/ossutil.zip" -d "$TMPDIR"
+
+    # 验证下载的文件是 zip（不是 HTML 错误页面）
+    if ! file "$TMPDIR/ossutil.zip" | grep -qi zip; then
+        error "下载的文件不是有效 zip（可能是 404 页面）"
+        echo "  请手动下载: $OSSUTIL_URL"
+        exit 1
+    fi
+    info "下载完成: $(du -h "$TMPDIR/ossutil.zip" | cut -f1)"
+
+    unzip -o "$TMPDIR/ossutil.zip" -d "$TMPDIR" || { error "解压失败"; exit 1; }
 
     # macOS 上二进制名是 ossutil，Linux 上是 ossutil64
     BINARY=$(find "$TMPDIR" -name "ossutil*" -not -name "*.zip" -type f | head -1)
