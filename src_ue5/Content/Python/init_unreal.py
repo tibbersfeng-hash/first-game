@@ -128,3 +128,8 @@ elif os.environ.get('FIRSTGAME_TEST_FLYING') == '1':
 elif os.environ.get('FIRSTGAME_TEST_FLYING_STRICT') == '1':
     unreal.log('[INIT] FIRSTGAME_TEST_FLYING_STRICT detected, running strict flying test...')
     import test_flying_strict
+
+# 添加地面到测试关卡
+elif os.environ.get('FIRSTGAME_ADD_FLOOR') == '1':
+    unreal.log('[INIT] FIRSTGAME_ADD_FLOOR detected, adding floor to test level...')
+    import add_floor
