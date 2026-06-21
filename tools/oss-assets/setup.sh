@@ -39,29 +39,56 @@ if command -v ossutil &>/dev/null; then
     info "ossutil 已安装: $(ossutil --version 2>&1 | head -1)"
 else
     warn "ossutil 未安装，尝试安装..."
+    OS=$(uname -s)
     ARCH=$(uname -m)
-    if [ "$ARCH" = "x86_64" ]; then
-        OSSUTIL_URL="https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil-v1.7.18-linux-amd64.zip"
-    elif [ "$ARCH" = "aarch64" ]; then
-        OSSUTIL_URL="https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil-v1.7.18-linux-arm64.zip"
+
+    # 确定平台前缀（linux/darwin）和架构映射
+    if [ "$OS" = "Darwin" ]; then
+        PLAT="darwin"
+    elif [ "$OS" = "Linux" ]; then
+        PLAT="linux"
     else
-        error "不支持的架构: $ARCH，请手动安装 ossutil"
+        error "不支持的系统: $OS，请手动安装 ossutil"
         exit 1
     fi
 
+    # 统一架构命名
+    case "$ARCH" in
+        x86_64)  OSS_ARCH="amd64" ;;
+        aarch64|arm64) OSS_ARCH="arm64" ;;
+        *) error "不支持的架构: $ARCH，请手动安装 ossutil"; exit 1 ;;
+    esac
+
+    OSSUTIL_URL="https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil-v1.7.18-${PLAT}-${OSS_ARCH}.zip"
+    info "下载: $OSSUTIL_URL"
+
     TMPDIR=$(mktemp -d)
     info "下载 ossutil..."
-    wget -q "$OSSUTIL_URL" -O "$TMPDIR/ossutil.zip"
+    if command -v curl &>/dev/null; then
+        curl -sfL "$OSSUTIL_URL" -o "$TMPDIR/ossutil.zip"
+    elif command -v wget &>/dev/null; then
+        wget -q "$OSSUTIL_URL" -O "$TMPDIR/ossutil.zip"
+    else
+        error "需要 curl 或 wget 来下载 ossutil"
+        exit 1
+    fi
     unzip -q -o "$TMPDIR/ossutil.zip" -d "$TMPDIR"
 
+    # macOS 上二进制名是 ossutil，Linux 上是 ossutil64
+    BINARY=$(find "$TMPDIR" -name "ossutil*" -not -name "*.zip" -type f | head -1)
+    if [ -z "$BINARY" ]; then
+        error "下载的文件中找不到 ossutil 二进制"
+        exit 1
+    fi
+
     # 尝试安装到系统路径
-    if sudo cp "$TMPDIR"/ossutil-*/ossutil64 /usr/local/bin/ossutil 2>/dev/null; then
+    if sudo cp "$BINARY" /usr/local/bin/ossutil 2>/dev/null; then
         sudo chmod +x /usr/local/bin/ossutil
         info "ossutil 安装到 /usr/local/bin/ossutil"
     else
         # 回退到用户目录
         mkdir -p "$HOME/.local/bin"
-        cp "$TMPDIR"/ossutil-*/ossutil64 "$HOME/.local/bin/ossutil"
+        cp "$BINARY" "$HOME/.local/bin/ossutil"
         chmod +x "$HOME/.local/bin/ossutil"
         export PATH="$HOME/.local/bin:$PATH"
         info "ossutil 安装到 ~/.local/bin/ossutil（请确保 PATH 包含此目录）"
