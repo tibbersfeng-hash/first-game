@@ -1,4 +1,10 @@
-# === IDE and Editor ===
+# ═══════════════════════════════════════════════════════════════
+#  first-game .gitignore
+#  策略：C++ 源码 + 文档 → GitHub | 二进制资产 → OSS
+#  详见 tools/oss-assets/README.md
+# ═══════════════════════════════════════════════════════════════
+
+# ── IDE / Editor ──────────────────────────────────────────────
 .vs/
 .vscode/settings.json
 .idea/
@@ -8,24 +14,23 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+ehthumbs.db
+ehthumbs_vista.db
+$RECYCLE.BIN/
 
-# === Claude Code Local ===
+# ── Claude Code Local ─────────────────────────────────────────
 .claude/settings.local.json
 CLAUDE.local.md
 production/session-logs/
 
-# === Internal Planning (not for public) ===
-
+# ── Internal Planning (not for public) ────────────────────────
 expansions/
-
-# === Marrow (eval tooling — never commit) ===
 marrow/
 
-# === Runtime Artifacts (auto-generated, start empty on fresh clone) ===
-# Created on first use by /consistency-check and /architecture-review
+# ── Runtime Artifacts ─────────────────────────────────────────
 docs/consistency-failures.md
 
-# === Build Output ===
+# ── Build Output ──────────────────────────────────────────────
 build/
 builds/
 bin/
@@ -38,41 +43,7 @@ dist/
 *.dylib
 *.app
 
-# === Engine: Godot (legacy — migrated to UE5.7 on 2026-06-17) ===
-# Godot entries removed; re-add if legacy Godot work resumes.
-
-# === Legacy 2D Sprites (Godot era, not used in 3D direction) ===
-design/assets/output/
-design/narrative/characters/artwork/
-
-# === Engine: Unity ===
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
-*.csproj
-*.unityproj
-*.sln
-*.suo
-*.tmp
-*.user
-*.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
-crashlytics-buildid.txt
-sysinfo.txt
-# Uncomment if using Unity:
-# [Aa]ssets/[Aa]sset[Ss]tore[Tt]ools/
-
-# === Engine: Unreal ===
+# ── Unreal Engine 5 ──────────────────────────────────────────
 Binaries/
 DerivedDataCache/
 Intermediate/
@@ -82,16 +53,76 @@ Saved/
 *.sdf
 *.cachefile
 *.VC.db
-# Uncomment if using Unreal:
-# *.uasset
-# *.umap
-
-# === Compiled Shaders ===
 *.spv
 *.cso
 *.dxbc
 
-# === Temporary and Cache ===
+# UE5 Plugins (large / external)
+src_ue5/Plugins/McpAutomationBridge/
+
+# ★ UE5 Content — 所有二进制资产走 OSS ★
+# 包括 .uasset .umap .fbx .png 等所有 Content/ 下的文件
+# 例外：Content/Python/ 下的脚本是源码，留在 git
+src_ue5/Content/*
+!src_ue5/Content/Python/
+
+# ── Binary Assets (走 OSS) ───────────────────────────────────
+# 图片
+*.png
+*.jpg
+*.jpeg
+*.tga
+*.bmp
+*.exr
+*.hdr
+*.psd
+*.tif
+*.tiff
+
+# 3D 模型 / 动画
+*.fbx
+*.obj
+*.gltf
+*.glb
+*.blend
+*.max
+
+# 音频
+*.wav
+*.mp3
+*.ogg
+*.flac
+
+# 视频
+*.mp4
+*.mov
+*.webm
+*.avi
+
+# FBX 材质子目录
+*.fbm/
+
+# ── Archives ─────────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# ── Secrets ──────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# ── Temp / Cache ─────────────────────────────────────────────
 *.tmp
 *.temp
 *.cache
@@ -101,67 +132,36 @@ __pycache__/
 *.pyc
 node_modules/
 .npm/
-
-# === UE5 Plugins (large / external — manage outside git) ===
-# McpAutomationBridge is a ~968MB generated plugin; keep out of the repo.
-src_ue5/Plugins/McpAutomationBridge/
-
-# === MCP / automation local config ===
-.mcp.json
-
-# === Archives ===
-*.zip
-*.tar.gz
-*.rar
-*.7z
-
-# === Secrets and Environment ===
-.env
-.env.local
-.env.*.local
-*.pem
-*.key
-credentials.json
-secrets.json
-
-# === Large Binary Assets (use Git LFS instead) ===
-# Uncomment and configure with Git LFS for your project:
-# *.png
-# *.jpg
-# *.jpeg
-# *.wav
-# *.mp3
-# *.ogg
-# *.fbx
-# *.blend
-# *.psd
-# *.tga
-# *.exr
-# *.hdr
-
-# === OS Generated ===
-ehthumbs.db
-ehthumbs_vista.db
-[Dd]esktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
 *.lnk
 
-# Dev server (local only)
-server.py
+# ── Legacy ───────────────────────────────────────────────────
+# Godot (legacy — migrated to UE5.7 on 2026-06-17)
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+crashlytics-buildid.txt
+sysinfo.txt
 
-# Node.js / npm (local tooling artifacts)
-node_modules/
+# ── Local Only ───────────────────────────────────────────────
+.mcp.json
+server.py
 package-lock.json
 package.json
-
-# Local scripts (not part of core project)
 scripts/
 
-# === Debug/Test Materials (iteration artifacts, not production) ===
-src_ue5/Content/**/M_*Test*.uasset
-src_ue5/Content/**/M_Minimal*.uasset
+# ── OS Generated ─────────────────────────────────────────────
+[Dd]esktop.ini

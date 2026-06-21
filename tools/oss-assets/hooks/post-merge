@@ -1,0 +1,26 @@
+#!/bin/bash
+# ─────────────────────────────────────────────────────────────
+# post-merge hook — merge/pull 后自动下载新增的大 FBX
+#
+# 当 .large-assets.json 发生变更时，自动从 OSS 下载新文件。
+# 如果 ossutil 不可用，打印提示信息但不阻塞。
+# ─────────────────────────────────────────────────────────────
+
+SYNC_SCRIPT="$(git rev-parse --show-toplevel)/tools/oss-assets/oss-sync.py"
+
+# 检查 ossutil 是否可用
+if ! command -v ossutil &>/dev/null; then
+    exit 0
+fi
+
+# 检查 .large-assets.json 是否存在
+if [ ! -f "$(git rev-parse --show-toplevel)/.large-assets.json" ]; then
+    exit 0
+fi
+
+echo ""
+echo "📥 [OSS Hook] merge 完成，检查大 FBX 文件..."
+
+python3 "$SYNC_SCRIPT" sync-down
+
+echo ""

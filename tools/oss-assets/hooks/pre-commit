@@ -1,0 +1,85 @@
+#!/bin/bash
+# ─────────────────────────────────────────────────────────────
+# pre-commit hook — 拦截所有二进制资产文件（应走 OSS）
+#
+# 策略：C++ 源码 + 文档 → GitHub | 二进制资产 → OSS
+#
+# 行为：
+#   1. 检测暂存区中的二进制资产文件（被 .gitignore 覆盖但仍被 add 的）
+#   2. 自动上传到 OSS
+#   3. 从 git 索引中移除（保留本地文件）
+#   4. 更新 .large-assets.json 并加入暂存区
+#   5. 退出码 1 中止本次 commit（提示用户重新 commit）
+#
+# 如果 ossutil 不可用，仅打印警告，不阻塞 commit。
+# ─────────────────────────────────────────────────────────────
+
+SYNC_SCRIPT="$(git rev-parse --show-toplevel)/tools/oss-assets/oss-sync.py"
+
+# 检查 ossutil 是否可用
+if ! command -v ossutil &>/dev/null; then
+    echo ""
+    echo "⚠️  [OSS Hook] ossutil 未安装，跳过资产检查"
+    echo "   安装: bash tools/oss-assets/setup.sh"
+    echo ""
+    exit 0
+fi
+
+# 获取暂存区中所有被 .gitignore 规则覆盖但被强制 add 的文件
+# 这些文件应该走 OSS 而不是 git
+ASSET_FILES=""
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null || true)
+
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+for file in $STAGED_FILES; do
+    [ -f "$file" ] || continue
+    # 检查文件是否被 .gitignore 规则覆盖
+    if git check-ignore -q "$file" 2>/dev/null; then
+        ASSET_FILES="$ASSET_FILES $file"
+    fi
+done
+
+if [ -z "$ASSET_FILES" ]; then
+    exit 0
+fi
+
+echo ""
+echo "═══════════════════════════════════════════════════════"
+echo "  📦 OSS 资产处理（二进制文件应走 OSS，不入 git）"
+echo "═══════════════════════════════════════════════════════"
+
+# 上传到 OSS
+python3 "$SYNC_SCRIPT" upload-staged $ASSET_FILES
+UPLOAD_OK=$?
+
+if [ $UPLOAD_OK -ne 0 ]; then
+    echo ""
+    echo "❌ OSS 上传失败！"
+    echo "   请检查网络连接和 ossutil 配置"
+    echo "   手动上传: python3 tools/oss-assets/oss-sync.py sync-up"
+    echo ""
+    exit 0  # 不阻塞 commit
+fi
+
+# 从 git 索引中移除（保留本地文件）
+echo ""
+echo "📤 从 git 追踪中移除（本地保留，已上传 OSS）..."
+for file in $ASSET_FILES; do
+    git rm --cached "$file" 2>/dev/null
+    echo "   ✓ $file"
+done
+
+# 更新 .large-assets.json 到暂存区
+git add .large-assets.json 2>/dev/null
+
+echo ""
+echo "═══════════════════════════════════════════════════════"
+echo "  ✅ 资产已上传 OSS，本次 commit 不包含这些文件"
+echo "  🔄 请重新执行: git commit"
+echo "═══════════════════════════════════════════════════════"
+echo ""
+
+exit 1

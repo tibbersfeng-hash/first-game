@@ -1,0 +1,41 @@
+#!/bin/bash
+# ─────────────────────────────────────────────────────────────
+# post-checkout hook — 分支切换后自动下载缺失的大 FBX
+#
+# Git 参数：
+#   $1 = previous HEAD
+#   $2 = new HEAD
+#   $3 = flag (1 = 分支切换, 0 = 文件检出)
+#
+# 只在分支切换（flag=1）时执行，避免 file checkout 频繁触发。
+# 如果 ossutil 不可用，打印提示信息但不阻塞。
+# ─────────────────────────────────────────────────────────────
+
+PREV_HEAD="$1"
+NEW_HEAD="$2"
+BRANCH_FLAG="$3"
+
+# 仅在分支切换时执行
+if [ "$BRANCH_FLAG" != "1" ]; then
+    exit 0
+fi
+
+SYNC_SCRIPT="$(git rev-parse --show-toplevel)/tools/oss-assets/oss-sync.py"
+
+# 检查 ossutil 是否可用
+if ! command -v ossutil &>/dev/null; then
+    # 静默跳过，不干扰正常 checkout
+    exit 0
+fi
+
+# 检查 .large-assets.json 是否存在
+if [ ! -f "$(git rev-parse --show-toplevel)/.large-assets.json" ]; then
+    exit 0
+fi
+
+echo ""
+echo "📥 [OSS Hook] 检查大 FBX 文件..."
+
+python3 "$SYNC_SCRIPT" sync-down
+
+echo ""

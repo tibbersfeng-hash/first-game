@@ -1,0 +1,1345 @@
+{
+  "version": 2,
+  "assets": {
+    "design/assets/output/3d/candy_zombie/model_1.obj": {
+      "md5": "aff50099ca0746eef20cb0ab7c0bd7f0",
+      "size": 15385159,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/preview_3.png": {
+      "md5": "2fa5bfd5c35d87cdbfc3c8a223eccdca",
+      "size": 128621,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/model_3.fbx": {
+      "md5": "ce44d7c33cab8f7127323debd87201c6",
+      "size": 19539132,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/model_2.glb": {
+      "md5": "7331c4c01ece67c4553626b0d3a8931b",
+      "size": 16679960,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/preview_1.png": {
+      "md5": "2fa5bfd5c35d87cdbfc3c8a223eccdca",
+      "size": 128621,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/preview_2.png": {
+      "md5": "2fa5bfd5c35d87cdbfc3c8a223eccdca",
+      "size": 128621,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/待机-1/model_1.fbx": {
+      "md5": "22b4dde617599e813453fe10d891391f",
+      "size": 18683004,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/慢跑/model_1.fbx": {
+      "md5": "0fd8d53c5b8664832f791bef82195eda",
+      "size": 18748124,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/受击倒地-1/model_1.fbx": {
+      "md5": "ea0a2129e06e35ef67174f31f9d09178",
+      "size": 18769532,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/二连击打/model_1.fbx": {
+      "md5": "d30600e16a0d473b052477ef696aa6f4",
+      "size": 18825372,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/受击/model_1.fbx": {
+      "md5": "60bd1fb635f45d21bfdba004e727f4ba",
+      "size": 18780316,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/motions/走路-1/model_1.fbx": {
+      "md5": "0c2224801bfa859086db38b39383edb9",
+      "size": 18706716,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/SK_CandyZombie.fbx": {
+      "md5": "201a1455ff0829414a2294cacabbf889",
+      "size": 3563068,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/SK_CandyZombie_LOD1.fbx": {
+      "md5": "1166711c48cf694c35368b857fc151f2",
+      "size": 1874268,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/SK_CandyZombie_LOD2.fbx": {
+      "md5": "bd33f5adeda18129bb525c53e5dd2f3c",
+      "size": 1006924,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Attack.fbx": {
+      "md5": "4ad4db6ab6018bf662806508f0351fdf",
+      "size": 4250156,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Hit.fbx": {
+      "md5": "391f024cc78b2b7ed8ae15a314d5eef7",
+      "size": 4204700,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Death.fbx": {
+      "md5": "171d702296971637a301a3e37f71b56c",
+      "size": 4193964,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Idle.fbx": {
+      "md5": "d18b989c42d8c9798be02b2e3b44764c",
+      "size": 4107676,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Jog.fbx": {
+      "md5": "378c32d0c2136d75b18600a153988100",
+      "size": 4172156,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/candy_zombie/ue5_ready/AM_CandyZombie_Walk.fbx": {
+      "md5": "8ec7fccae422b8ab6f516c8de963af71",
+      "size": 4131740,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/model_1.obj": {
+      "md5": "ab10831618a322054f404e8e887a536f",
+      "size": 14046044,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/preview_3.png": {
+      "md5": "7b0d70260b641eb0ee71c5e5054d4906",
+      "size": 119681,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/model_3.fbx": {
+      "md5": "e0a298f4f6a6600af5ce2ec142b500eb",
+      "size": 18368844,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/model_2.glb": {
+      "md5": "8b59d6cface2f750cfa752447a19eb4b",
+      "size": 15565944,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/preview_1.png": {
+      "md5": "7b0d70260b641eb0ee71c5e5054d4906",
+      "size": 119681,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/preview_2.png": {
+      "md5": "7b0d70260b641eb0ee71c5e5054d4906",
+      "size": 119681,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/蓄力攻击/model_1.fbx": {
+      "md5": "6bb233e22dd5a86ccc45bea28be3cf4f",
+      "size": 17797228,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/待机-1/model_1.fbx": {
+      "md5": "966c98f9feef89bfcf62d80b6519ab8f",
+      "size": 17855932,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/受击倒地-1/model_1.fbx": {
+      "md5": "7fb4f493bebd086fa7d59167c70f7c73",
+      "size": 17875052,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/奔跑/model_1.fbx": {
+      "md5": "2d6a50bb80342ca7101278c46fcac981",
+      "size": 17720316,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/受击/model_1.fbx": {
+      "md5": "d96f9f4dac3431ef694e6ca5f73e62ce",
+      "size": 17904380,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/motions/走路-1/model_1.fbx": {
+      "md5": "8e4826cd27bf113d7ce1f6b77d7c9890",
+      "size": 17829628,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/SK_Gingerbread.fbx": {
+      "md5": "41b95e12ca5989ca21297596cf8d47c6",
+      "size": 3815052,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/SK_Gingerbread_LOD1.fbx": {
+      "md5": "f6fdf2467c727d106a53d7bda0ba11b8",
+      "size": 1992572,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/SK_Gingerbread_LOD2.fbx": {
+      "md5": "06c52444f839437e040522f87bd1b270",
+      "size": 1061740,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Hit.fbx": {
+      "md5": "dbe4f474db9c9fe48c18c20670d8dc96",
+      "size": 4376716,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Death.fbx": {
+      "md5": "5aacbad35e3e684d863850b2cc9f58f6",
+      "size": 4347532,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Run.fbx": {
+      "md5": "07077fca4989afdf5758587ad40fa63c",
+      "size": 4193436,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Idle.fbx": {
+      "md5": "533da5a84762e400bb56597929aaaea6",
+      "size": 4328732,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Attack.fbx": {
+      "md5": "27f62e2ced494ed4335ac2a67e80ff6a",
+      "size": 4269852,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/gingerbread/ue5_ready/AM_Gingerbread_Walk.fbx": {
+      "md5": "4c09c597474c1e841ad6bfe032b4f3ea",
+      "size": 4302764,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/model_1.obj": {
+      "md5": "b3877cf1b22b56c8dbdb20fe04d4699c",
+      "size": 16015358,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/preview_3.png": {
+      "md5": "f3e58939d5761b21cfaf583cb68d8f57",
+      "size": 93941,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/model_3.fbx": {
+      "md5": "7a8c1294e5817d23c24dbe16db63ebce",
+      "size": 20291708,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/model_2.glb": {
+      "md5": "9a4ab281b40f3c0a5ed525720ea2a895",
+      "size": 17490332,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/preview_1.png": {
+      "md5": "f3e58939d5761b21cfaf583cb68d8f57",
+      "size": 93941,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/preview_2.png": {
+      "md5": "f3e58939d5761b21cfaf583cb68d8f57",
+      "size": 93941,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/冲刺跑-1/model_1.fbx": {
+      "md5": "9b6c6494a1d922f36487f8dea40d26ee",
+      "size": 19534156,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/待机-2/model_1.fbx": {
+      "md5": "06044c198c152cbd8a6a0c68b03175b0",
+      "size": 19561596,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/回旋踢/model_1.fbx": {
+      "md5": "7a1877b22ac901bf979ad545c817aee5",
+      "size": 19592364,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/走路-2/model_1.fbx": {
+      "md5": "a3d5cc293ac51d68e2fef65bb176b51d",
+      "size": 19571532,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/受击倒地-1/model_1.fbx": {
+      "md5": "7167a8596df9adc570bc8d11b34ee125",
+      "size": 19614860,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/motions/受击/model_1.fbx": {
+      "md5": "72c8ad0f134804e39a53e51698153bae",
+      "size": 19627340,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/SK_ShadowNinja.fbx": {
+      "md5": "cd0bda9f1b90a22c0b8091d55be4d59a",
+      "size": 3635948,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/SK_ShadowNinja_LOD1.fbx": {
+      "md5": "91a44b8d5a74fbfcca36aae7f1bf2aca",
+      "size": 1928364,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/SK_ShadowNinja_LOD2.fbx": {
+      "md5": "d331b9a6eaab220203c91b471ac5b25d",
+      "size": 1036108,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Sprint.fbx": {
+      "md5": "574bda882a3eca2f9c92e69edf59e9b5",
+      "size": 4163404,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Hit.fbx": {
+      "md5": "88e63dc75ba7144896e5e288006ce9f4",
+      "size": 4255804,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Death.fbx": {
+      "md5": "749bfd7686810aeaedacdc704e564be7",
+      "size": 4243500,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Attack_SpinKick.fbx": {
+      "md5": "54d9199b837a00d745de129e1049691f",
+      "size": 4221420,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Idle.fbx": {
+      "md5": "926c535de725e924e1c8f72e0ccf199d",
+      "size": 4190476,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/shadow_ninja/ue5_ready/AM_ShadowNinja_Walk.fbx": {
+      "md5": "a075230853025eb259f3b2d893bf2ac6",
+      "size": 4200764,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/model_1.obj": {
+      "md5": "421d4442c75d428536b47980bb1a4669",
+      "size": 35877878,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/preview_3.png": {
+      "md5": "f9fd45349daf0fa7198e37316de71b80",
+      "size": 125021,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/model_3.fbx": {
+      "md5": "dd4f0fe0cdf6fee48078c708b03ba6fd",
+      "size": 41764556,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/model_2.glb": {
+      "md5": "3cd1bc59a65a81780f11daa355c6d415",
+      "size": 41700876,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/preview_1.png": {
+      "md5": "f9fd45349daf0fa7198e37316de71b80",
+      "size": 125021,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/preview_2.png": {
+      "md5": "f9fd45349daf0fa7198e37316de71b80",
+      "size": 125021,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/连续击打/model_1.fbx": {
+      "md5": "dba1b7d57f82db147178c40999ed3ec9",
+      "size": 30594732,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/待机-1/model_1.fbx": {
+      "md5": "7788d7164f91adc86fca3203ca2f7f4d",
+      "size": 30539996,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/慢跑/model_1.fbx": {
+      "md5": "cd425af27599a662cc39800d28651a6a",
+      "size": 30619756,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/受击倒地-1/model_1.fbx": {
+      "md5": "6b90397dcf7a1115828b7a6b9339e9c0",
+      "size": 30605516,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/受击/model_1.fbx": {
+      "md5": "13f4bf89be550ced839329d23c16dffc",
+      "size": 30687020,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/motions/走路-1/model_1.fbx": {
+      "md5": "89b61c3269ba0b0d5fbaafb296c60c62",
+      "size": 30512108,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/SK_ArmoredGum.fbx": {
+      "md5": "e09cc7e24b7744d562a63f8e5d2ddba5",
+      "size": 4729308,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/SK_ArmoredGum_LOD1.fbx": {
+      "md5": "71f2e9f1f0022ede27a7e727617e604a",
+      "size": 2485116,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/SK_ArmoredGum_LOD2.fbx": {
+      "md5": "c936d9bf4002a8f68af45cac8132bc44",
+      "size": 1328124,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Hit.fbx": {
+      "md5": "50826f3dad481d995d75ebfff1c6acae",
+      "size": 5711900,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Death.fbx": {
+      "md5": "7c46073800445efab19f46935b4f8d33",
+      "size": 5630588,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Idle.fbx": {
+      "md5": "1c85cd27798c97cfc33f263c99525054",
+      "size": 5565292,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Jog.fbx": {
+      "md5": "b09660c9696457775430a4b1a2734504",
+      "size": 5644172,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Walk.fbx": {
+      "md5": "a129dc616d8cce47568e2d6ffaef76a5",
+      "size": 5537788,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "design/assets/output/3d/armored_gum/ue5_ready/AM_ArmoredGum_Attack.fbx": {
+      "md5": "a9e122e379342716a38a76eb5515728f",
+      "size": 5619788,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "docs/npr_gpu_render.png": {
+      "md5": "c4c1f5122012e2309bd9a3a72a8ed8cd",
+      "size": 323343,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/npr_screenshot_camera_fixed.png": {
+      "md5": "a46a3d3987f1f1eb19744857bc94e41f",
+      "size": 15531,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/npr_screenshot_fixed.png": {
+      "md5": "1ceb3dc37033d7632390199d50e68b09",
+      "size": 14104,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/npr_screenshot_rotated.png": {
+      "md5": "f3d019937a1640f39ec1e7dc8a3b95f0",
+      "size": 14083,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/npr_screenshot_v2.png": {
+      "md5": "4370eee62e8c6326c45344d933f98dc9",
+      "size": 14181,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/npr_with_light.png": {
+      "md5": "81fa5fdd5e21573c5e3a778ab2339781",
+      "size": 238619,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_all_monsters_npr.png": {
+      "md5": "105ccaaba43fe8100e650d38824773bd",
+      "size": 388513,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_all_monsters_npr_v2.png": {
+      "md5": "2583b5b7de2584c22fccb5580d0a1411",
+      "size": 384905,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_npr_direct.png": {
+      "md5": "031dbe2336df86b982547cd07a6e2a93",
+      "size": 350085,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_light_test.png": {
+      "md5": "f1878d628047ae0d2e91b8acc8df1ea5",
+      "size": 317298,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_npr_cpp.png": {
+      "md5": "1447aae59c8df0cab4b9e0f5a9fcc049",
+      "size": 285935,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "docs/verify_npr_memory.png": {
+      "md5": "1447aae59c8df0cab4b9e0f5a9fcc049",
+      "size": 285935,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_HitReaction.fbx": {
+      "md5": "378484a7f0d9f0c1fdb1b58912a690e1",
+      "size": 290188,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Idle_01.fbx": {
+      "md5": "3b1531a0f10eeb5c6372d587b446d3bf",
+      "size": 236812,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Idle_02.fbx": {
+      "md5": "1f5050a2c16ae518263ce9794b80c7c3",
+      "size": 225724,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Landing.fbx": {
+      "md5": "07ada69000b37fb7e24dfe043d67cbd4",
+      "size": 242364,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_LightAttack_01.fbx": {
+      "md5": "aa569149c8656b3ca4ab6f9af3c7942c",
+      "size": 231084,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Run_01.fbx": {
+      "md5": "49a2391e104f25948b249cbb9e8ac2c4",
+      "size": 204812,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Walk_01.fbx": {
+      "md5": "9ff8fe31bdcd36b6d81f2f5775be7a04",
+      "size": 220396,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/texture_pbr_20250901_normal.uasset": {
+      "md5": "17fd65a6362c9e97ff6d246c4ddf508b",
+      "size": 5701827,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/Test_Anim.uasset": {
+      "md5": "05514c5223968038935c23f73af97790",
+      "size": 4312233,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_Run_01.fbx": {
+      "md5": "ea6252a1aa5cde2f7ec2ef2515522ed2",
+      "size": 204876,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_Idle_01.fbx": {
+      "md5": "b9ee6184be41a96565b1fc4546f7e4e1",
+      "size": 236860,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_Idle_02.fbx": {
+      "md5": "b890377301f5579223d5b65af31e4649",
+      "size": 225788,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_LightAttack_01.fbx": {
+      "md5": "73c94ae7bb6e9bef324c3488f482b8e0",
+      "size": 231148,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_Landing.fbx": {
+      "md5": "133deaf09265cae90a54b521450e0fb8",
+      "size": 242412,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_HitReaction.fbx": {
+      "md5": "4059b2104eff96b4617d56c825526087",
+      "size": 290236,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/pure_AM_Huikong_Walk_01.fbx": {
+      "md5": "3f3ecb81272bc4ab0634dd3564759860",
+      "size": 220460,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Idle_01.uasset": {
+      "md5": "0779d666f0b072153c926b6a5ef4468b",
+      "size": 359323,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Idle_02.uasset": {
+      "md5": "82d4b8121a2a0e34f59ba3c56647530f",
+      "size": 326963,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Walk_01.uasset": {
+      "md5": "24b4df45c3074388ee8539ae503a243b",
+      "size": 263676,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Run_01.uasset": {
+      "md5": "5ad6d2d9ad69093190034c828d39f61d",
+      "size": 200923,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_LightAttack_01.uasset": {
+      "md5": "cb0a9b6347923bb85e7a02c7ba1616c9",
+      "size": 300355,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_HitReaction.uasset": {
+      "md5": "b6ac00777cab4ae81b82ca53d830d219",
+      "size": 634243,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/AM_Huikong_Landing.uasset": {
+      "md5": "b8d1984cd0f018e1f73f61b86d7ede6b",
+      "size": 370367,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Animations/texture_pbr_20250901.uasset": {
+      "md5": "f1ae2a0445fb282099d9642441c0db41",
+      "size": 13629949,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/model_3.fbx": {
+      "md5": "cd5fa7307b45bee8243b1505d8659d51",
+      "size": 33942108,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/SKM_Huikong_Base.fbx": {
+      "md5": "c62540652151ee44a578357d0ca12d96",
+      "size": 4946188,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/SKM_Huikong_Skeleton.uasset": {
+      "md5": "c0d474d6e26916944e8448706848baa0",
+      "size": 13646,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/SKM_Huikong.uasset": {
+      "md5": "546d6d2f101c3b722f710ec6399e4384",
+      "size": 15467417,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901_roughness.png": {
+      "md5": "b190aa2bd789fe3658a1480db3b85626",
+      "size": 4588189,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Mesh/model_3.fbm/texture_pbr_20250901_metallic.png": {
+      "md5": "9c19b8edd043acf8e94d86f72b9e8a1b",
+      "size": 3490671,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/奔跑.fbx": {
+      "md5": "4858b677e29553b2655656d2d25d7442",
+      "size": 24767468,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-1.fbx": {
+      "md5": "581f752f5775b1a74c8e780fd1b022fe",
+      "size": 24767996,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-2.fbx": {
+      "md5": "76beaebed44914a5091803fcb3f16596",
+      "size": 24790636,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/回旋踢.fbx": {
+      "md5": "f53a86a744cbc7c352de8e4fd61f5d16",
+      "size": 24783484,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/落地.fbx": {
+      "md5": "da2d9917e59dd427e7601f83e706b4f8",
+      "size": 24801244,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/受击.fbx": {
+      "md5": "2fd4d7499254b53858b0e87ab470528e",
+      "size": 24852796,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/走路-1.fbx": {
+      "md5": "f9b13efafd5d75df1d2dea21cbe3bf03",
+      "size": 24772892,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-1.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-1.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/奔跑.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/奔跑.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-2.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/待机-2.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/回旋踢.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/回旋踢.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/落地.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/落地.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/受击.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/受击.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/走路-1.fbm/texture_pbr_20250901.png": {
+      "md5": "1249aab4d245f0c30adbead6a150d236",
+      "size": 14446890,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/_old_anim/走路-1.fbm/texture_pbr_20250901_normal.png": {
+      "md5": "128eb98d71f7816e5b10e5009972e4a6",
+      "size": 5176818,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/ABP/ABP_Huikong.uasset": {
+      "md5": "04094d6e0e2fc56ec5a802ad253a0059",
+      "size": 212778,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_Huikong_Test.uasset": {
+      "md5": "4ea26e33db85288d6bc8cc06fd1564a3",
+      "size": 2064,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_Huikong_TestConnect.uasset": {
+      "md5": "ba564eba5915af52cba5c9e25c4f15cd",
+      "size": 3064,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_TextureTest.uasset": {
+      "md5": "efd38e74acd0620a641e56946f8bfa7c",
+      "size": 4833,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_MinimalTest.uasset": {
+      "md5": "cad7748c7983f05aef9d09c618ddf3a3",
+      "size": 4829,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_Huikong_NPR.uasset": {
+      "md5": "87aaa1d7b0a30fc8a83e232de7a9b87c",
+      "size": 4947,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Characters/Huikong/Materials/M_Outline.uasset": {
+      "md5": "ce9eea3469dfa4471e8f66e69833e6f9",
+      "size": 5043,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_HitReaction.fbx": {
+      "md5": "2fd4d7499254b53858b0e87ab470528e",
+      "size": 24852796,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_Idle_01.fbx": {
+      "md5": "581f752f5775b1a74c8e780fd1b022fe",
+      "size": 24767996,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_Idle_02.fbx": {
+      "md5": "76beaebed44914a5091803fcb3f16596",
+      "size": 24790636,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_Landing.fbx": {
+      "md5": "da2d9917e59dd427e7601f83e706b4f8",
+      "size": 24801244,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_LightAttack_01.fbx": {
+      "md5": "f53a86a744cbc7c352de8e4fd61f5d16",
+      "size": 24783484,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_Run_01.fbx": {
+      "md5": "4858b677e29553b2655656d2d25d7442",
+      "size": 24767468,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/Anim_Huikong_Walk_01.fbx": {
+      "md5": "f9b13efafd5d75df1d2dea21cbe3bf03",
+      "size": 24772892,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/_fbx_staging/model_3.fbx": {
+      "md5": "cd5fa7307b45bee8243b1505d8659d51",
+      "size": 33942108,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Maps/HeadlessPIETest.umap": {
+      "md5": "e48de1a7a1cbe2b624155862c97be5f0",
+      "size": 11006,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_AnimTest.umap": {
+      "md5": "26debe2166a77575674713e6fc153e61",
+      "size": 12602,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_Combat.umap": {
+      "md5": "087a3ffc61312d6e94ce671b7fb1c009",
+      "size": 19884,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_Dungeon.umap": {
+      "md5": "2df88b11e0ff91cc125b372be42af443",
+      "size": 27765,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_Integration.umap": {
+      "md5": "70d4695e627eb1d49a6fc409794a17fb",
+      "size": 16900,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_MaterialVerify.umap": {
+      "md5": "730e086559d5f7c1db2e11831af3daa1",
+      "size": 8520,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_NPR.umap": {
+      "md5": "b1a5a1b18ff8167bab8a25eed7b98eff",
+      "size": 21211,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_PVPArena.umap": {
+      "md5": "09050039896aa8df521a9a961e033c71",
+      "size": 16004,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_TownHub.umap": {
+      "md5": "60de1bc34fb36ac626f3810483864812",
+      "size": 19211,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_Monsters.umap": {
+      "md5": "11ef72dc2ca2f878f96fdb65309dba1f",
+      "size": 62620,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Maps/TestLevel_Huikong.umap": {
+      "md5": "180096de3964b9309bce5b6eb28561e8",
+      "size": 10117,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/ABP/ABP_ArmoredGum.uasset": {
+      "md5": "9fbe5d698c8b321a2178d592037c2ea8",
+      "size": 26058,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Attack.fbx": {
+      "md5": "a9e122e379342716a38a76eb5515728f",
+      "size": 5619788,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Death.fbx": {
+      "md5": "7c46073800445efab19f46935b4f8d33",
+      "size": 5630588,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Hit.fbx": {
+      "md5": "50826f3dad481d995d75ebfff1c6acae",
+      "size": 5711900,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Idle.fbx": {
+      "md5": "1c85cd27798c97cfc33f263c99525054",
+      "size": 5565292,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Jog.fbx": {
+      "md5": "b09660c9696457775430a4b1a2734504",
+      "size": 5644172,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Walk.fbx": {
+      "md5": "a129dc616d8cce47568e2d6ffaef76a5",
+      "size": 5537788,
+      "uploaded_at": "2026-06-21T16:53:15.097660+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Attack.uasset": {
+      "md5": "715589026b3b7ac9fb1e508cd2df8454",
+      "size": 4492250,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Death.uasset": {
+      "md5": "810008d00a297095d9bcd525b6c92ac9",
+      "size": 4539272,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Hit.uasset": {
+      "md5": "f9a6323dba87a598e87afd2876748136",
+      "size": 4530942,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Idle.uasset": {
+      "md5": "753916e72f80c405c603c5a6dc2a570e",
+      "size": 4470584,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Jog.uasset": {
+      "md5": "3fb75e4b428e6362216cc4d3956539e5",
+      "size": 4487048,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Animations/AM_ArmoredGum_Walk.uasset": {
+      "md5": "6d09b14055e791714348d8c2e9dfe542",
+      "size": 4480551,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/BlendSpaces/BS_ArmoredGum_Locomotion.uasset": {
+      "md5": "7db91b99f3889175209ba9547715197c",
+      "size": 1657,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Materials/M_ArmoredGum_Basic.uasset": {
+      "md5": "9095b761c1eb3c182dc9a4b49c6c7580",
+      "size": 4024,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Materials/MI_ArmoredGum_NPR.uasset": {
+      "md5": "c8e33a56b24b44c911dcaf97a7b26a5d",
+      "size": 1908,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Mesh/SK_ArmoredGum.fbx": {
+      "md5": "e09cc7e24b7744d562a63f8e5d2ddba5",
+      "size": 4729308,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Mesh/SK_ArmoredGum_LOD1.fbx": {
+      "md5": "71f2e9f1f0022ede27a7e727617e604a",
+      "size": 2485116,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Mesh/SK_ArmoredGum_LOD2.fbx": {
+      "md5": "c936d9bf4002a8f68af45cac8132bc44",
+      "size": 1328124,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Mesh/SK_ArmoredGum_Skeleton.uasset": {
+      "md5": "29a69ecb8ead487255926055bfc2124b",
+      "size": 7544,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Mesh/SK_ArmoredGum.uasset": {
+      "md5": "2049541dcc98f0bfe0e5dfe2f192f4e6",
+      "size": 15956583,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ArmoredGum/Blueprints/BP_ArmoredGum.uasset": {
+      "md5": "6498c0dff976553e461ba2caac98c443",
+      "size": 24526,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/ABP/ABP_CandyZombie.uasset": {
+      "md5": "f52a250cdef79b688547f5f60738b0cc",
+      "size": 26081,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Attack.fbx": {
+      "md5": "4ad4db6ab6018bf662806508f0351fdf",
+      "size": 4250156,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Death.fbx": {
+      "md5": "171d702296971637a301a3e37f71b56c",
+      "size": 4193964,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Hit.fbx": {
+      "md5": "391f024cc78b2b7ed8ae15a314d5eef7",
+      "size": 4204700,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Idle.fbx": {
+      "md5": "d18b989c42d8c9798be02b2e3b44764c",
+      "size": 4107676,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Jog.fbx": {
+      "md5": "378c32d0c2136d75b18600a153988100",
+      "size": 4172156,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Walk.fbx": {
+      "md5": "8ec7fccae422b8ab6f516c8de963af71",
+      "size": 4131740,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Attack.uasset": {
+      "md5": "c02f43ccc1a7cd6c6888bdfcae825cde",
+      "size": 3479224,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Death.uasset": {
+      "md5": "de3b4b4337f371928c245b490d2fc9dc",
+      "size": 3390680,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Hit.uasset": {
+      "md5": "d090a784e67072c44c53a03509036ee1",
+      "size": 3403919,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Idle.uasset": {
+      "md5": "0abae54668b0a7c46e12923740689ea4",
+      "size": 3390072,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Jog.uasset": {
+      "md5": "fd3790bb9feb8e285be67230b103d8f1",
+      "size": 3394769,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Animations/AM_CandyZombie_Walk.uasset": {
+      "md5": "f883080ffe06fd8f8e74eddbfcef67aa",
+      "size": 3405299,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/BlendSpaces/BS_CandyZombie_Locomotion.uasset": {
+      "md5": "d54bb712f8775fc121f57a82ba57b4bd",
+      "size": 1670,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Materials/M_CandyZombie_Basic.uasset": {
+      "md5": "b37398113fc1160c8bfa67edb7b7f45d",
+      "size": 4032,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Materials/MI_CandyZombie_NPR.uasset": {
+      "md5": "e3cac9fbed26d9855503c87d0ca5eed5",
+      "size": 1916,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Mesh/SK_CandyZombie.fbx": {
+      "md5": "201a1455ff0829414a2294cacabbf889",
+      "size": 3563068,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Mesh/SK_CandyZombie_LOD1.fbx": {
+      "md5": "1166711c48cf694c35368b857fc151f2",
+      "size": 1874268,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Mesh/SK_CandyZombie_LOD2.fbx": {
+      "md5": "bd33f5adeda18129bb525c53e5dd2f3c",
+      "size": 1006924,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Mesh/SK_CandyZombie_Skeleton.uasset": {
+      "md5": "05b936ef3ec3fac6def80e12a48980a2",
+      "size": 7557,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Mesh/SK_CandyZombie.uasset": {
+      "md5": "2e0b955d1aba9cb38dd38e0adc69c9c9",
+      "size": 11999993,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/CandyZombie/Blueprints/BP_CandyZombie.uasset": {
+      "md5": "3c5ab2d3f39a0a6cb35beb6689cadd9d",
+      "size": 24554,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/ABP/ABP_Gingerbread.uasset": {
+      "md5": "1d3e89687e3ede07e7d36a66fac7db60",
+      "size": 26081,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Attack.fbx": {
+      "md5": "27f62e2ced494ed4335ac2a67e80ff6a",
+      "size": 4269852,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Death.fbx": {
+      "md5": "5aacbad35e3e684d863850b2cc9f58f6",
+      "size": 4347532,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Hit.fbx": {
+      "md5": "dbe4f474db9c9fe48c18c20670d8dc96",
+      "size": 4376716,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Idle.fbx": {
+      "md5": "533da5a84762e400bb56597929aaaea6",
+      "size": 4328732,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Run.fbx": {
+      "md5": "07077fca4989afdf5758587ad40fa63c",
+      "size": 4193436,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Walk.fbx": {
+      "md5": "4c09c597474c1e841ad6bfe032b4f3ea",
+      "size": 4302764,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Attack.uasset": {
+      "md5": "b435be5fb0b7d17e61e9b47adbd1658f",
+      "size": 3440359,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Death.uasset": {
+      "md5": "9a67755750566a10b02e4b8fd536cec6",
+      "size": 3420735,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Hit.uasset": {
+      "md5": "8a0f3ac17484350d2a5537bc19c36cf6",
+      "size": 3406307,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Idle.uasset": {
+      "md5": "689d40d3f23a00c207b5fffd620e1994",
+      "size": 3416893,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Run.uasset": {
+      "md5": "dce0a2d4eafbc2812181b508335cbc0c",
+      "size": 3430762,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Animations/AM_Gingerbread_Walk.uasset": {
+      "md5": "c6fea3f1ad788e7ac4715cc591a78754",
+      "size": 3420683,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/BlendSpaces/BS_Gingerbread_Locomotion.uasset": {
+      "md5": "96b6f660e0aec7bd6cca5fbe777b5c60",
+      "size": 1670,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Materials/M_Gingerbread_Basic.uasset": {
+      "md5": "331f2fafc38d8bef2fa1c9abaa02003a",
+      "size": 4032,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Materials/MI_Gingerbread_NPR.uasset": {
+      "md5": "5728c3b04cd690c03a15a78ac7da4049",
+      "size": 1916,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Mesh/SK_Gingerbread.fbx": {
+      "md5": "41b95e12ca5989ca21297596cf8d47c6",
+      "size": 3815052,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Mesh/SK_Gingerbread_LOD1.fbx": {
+      "md5": "f6fdf2467c727d106a53d7bda0ba11b8",
+      "size": 1992572,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Mesh/SK_Gingerbread_LOD2.fbx": {
+      "md5": "06c52444f839437e040522f87bd1b270",
+      "size": 1061740,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Mesh/SK_Gingerbread_Skeleton.uasset": {
+      "md5": "0dba322b0a15f3c59e75b1a5be01dfce",
+      "size": 7557,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Mesh/SK_Gingerbread.uasset": {
+      "md5": "4cf39e171034660af2afb41bc7b09a25",
+      "size": 11743276,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/Gingerbread/Blueprints/BP_Gingerbread.uasset": {
+      "md5": "bcce97e1a7191885970be72680e4c973",
+      "size": 24554,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/ABP/ABP_ShadowNinja.uasset": {
+      "md5": "78e1fbd0df498869b462f449ba711677",
+      "size": 26081,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Attack_SpinKick.fbx": {
+      "md5": "54d9199b837a00d745de129e1049691f",
+      "size": 4221420,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Death.fbx": {
+      "md5": "749bfd7686810aeaedacdc704e564be7",
+      "size": 4243500,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Hit.fbx": {
+      "md5": "88e63dc75ba7144896e5e288006ce9f4",
+      "size": 4255804,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Idle.fbx": {
+      "md5": "926c535de725e924e1c8f72e0ccf199d",
+      "size": 4190476,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Sprint.fbx": {
+      "md5": "574bda882a3eca2f9c92e69edf59e9b5",
+      "size": 4163404,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Walk.fbx": {
+      "md5": "a075230853025eb259f3b2d893bf2ac6",
+      "size": 4200764,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Attack_SpinKick.uasset": {
+      "md5": "e8ba23b9130fce7d21994fbd43f46dbf",
+      "size": 3456774,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Death.uasset": {
+      "md5": "ae65ec1585d6ed0dc4f4ca71f46bec37",
+      "size": 3447545,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Hit.uasset": {
+      "md5": "f039958b97a36749079aed4f4c4cdbdb",
+      "size": 3455427,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Idle.uasset": {
+      "md5": "299d2f570bf05043762d9dd86efc59fa",
+      "size": 3448627,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Sprint.uasset": {
+      "md5": "b37731b999ceb04e6f8c5a38e048d72b",
+      "size": 3442500,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Animations/AM_ShadowNinja_Walk.uasset": {
+      "md5": "3efa711c28af1b4c8012efd6af26a2a5",
+      "size": 3447369,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/BlendSpaces/BS_ShadowNinja_Locomotion.uasset": {
+      "md5": "fde78d1b4d5041bc22f7b009f0616f42",
+      "size": 1670,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Materials/M_ShadowNinja_Basic.uasset": {
+      "md5": "1be81f30bb26e6eed31c6f1c48ab502a",
+      "size": 4032,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Materials/MI_ShadowNinja_NPR.uasset": {
+      "md5": "20c327a33d2d9eb21f369a419da68f53",
+      "size": 1916,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Mesh/SK_ShadowNinja.fbx": {
+      "md5": "cd0bda9f1b90a22c0b8091d55be4d59a",
+      "size": 3635948,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Mesh/SK_ShadowNinja_LOD1.fbx": {
+      "md5": "91a44b8d5a74fbfcca36aae7f1bf2aca",
+      "size": 1928364,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Mesh/SK_ShadowNinja_LOD2.fbx": {
+      "md5": "d331b9a6eaab220203c91b471ac5b25d",
+      "size": 1036108,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Mesh/SK_ShadowNinja_Skeleton.uasset": {
+      "md5": "ce22f8e1a823938d583be4a703602e9b",
+      "size": 7557,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Mesh/SK_ShadowNinja.uasset": {
+      "md5": "13fffa78d0c75cb443673ec1044aad76",
+      "size": 12160718,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Monsters/ShadowNinja/Blueprints/BP_ShadowNinja.uasset": {
+      "md5": "c7644fe84a238462c4bf7ee34211f40a",
+      "size": 24554,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Materials/MI_Gingerbread_NPR.uasset": {
+      "md5": "703c23ecee19213dd46d89a4232dbb5d",
+      "size": 10154,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Materials/MI_ShadowNinja_NPR.uasset": {
+      "md5": "3a1d12e3819870c7552321824a732f4e",
+      "size": 10004,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Materials/MI_ArmoredGum_NPR.uasset": {
+      "md5": "6bb1553e1bb1fa0b09b871492f128e21",
+      "size": 10018,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Materials/MI_CandyZombie_NPR.uasset": {
+      "md5": "ba0cf14d1c7bd89574ec54114c7ee688",
+      "size": 9989,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    },
+    "src_ue5/Content/Materials/M_NPR_Parent.uasset": {
+      "md5": "0c3bfd93cc133b57d8bc233f86217483",
+      "size": 19927,
+      "uploaded_at": "2026-06-21T16:53:28.591914+00:00"
+    }
+  }
+}

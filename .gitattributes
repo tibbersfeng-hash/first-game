@@ -1,0 +1,28 @@
+# Binary file handling — improve git diff for non-text files
+# Files managed by OSS (>= 5MB FBX) are also marked binary here
+# so git shows "Binary files differ" instead of showing garbage
+
+# Unreal Engine assets
+*.uasset binary
+*.umap binary
+
+# 3D Models
+*.fbx binary
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.exr binary
+*.hdr binary
+
+# Audio
+*.wav binary
+*.mp3 binary
+*.ogg binary
+
+# Archives
+*.zip binary
+*.tar.gz binary
+*.7z binary

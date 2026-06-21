@@ -95,21 +95,20 @@ class HuikongAnimationTester:
 
         self.log("  ✅ 慧空资产加载成功")
 
-        # 创建慧空角色
-        enemy_class = unreal.find_class("BaseEnemy") if hasattr(unreal, 'find_class') else None
-
-        # 使用 StaticMeshActor 作为临时替代
+        # 使用 SkeletalMeshActor 显示慧空
         huikong = unreal.EditorLevelLibrary.spawn_actor_from_class(
-            unreal.StaticMeshActor,
+            unreal.SkeletalMeshActor,
             unreal.Vector(0, 0, 50),
             unreal.Rotator(0, 0, 0)
         )
 
         if huikong:
             huikong.set_actor_label("Huikong")
-            mesh_comp = huikong.get_component_by_class(unreal.StaticMeshComponent)
+            mesh_comp = huikong.get_component_by_class(unreal.SkeletalMeshComponent)
             if mesh_comp and huikong_mesh:
-                mesh_comp.set_static_mesh(huikong_mesh)
+                mesh_comp.set_skeletal_mesh(huikong_mesh)
+                if huikong_abp:
+                    mesh_comp.set_anim_instance_class(huikong_abp.generated_class())
             self.log("  ✅ 慧空角色已创建")
 
         # 添加地面
