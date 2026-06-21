@@ -42,24 +42,16 @@ else
     OS=$(uname -s)
     ARCH=$(uname -m)
 
-    # 确定平台前缀（linux/darwin）和架构映射
-    if [ "$OS" = "Darwin" ]; then
-        PLAT="darwin"
-    elif [ "$OS" = "Linux" ]; then
-        PLAT="linux"
-    else
-        error "不支持的系统: $OS，请手动安装 ossutil"
-        exit 1
-    fi
-
-    # 统一架构命名
-    case "$ARCH" in
-        x86_64)  OSS_ARCH="amd64" ;;
-        aarch64|arm64) OSS_ARCH="arm64" ;;
-        *) error "不支持的架构: $ARCH，请手动安装 ossutil"; exit 1 ;;
+    # 确定平台标识和架构映射
+    case "${OS}_${ARCH}" in
+        Darwin_x86_64)   PLAT_ARCH="mac-amd64" ;;
+        Darwin_arm64)    PLAT_ARCH="mac-arm64" ;;
+        Linux_x86_64)    PLAT_ARCH="linux-amd64" ;;
+        Linux_aarch64)   PLAT_ARCH="linux-arm64" ;;
+        *) error "不支持的平台: $OS $ARCH，请手动安装 ossutil"; exit 1 ;;
     esac
 
-    OSSUTIL_URL="https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil-v1.7.18-${PLAT}-${OSS_ARCH}.zip"
+    OSSUTIL_URL="https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-${PLAT_ARCH}.zip"
     info "下载: $OSSUTIL_URL"
 
     TMPDIR=$(mktemp -d)
