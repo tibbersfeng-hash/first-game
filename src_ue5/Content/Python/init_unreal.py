@@ -133,3 +133,33 @@ elif os.environ.get('FIRSTGAME_TEST_FLYING_STRICT') == '1':
 elif os.environ.get('FIRSTGAME_ADD_FLOOR') == '1':
     unreal.log('[INIT] FIRSTGAME_ADD_FLOOR detected, adding floor to test level...')
     import add_floor
+
+# 验证飞天问题修复
+elif os.environ.get('FIRSTGAME_VERIFY_FLYING') == '1':
+    unreal.log('[INIT] FIRSTGAME_VERIFY_FLYING detected, verifying flying bug fix...')
+    import verify_flying_fix
+
+# 修复光照
+elif os.environ.get('FIRSTGAME_FIX_LIGHTING') == '1':
+    unreal.log('[INIT] FIRSTGAME_FIX_LIGHTING detected, fixing lighting...')
+    import fix_lighting
+
+# 测试 Huikong 动画
+elif os.environ.get('FIRSTGAME_TEST_HUIKONG') == '1':
+    unreal.log('[INIT] FIRSTGAME_TEST_HUIKONG detected, testing Huikong animation...')
+    import test_huikong_anim
+
+# 构建光照并截图
+elif os.environ.get('FIRSTGAME_BUILD_LIGHT') == '1':
+    unreal.log('[INIT] FIRSTGAME_BUILD_LIGHT detected, building lighting...')
+    import build_lighting_and_shot
+
+# 设置场景并截图
+elif os.environ.get('FIRSTGAME_SETUP_SHOT') == '1':
+    unreal.log('[INIT] FIRSTGAME_SETUP_SHOT detected, setting up and screenshot...')
+    import setup_and_shot
+
+# 慧空动画完整测试
+elif os.environ.get('FIRSTGAME_HUIKONG_TEST') == '1':
+    unreal.log('[INIT] FIRSTGAME_HUIKONG_TEST detected, running Huikong animation test...')
+    import test_huikong_full
