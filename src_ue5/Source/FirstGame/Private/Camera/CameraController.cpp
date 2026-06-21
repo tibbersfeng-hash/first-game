@@ -84,7 +84,8 @@ void UCameraController::Initialize(USpringArmComponent* InSpringArm, UCameraComp
 void UCameraController::TickComponent(float DeltaTime, ELevelTick TickType,
                                        FActorComponentTickFunction* ThisTickFunction)
 {
-	if (IsRegistered()) { Super::TickComponent(DeltaTime, TickType, ThisTickFunction); }
+	if (!GetWorld()) return;
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	if (!bInitialized) return;
 

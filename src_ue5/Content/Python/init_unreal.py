@@ -118,3 +118,13 @@ elif os.environ.get('FIRSTGAME_LIGHT_TEST') == '1':
 elif os.environ.get('FIRSTGAME_NPR_CPP') == '1':
     unreal.log('[INIT] FIRSTGAME_NPR_CPP detected, running NPR C++ verification...')
     import verify_npr_cpp
+
+# 角色飞天问题测试
+elif os.environ.get('FIRSTGAME_TEST_FLYING') == '1':
+    unreal.log('[INIT] FIRSTGAME_TEST_FLYING detected, running flying bug test...')
+    import test_flying
+
+# 角色飞天问题严格测试（运行 10 秒）
+elif os.environ.get('FIRSTGAME_TEST_FLYING_STRICT') == '1':
+    unreal.log('[INIT] FIRSTGAME_TEST_FLYING_STRICT detected, running strict flying test...')
+    import test_flying_strict

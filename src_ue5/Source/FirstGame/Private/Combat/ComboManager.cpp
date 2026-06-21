@@ -14,11 +14,10 @@ UComboManager::UComboManager()
 
 void UComboManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	// 测试环境中组件可能未注册，跳过 Super 调用（会 assert bRegistered）
-	if (IsRegistered())
-	{
-		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	}
+	// 没有 World 时跳过（测试环境）
+	if (!GetWorld()) return;
+
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// Combo window timeout
 	if (CurrentCount > 0)
