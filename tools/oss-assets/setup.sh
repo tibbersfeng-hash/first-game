@@ -180,26 +180,67 @@ for hook_name in pre-commit post-checkout post-merge; do
     info "hook 已安装: .git/hooks/$hook_name → tools/oss-assets/hooks/$hook_name"
 done
 
-# ── Step 4：生成资产清单 ───────────────────────────────────
-step "4/5 扫描大 FBX 文件"
+# ── Step 4：生成/验证资产清单 ────────────────────────────────
+step "4/5 资产清单"
 
-info "扫描仓库中的大 FBX 文件（>= 5MB）..."
-python3 "$SCRIPT_DIR/oss-sync.py" scan
+# 检查 git 中是否已有清单（新 clone 的情况）
+GIT_MANIFEST_COUNT=0
+if [ -f "$REPO_ROOT/.large-assets.json" ]; then
+    GIT_MANIFEST_COUNT=$(python3 -c "import json; print(len(json.load(open('$REPO_ROOT/.large-assets.json')).get('assets', {})))" 2>/dev/null || echo 0)
+fi
+
+# 扫描本地资产
+LOCAL_ASSET_COUNT=$(python3 -c "
+import os, sys
+sys.path.insert(0, '$SCRIPT_DIR')
+from importlib import import_module
+# 直接计数
+count = 0
+for root, dirs, files in os.walk('$REPO_ROOT'):
+    dirs[:] = [d for d in dirs if d not in {'.git', 'DerivedDataCache', 'Intermediate', 'Saved', 'Binaries', 'node_modules', '__pycache__'} and not d.startswith('.')]
+    for f in files:
+        if f.lower().endswith(('.uasset', '.umap', '.fbx', '.png', '.jpg', '.jpeg', '.tga', '.exr', '.hdr', '.wav', '.mp3', '.ogg', '.glb', '.obj', '.blend')) or '/.fbm/' in os.path.join(root, f).lower():
+            count += 1
+print(count)
+" 2>/dev/null || echo 0)
+
+if [ "$GIT_MANIFEST_COUNT" -gt 0 ] && [ "$LOCAL_ASSET_COUNT" -eq 0 ]; then
+    # 新机器：git 有清单但本地无资产 → 跳过扫描，直接下载
+    info "检测到新环境：git 清单有 $GIT_MANIFEST_COUNT 条记录，本地无资产"
+    info "将自动从 OSS 下载所有资产"
+    SKIP_SCAN=1
+elif [ "$LOCAL_ASSET_COUNT" -gt 0 ]; then
+    info "发现 $LOCAL_ASSET_COUNT 个本地资产文件，扫描中..."
+    python3 "$SCRIPT_DIR/oss-sync.py" scan
+    SKIP_SCAN=0
+else
+    warn "本地无资产文件，git 中也无清单"
+    SKIP_SCAN=1
+fi
 
 # ── Step 5：首次上传 ───────────────────────────────────────
-step "5/5 首次上传到 OSS"
+step "5/5 首次同步"
 
-echo ""
-read -p "  是否立即上传所有大 FBX 到 OSS？[Y/n] " CONFIRM
-CONFIRM=${CONFIRM:-Y}
-
-if [[ "$CONFIRM" =~ ^[Yy] ]]; then
-    info "开始上传..."
-    python3 "$SCRIPT_DIR/oss-sync.py" sync-up
-    info "首次上传完成！"
+if [ "${SKIP_SCAN:-0}" -eq 1 ]; then
+    # 新机器 → 下载
+    echo ""
+    echo "   从 OSS 下载所有资产到本地..."
+    python3 "$SCRIPT_DIR/oss-sync.py" sync-down
+    info "首次下载完成！"
 else
-    warn "跳过上传。稍后手动运行："
-    echo "  python3 tools/oss-assets/oss-sync.py sync-up"
+    # 现有机器 → 上传
+    echo ""
+    read -p "  是否立即上传所有本地资产到 OSS？[Y/n] " CONFIRM
+    CONFIRM=${CONFIRM:-Y}
+
+    if [[ "$CONFIRM" =~ ^[Yy] ]]; then
+        info "开始上传..."
+        python3 "$SCRIPT_DIR/oss-sync.py" sync-up
+        info "首次上传完成！"
+    else
+        warn "跳过上传。稍后手动运行："
+        echo "  python3 tools/oss-assets/oss-sync.py sync-up"
+    fi
 fi
 
 # ── 完成 ───────────────────────────────────────────────────
