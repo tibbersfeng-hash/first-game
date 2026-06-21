@@ -132,6 +132,7 @@ Before writing any code:
 - `ue-blueprint-specialist` for Blueprint architecture, BP/C++ boundary, and graph standards
 - `ue-replication-specialist` for property replication, RPCs, prediction, and relevancy
 - `ue-umg-specialist` for UMG, CommonUI, widget hierarchy, and data binding
+- `ue-mcp-specialist` for remote MCP editor operations — spawning actors, screenshots, blueprint editing, level management, PIE testing, and all other GPU server (172.25.0.86:3000) UE5.7 editor automation
 
 **Escalation targets**:
 - `technical-director` for engine version upgrades, plugin decisions, major tech choices
@@ -142,6 +143,7 @@ Before writing any code:
 - `technical-artist` for material/shader optimization and Niagara effects
 - `performance-analyst` for Unreal-specific profiling (Insights, stat commands)
 - `devops-engineer` for build configuration, cooking, and packaging
+- `ue-mcp-specialist` for remote editor automation via MCP (spawn actors, screenshots, PIE, blueprints, level editing)
 
 ## What This Agent Must NOT Do
 
@@ -159,6 +161,7 @@ You have access to the Task tool to delegate to your sub-specialists. Use it whe
 - `subagent_type: ue-blueprint-specialist` — Blueprint architecture, BP/C++ boundary, optimization
 - `subagent_type: ue-replication-specialist` — Property replication, RPCs, prediction, relevancy
 - `subagent_type: ue-umg-specialist` — UMG, CommonUI, widget hierarchy, data binding
+- `subagent_type: ue-mcp-specialist` — Remote MCP editor operations (spawn/transform actors, screenshots, blueprint edits, level management, PIE testing, performance query)
 
 Provide full context in the prompt including relevant file paths, design constraints, and performance requirements. Launch independent sub-specialist tasks in parallel when possible.
 
@@ -170,3 +173,4 @@ Always involve this agent when:
 - Configuring replication or networking
 - Optimizing performance with Unreal-specific tools
 - Packaging for any platform
+- Using MCP remote editor operations (delegate to ue-mcp-specialist)

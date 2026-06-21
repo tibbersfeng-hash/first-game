@@ -72,6 +72,43 @@ See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
 **Candy Dungeon 4 怪物**: 完整管线完成（52 uassets + C++ 动态材质 + 编辑器验证），分支 `monster-3d-pipeline`。
 
+## UE5 MCP 远程编辑器控制
+
+> 通过 MCP 协议远程操控 GPU 服务器上的 UE5.7 编辑器。
+> 所有 Agent 可直接调用 MCP 工具或通过 `ue-mcp-specialist` 代理执行编辑器操作。
+
+| 项目 | 值 |
+|------|-----|
+| 服务器 | `172.25.0.86:3000` |
+| 协议 | MCP Streamable HTTP |
+| MCP Agent | `ue-mcp-specialist`（23+ 工具域 / 全部 action） |
+| 技能 | `/ue5-mcp`（手动调用） |
+| 连接 | Session 自动管理，超时 1 小时需重连 |
+
+### 能力概览
+
+| 领域 | 说明 |
+|------|------|
+| `control_actor` | Actor 生成/删除/变换/材质/碰撞/标签 |
+| `control_editor` | PIE 启停/截图/相机/控制台命令 |
+| `inspect` | 对象/属性/场景/性能/运行时数据查询 |
+| `manage_asset` | 资产搜索/导入/材质实例/LOD |
+| `manage_blueprint` | 蓝图创建/节点编辑/变量/函数/连线/UI |
+| `manage_level` | 关卡加载/光照/World Partition/Data Layer |
+| `build_environment` | 地形/水体/天气/后处理/Spline/Lumen |
+| `manage_geometry` | 程序化几何体/布尔运算/Nanite |
+| `animation_physics` | 动画蓝图/状态机/Control Rig/蒙太奇 |
+| `manage_effect` | Niagara 粒子/GPU 模拟 |
+| `manage_character` | 角色蓝图/移动/攀爬/脚步 |
+| `manage_combat` | 武器/连击/格挡/弹道 |
+| `manage_ai` | 行为树/黑板/EQS/导航 |
+| `manage_gas` | Gameplay Ability / Effect / Attribute Set |
+| `manage_networking` | 复制/RPC/增强输入/游戏模式 |
+| `manage_sequence` | Sequencer 过场/关键帧 |
+| `system_control` | Python 脚本/UBT 构建/Insights 性能分析 |
+
+> **Agent 协作方式**: 当你需要操作 UE 编辑器时（生成 Actor、截图、编辑蓝图、运行 PIE），委托给 `ue-mcp-specialist`。先 initialize 获取 sessionId，再按需调用工具。截图以 base64 内联返回，可直接分析。
+
 ## 图片/美术资产生成
 
 > 使用百炼 CLI (`bailian`) 调用通义万相生成游戏美术资产。
