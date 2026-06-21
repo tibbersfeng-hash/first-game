@@ -38,8 +38,7 @@ void ABaseEnemy::BeginPlay()
 
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
-		MoveComp->bConstrainToPlane = true;
-		MoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
+		MoveComp->bConstrainToPlane = false;  // 3D 全向移动，不约束平面
 	}
 
 	// 如果没有外部数据, 根据 EnemyType 创建对应数据
@@ -102,6 +101,7 @@ void ABaseEnemy::InitializeEnemy(UCharacterDataAsset* InDataAsset)
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
 		MoveComp->MaxWalkSpeed = EnemyData->MoveSpeed * 0.7f; // Enemies slightly slower
+		MoveComp->GravityScale = EnemyData->Gravity / 980.f;  // Fix flying bug
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("Enemy initialized: %s (HP:%.0f, State:%s)"),
