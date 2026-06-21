@@ -103,10 +103,18 @@ bool FSkillNodeUnlockTest::RunTest(const FString& Parameters)
 	Skill->Unlock();
 	TestTrue("After Unlock: bIsUnlocked", Skill->bIsUnlocked);
 
-	// Upgrade
-	bool bUpgraded = Skill->Upgrade();
-	TestTrue("Upgrade succeeded", bUpgraded);
-	TestTrue("After Upgrade: bIsUpgraded", Skill->bIsUpgraded);
+	// Upgrade to max level (MaxLevel=5, SkillLevel starts at 1, need 4 upgrades)
+	for (int32 i = 0; i < 4; i++)
+	{
+		bool bUpgraded = Skill->Upgrade();
+		TestTrue("Upgrade succeeded", bUpgraded);
+	}
+	TestEqual("SkillLevel at max", Skill->SkillLevel, 5);
+	TestTrue("After max upgrade: bIsUpgraded", Skill->bIsUpgraded);
+
+	// Can't upgrade past max
+	bool bUpgradePastMax = Skill->Upgrade();
+	TestFalse("Can't upgrade past max level", bUpgradePastMax);
 
 	return true;
 }

@@ -109,6 +109,26 @@ See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
 > **Agent 协作方式**: 当你需要操作 UE 编辑器时（生成 Actor、截图、编辑蓝图、运行 PIE），委托给 `ue-mcp-specialist`。先 initialize 获取 sessionId，再按需调用工具。截图以 base64 内联返回，可直接分析。
 
+### 自动验证触发规则
+
+> MCP 服务器可用时，下列改动**必须**触发自动验证；MCP 服务器不可用时，
+> 记录到 `production/qa/deferred-mcp-verifications.md` 并在下次服务器上线后补验。
+
+| 改动路径 | 自动验证动作 | 委托给 |
+|---|---|---|
+| `src_ue5/Content/Materials/**` | 加载关卡 → 截图 → 与基线对比 | `ue-mcp-specialist` |
+| `src_ue5/Content/Maps/**` | 加载关卡 → 多视角截图 | `ue-mcp-specialist` |
+| `src_ue5/Content/UI/**` 或 UMG Blueprint | 打开 Widget → 截图 | `ue-mcp-specialist` |
+| `src_ue5/Source/FirstGame/**`（C++ 改动） | `run_ubt` 构建 → PIE 启动 → 截图 + `get_performance_stats` | `ue-mcp-specialist` |
+| GAS / Combat / AI 相关 Blueprint | spawn 测试角色 → PIE → `runtime_report` 验证属性 | `ue-mcp-specialist` |
+| Niagara / 后处理配置 | PIE → 截图 + `get_performance_stats` 抓帧时间 | `ue-mcp-specialist` |
+
+**验证闭环**：截图/数据存到 `production/qa/evidence/mcp-[story-id]-[date].md`，
+作为对应 story 的 test evidence。
+
+**降级策略**：MCP 服务器 HTTP 非 200 或 5 秒超时 → 视为不可用 →
+写入 deferred 文件 → 不阻塞开发流程，但在 story-done 时提示补验。
+
 ## 图片/美术资产生成
 
 > 使用百炼 CLI (`bailian`) 调用通义万相生成游戏美术资产。

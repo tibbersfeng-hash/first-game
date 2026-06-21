@@ -98,3 +98,23 @@ elif os.environ.get('FIRSTGAME_FINAL_NPR') == '1':
 elif os.environ.get('FIRSTGAME_INTEGRATION_TEST') == '1':
     unreal.log('[INIT] FIRSTGAME_INTEGRATION_TEST detected, running integration test...')
     import integration_test
+
+# NPR + 怪物整合验证
+elif os.environ.get('FIRSTGAME_VERIFY_ALL') == '1':
+    unreal.log('[INIT] FIRSTGAME_VERIFY_ALL detected, running NPR + monster verification...')
+    import verify_all
+
+# NPR 材质直接验证（不依赖 C++ 工具类）
+elif os.environ.get('FIRSTGAME_NPR_DIRECT') == '1':
+    unreal.log('[INIT] FIRSTGAME_NPR_DIRECT detected, running direct NPR verification...')
+    import verify_npr_direct
+
+# 光照验证
+elif os.environ.get('FIRSTGAME_LIGHT_TEST') == '1':
+    unreal.log('[INIT] FIRSTGAME_LIGHT_TEST detected, running light verification...')
+    import verify_light_test
+
+# NPR C++ 函数调用验证
+elif os.environ.get('FIRSTGAME_NPR_CPP') == '1':
+    unreal.log('[INIT] FIRSTGAME_NPR_CPP detected, running NPR C++ verification...')
+    import verify_npr_cpp

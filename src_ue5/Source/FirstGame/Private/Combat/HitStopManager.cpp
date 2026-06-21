@@ -13,7 +13,7 @@ UHitStopManager::UHitStopManager()
 
 void UHitStopManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (IsRegistered()) { Super::TickComponent(DeltaTime, TickType, ThisTickFunction); }
 
 	if (!bHitStopEnabled) return;
 

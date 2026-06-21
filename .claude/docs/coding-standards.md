@@ -39,6 +39,37 @@ All stories must have appropriate test evidence before they can be marked Done:
 | **UI** (menus, HUD, screens) | Manual walkthrough doc OR interaction test | `production/qa/evidence/` | ADVISORY |
 | **Config/Data** (balance tuning) | Smoke check pass | `production/qa/smoke-[date].md` | ADVISORY |
 
+## MCP-Backed Visual Verification
+
+> 通过 `ue-mcp-specialist` 远程操控 GPU 服务器上的 UE5.7 编辑器，对视觉/运行时改动
+> 进行自动截图和数据抓取。这是 "验证驱动开发" 的视觉验证通道。
+
+### 当 MCP 服务器可用时
+
+| Story 类型 | MCP 验证方式 | 证据存储 |
+|---|---|---|
+| **Visual/Feel** | `control_editor(screenshot)` 多视角截图 | `production/qa/evidence/mcp-[story-id].png` |
+| **UI** | Widget 编辑器截图 + `simulate_input` 交互 | `production/qa/evidence/mcp-[story-id]-ui.png` |
+| **Logic/Integration** | PIE + `runtime_report` + `get_performance_stats` | `production/qa/evidence/mcp-[story-id]-runtime.md` |
+| **Config/Data** | PIE 后 stat 验证 + 截图 | `production/qa/evidence/mcp-[story-id]-smoke.md` |
+
+### 当 MCP 服务器不可用时
+
+- 验证任务追加到 `production/qa/deferred-mcp-verifications.md`
+- story 仍可标记 Done，但需在 MCP 上线后补验（story-done 时提醒）
+- 不阻塞开发流程
+
+### MCP 健康检查
+
+```bash
+curl -s -m 5 --noproxy '*' -X POST http://172.25.0.86:3000/mcp \
+  -H "Content-Type: application/json" \
+  -H "X-MCP-Capability-Token: c74a40cde871789c0b27984019fc58e4" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"health-check","version":"1.0"}}}'
+```
+
+HTTP 200 + 返回 sessionId → 可用；其他 → 走降级策略。
+
 ## Automated Test Rules
 
 - **Naming**: `[system]_[feature]_test.[ext]` for files; `test_[scenario]_[expected]` for functions

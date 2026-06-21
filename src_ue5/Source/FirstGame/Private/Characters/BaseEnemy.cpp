@@ -97,13 +97,15 @@ void ABaseEnemy::InitializeEnemy(UCharacterDataAsset* InDataAsset)
 	if (!EnemyData) return;
 
 	CurrentHealth = EnemyData->MaxHealth;
+	SetState("Idle");  // 确保初始状态正确（PostInitializeComponents 不会在 NewObject 时调用）
 
 	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
 	{
 		MoveComp->MaxWalkSpeed = EnemyData->MoveSpeed * 0.7f; // Enemies slightly slower
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Enemy initialized: %s (HP:%.0f)"), *EnemyData->CharacterId.ToString(), CurrentHealth);
+	UE_LOG(LogTemp, Log, TEXT("Enemy initialized: %s (HP:%.0f, State:%s)"),
+		*EnemyData->CharacterId.ToString(), CurrentHealth, *CurrentState.ToString());
 }
 
 void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
@@ -114,20 +116,26 @@ void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 
 	UE_LOG(LogTemp, Log, TEXT("Enemy took %.0f damage. HP: %.0f"), Amount, CurrentHealth);
 
+	// SignalBus 通知（可选）
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
 	if (SignalBus)
 	{
 		SignalBus->OnHitLanded.Broadcast(DamageCauser, this, Amount, GetActorLocation());
+	}
 
-		if (CurrentHealth <= 0.f)
-		{
-			Die();
-		}
-		else
-		{
-			SetState("HitStun");
-			bIsAggro = true; // Always aggro after being hit
+	// 死亡/硬直逻辑 — 不依赖 SignalBus
+	if (CurrentHealth <= 0.f)
+	{
+		Die();
+	}
+	else
+	{
+		SetState("HitStun");
+		bIsAggro = true; // Always aggro after being hit
 
+		// 测试环境中可能没有 World，跳过 Timer
+		if (GetWorld())
+		{
 			FTimerHandle Handle;
 			GetWorldTimerManager().SetTimer(Handle, [this]()
 			{
@@ -140,6 +148,7 @@ void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 void ABaseEnemy::PerformAttack()
 {
 	if (CurrentState != "Idle" || !bIsAggro) return;
+	if (!GetWorld()) return;  // 测试环境可能没有 World
 
 	float Now = GetWorld()->GetTimeSeconds();
 	if (Now - LastAttackTime < AttackCooldown) return;
@@ -152,12 +161,15 @@ void ABaseEnemy::PerformAttack()
 
 	EnemyHitBox->ActivateHitBox(Damage, this);
 
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle, [this]()
+	if (GetWorld())
 	{
-		EnemyHitBox->DeactivateHitBox();
-		SetState("Idle");
-	}, 0.5f, false);
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle, [this]()
+		{
+			EnemyHitBox->DeactivateHitBox();
+			SetState("Idle");
+		}, 0.5f, false);
+	}
 }
 
 void ABaseEnemy::Die()
@@ -209,11 +221,14 @@ void ABaseEnemy::Die()
 	}
 
 	// Play death animation, then destroy
-	FTimerHandle Handle;
-	GetWorldTimerManager().SetTimer(Handle, [this]()
+	if (GetWorld())
 	{
-		Destroy();
-	}, 1.0f, false);
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle, [this]()
+		{
+			Destroy();
+		}, 1.0f, false);
+	}
 }
 
 void ABaseEnemy::SetState(FName NewState)

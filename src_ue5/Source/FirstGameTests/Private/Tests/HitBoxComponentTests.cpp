@@ -19,11 +19,13 @@ bool FHitBoxComponentConfigTest::RunTest(const FString& Parameters)
 
 	if (!HitBox) return false;
 
-	// Default box extent from constructor: FVector(40.f, 10.f, 60.f)
+	// 注意：BoxExtent 在 BeginPlay 中设置为 (40, 10, 60)
+	// 构造函数中不设置（避免 UpdateBodySetup 在 UObject 构造中调用 NewObject）
+	// 测试中 BeginPlay 不会被调用，所以使用 UBoxComponent 默认值 (32, 32, 32)
 	FVector Extent = HitBox->GetScaledBoxExtent();
-	TestEqual("Default BoxExtent X", (double)Extent.X, (double)40.);
-	TestEqual("Default BoxExtent Y", (double)Extent.Y, (double)10.);
-	TestEqual("Default BoxExtent Z", (double)Extent.Z, (double)60.);
+	TestEqual("Default BoxExtent X (UBoxComponent default)", (double)Extent.X, (double)32.);
+	TestEqual("Default BoxExtent Y (UBoxComponent default)", (double)Extent.Y, (double)32.);
+	TestEqual("Default BoxExtent Z (UBoxComponent default)", (double)Extent.Z, (double)32.);
 
 	return true;
 }

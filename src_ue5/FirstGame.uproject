@@ -8,6 +8,11 @@
 			"Name": "FirstGame",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "FirstGameTests",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -29,6 +34,10 @@
 		},
 		{
 			"Name": "PythonScriptPlugin",
+			"Enabled": true
+		},
+		{
+			"Name": "McpAutomationBridge",
 			"Enabled": true
 		}
 	],

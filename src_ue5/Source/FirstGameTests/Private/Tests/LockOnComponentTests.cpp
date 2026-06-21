@@ -13,12 +13,7 @@
 static ULockOnComponent* CreateTestLockOnComponent(UObject* Outer)
 {
 	ULockOnComponent* LockOn = NewObject<ULockOnComponent>(Outer);
-	LockOn->LockRange = 2000.f;
-	LockOn->LockFOV = 60.f;
-	LockOn->LockHeightRange = 1000.f;
-	LockOn->SwitchDelay = 0.1f;
-	LockOn->LostDelay = 1.f;
-	LockOn->TargetCacheInterval = 0.1f;
+	// 不覆盖默认值，让测试验证真正的默认配置
 	return LockOn;
 }
 
