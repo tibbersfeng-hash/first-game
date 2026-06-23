@@ -23,13 +23,52 @@ void UMonsterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	UE_LOG(LogTemp, Log, TEXT("MonsterAnimInstance: Initialized"));
+	UE_LOG(LogTemp, Log, TEXT("MonsterAnimInstance: Initialized for %s"), *GetName());
 
-	// 尝试自动获取 BlendSpace（如果未手动设置）
+	// 自动获取 owning enemy 并配置动画
+	ABaseEnemy* Enemy = GetOwningEnemy();
+	if (!Enemy)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: No owning enemy found"));
+		return;
+	}
+
+	// 根据 EnemyType 加载 BlendSpace 和动画
+	// 如果 LocomotionBlendSpace 未设置，尝试自动加载
 	if (!LocomotionBlendSpace)
 	{
-		// 可以通过 owning enemy 的 EnemyType 来自动加载
-		// 这里先留空，需要在 BP 中设置或在 C++ 中根据 EnemyType 加载
+		// 尝试加载每个怪物的 Locomotion BlendSpace
+		FString BlendSpacePath;
+		uint8 EnemyTypeVal = Enemy->GetEnemyTypeValue();
+
+		switch (EnemyTypeVal)
+		{
+		case 0: // CandyZombie
+			BlendSpacePath = TEXT("/Game/Monsters/CandyZombie/BlendSpaces/BS_CandyZombie_Locomotion");
+			break;
+		case 1: // Gingerbread
+			BlendSpacePath = TEXT("/Game/Monsters/Gingerbread/BlendSpaces/BS_Gingerbread_Locomotion");
+			break;
+		case 2: // ShadowNinja
+			BlendSpacePath = TEXT("/Game/Monsters/ShadowNinja/BlendSpaces/BS_ShadowNinja_Locomotion");
+			break;
+		case 3: // ArmoredGum
+			BlendSpacePath = TEXT("/Game/Monsters/ArmoredGum/BlendSpaces/BS_ArmoredGum_Locomotion");
+			break;
+		}
+
+		if (!BlendSpacePath.IsEmpty())
+		{
+			LocomotionBlendSpace = LoadObject<UBlendSpace1D>(nullptr, *BlendSpacePath);
+			if (LocomotionBlendSpace)
+			{
+				UE_LOG(LogTemp, Log, TEXT("MonsterAnimInstance: 自动加载 BlendSpace %s"), *BlendSpacePath);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: 无法加载 BlendSpace %s"), *BlendSpacePath);
+			}
+		}
 	}
 }
 
@@ -267,17 +306,16 @@ void UMonsterAnimInstance::PlayAnimation(UAnimSequence* AnimSequence, bool bLoop
 		return;
 	}
 
-	// 使用 Montage 播放
-	UAnimMontage* Montage = Cast<UAnimMontage>(AnimSequence);
-	if (Montage)
-	{
-		Montage_Play(Montage);
-	}
-	else
-	{
-		// 直接播放序列（不推荐，但作为 fallback）
-		UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: No montage for %s"), *AnimSequence->GetName());
-	}
+	// 使用 PlaySlotAnimationAsDynamicMontage 播放动画序列
+	PlaySlotAnimationAsDynamicMontage(
+		AnimSequence,
+		FName(TEXT("DefaultSlot")),
+		0.2f,  // BlendIn
+		0.2f,  // BlendOut
+		1.0f,  // PlayRate
+		1,     // LoopCount
+		bLooping ? -1.f : 0.f  // BlendInTime (-1 = infinite loop)
+	);
 }
 
 void UMonsterAnimInstance::PlayBlendSpace(UBlendSpace1D* BlendSpace, float BlendInput)
@@ -287,8 +325,8 @@ void UMonsterAnimInstance::PlayBlendSpace(UBlendSpace1D* BlendSpace, float Blend
 		return;
 	}
 
-	// 使用 PlaySlotAnimationAsDynamicMontage 播放 BlendSpace
-	// 注意：BlendSpace1D 是 UAnimSequenceBase 的子类
+	// UBlendSpace1D 继承自 UAnimSequenceBase
+	// 使用 Cast 转换后播放
 	UAnimSequenceBase* AnimBase = Cast<UAnimSequenceBase>(BlendSpace);
 	if (AnimBase)
 	{
@@ -297,14 +335,14 @@ void UMonsterAnimInstance::PlayBlendSpace(UBlendSpace1D* BlendSpace, float Blend
 			FName(TEXT("DefaultSlot")),
 			0.2f,  // BlendIn
 			0.2f,  // BlendOut
-			BlendInput,  // InPlayRate (用于 BlendSpace 输入)
+			1.0f,  // PlayRate
 			1,     // LoopCount
-			0.f    // BlendInTime
+			-1.f   // BlendOutTriggerTime
 		);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: Failed to cast BlendSpace to AnimSequenceBase"));
+		UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: Cannot cast BlendSpace to AnimSequenceBase"));
 	}
 }
 

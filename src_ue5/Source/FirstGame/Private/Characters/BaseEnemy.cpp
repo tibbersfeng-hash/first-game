@@ -365,7 +365,7 @@ void ABaseEnemy::ConfigureMonsterAssets()
 		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load mesh %s"), *MeshPath);
 	}
 
-	// Load AnimBP class
+	// Load AnimBP class — 优先使用 C++ MonsterAnimInstance
 	UClass* AnimBPClass = LoadObject<UClass>(nullptr, *AnimBPPath);
 	if (AnimBPClass)
 	{
@@ -374,12 +374,34 @@ void ABaseEnemy::ConfigureMonsterAssets()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load AnimBP %s"), *AnimBPPath);
+		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load AnimBP %s, 尝试 C++ MonsterAnimInstance"), *AnimBPPath);
 	}
+
+	// 始终设置 MonsterAnimInstance 作为备用/主动画系统
+	GetMesh()->SetAnimInstanceClass(UMonsterAnimInstance::StaticClass());
+	UE_LOG(LogTemp, Log, TEXT("BaseEnemy: 设置 C++ MonsterAnimInstance"));
 
 	// 应用 NPR 材质
 	UNPRMaterialUtils::ApplyNPRMaterialToMonster(this, static_cast<uint8>(EnemyType));
 
 	// 创建描边 (Inverted Hull)
 	UNPRMaterialUtils::SpawnOutlineAttachment(this, FLinearColor::Black, 2.0f);
+
+	// 配置 LOD
+	ConfigureLODSettings();
+}
+
+void ABaseEnemy::ConfigureLODSettings()
+{
+	USkeletalMeshComponent* MeshComp = GetMesh();
+	if (!MeshComp || !MeshComp->GetSkeletalMeshAsset())
+	{
+		return;
+	}
+
+	// UE5.7 LOD 配置
+	// 启用 LOD 优化
+	MeshComp->bEnableUpdateRateOptimizations = true;
+
+	UE_LOG(LogTemp, Log, TEXT("BaseEnemy: LOD 配置完成"));
 }

@@ -39,12 +39,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy")
 	EEnemyType EnemyType = EEnemyType::CandyZombie;
 
+	/** 获取 EnemyType 数值 (给 MonsterAnimInstance 用) */
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+	uint8 GetEnemyTypeValue() const { return static_cast<uint8>(EnemyType); }
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitializeEnemy(UCharacterDataAsset* InDataAsset);
 
 	/** 根据 EnemyType 自动加载对应的 SkeletalMesh + AnimBP */
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void ConfigureMonsterAssets();
+
+	/** 配置 LOD 设置 */
+	void ConfigureLODSettings();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Stats")
 	float CurrentHealth;
