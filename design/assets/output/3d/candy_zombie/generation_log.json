@@ -1,0 +1,40 @@
+[
+  {
+    "timestamp": "2026-06-20 19:04:06",
+    "char_key": "candy_zombie",
+    "name_cn": "糖果僵尸",
+    "model_job_id": "dry-run-fake-id",
+    "model_files": [],
+    "rigged_files": [],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:04:26",
+    "char_key": "candy_zombie",
+    "name_cn": "糖果僵尸",
+    "model_job_id": "dry-run-fake-id",
+    "model_files": [],
+    "rigged_files": [],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:11:26",
+    "char_key": "candy_zombie",
+    "name_cn": "糖果僵尸",
+    "model_job_id": "1459865749090451456",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/待机-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/走路-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/慢跑/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/二连击打/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/受击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/candy_zombie/motions/受击倒地-1/model_1.fbx"
+    ],
+    "status": "failed"
+  }
+]

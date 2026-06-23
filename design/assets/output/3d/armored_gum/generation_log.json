@@ -1,0 +1,35 @@
+[
+  {
+    "timestamp": "2026-06-20 19:25:03",
+    "char_key": "armored_gum",
+    "name_cn": "铁甲口香糖",
+    "model_job_id": "1459869874440101888",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_3.fbx"
+    ],
+    "rigged_files": [],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 20:00:03",
+    "char_key": "armored_gum",
+    "name_cn": "铁甲口香糖",
+    "model_job_id": "1459877315613548544",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/待机-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/走路-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/慢跑/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/连续击打/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/受击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/armored_gum/motions/受击倒地-1/model_1.fbx"
+    ],
+    "status": "failed"
+  }
+]

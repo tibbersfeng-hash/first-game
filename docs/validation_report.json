@@ -1,0 +1,13 @@
+{
+  "errors": [],
+  "warnings": [
+    "文档缺失: README.md"
+  ],
+  "info": [
+    "编译产物: UnrealEditor-FirstGame.dll",
+    "编译产物: UnrealEditor-FirstGameTests.dll",
+    "源文件: 48 cpp + 51 h",
+    "项目: 格斗萌主 - Q版2.5D横版格斗闯关游戏"
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,1189 @@
+{
+  "summary": {
+    "uasset_count": 76,
+    "umap_count": 11,
+    "fbx_count": 67,
+    "png_count": 18,
+    "cpp_count": 67,
+    "h_count": 52,
+    "total_size": "867.9 MB"
+  },
+  "assets": {
+    "uasset": [
+      {
+        "path": "Content\\Characters\\Huikong\\ABP\\ABP_Huikong.uasset",
+        "size": 212778
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_HitReaction.uasset",
+        "size": 634243
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Idle_01.uasset",
+        "size": 359323
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Idle_02.uasset",
+        "size": 326963
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Landing.uasset",
+        "size": 370367
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_LightAttack_01.uasset",
+        "size": 300355
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Run_01.uasset",
+        "size": 200923
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Walk_01.uasset",
+        "size": 263676
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\Test_Anim.uasset",
+        "size": 4312233
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\texture_pbr_20250901.uasset",
+        "size": 13629949
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\texture_pbr_20250901_normal.uasset",
+        "size": 5701827
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_Huikong_NPR.uasset",
+        "size": 4947
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_Huikong_Test.uasset",
+        "size": 2064
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_Huikong_TestConnect.uasset",
+        "size": 3064
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_MinimalTest.uasset",
+        "size": 4829
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_Outline.uasset",
+        "size": 5043
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Materials\\M_TextureTest.uasset",
+        "size": 4833
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\SKM_Huikong.uasset",
+        "size": 15467417
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\SKM_Huikong_Skeleton.uasset",
+        "size": 13646
+      },
+      {
+        "path": "Content\\Materials\\MI_ArmoredGum_NPR.uasset",
+        "size": 10018
+      },
+      {
+        "path": "Content\\Materials\\MI_CandyZombie_NPR.uasset",
+        "size": 9989
+      },
+      {
+        "path": "Content\\Materials\\MI_Gingerbread_NPR.uasset",
+        "size": 10154
+      },
+      {
+        "path": "Content\\Materials\\MI_ShadowNinja_NPR.uasset",
+        "size": 10004
+      },
+      {
+        "path": "Content\\Materials\\M_NPR_Parent.uasset",
+        "size": 19927
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\ABP\\ABP_ArmoredGum.uasset",
+        "size": 26058
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Attack.uasset",
+        "size": 4492250
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Death.uasset",
+        "size": 4539272
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Hit.uasset",
+        "size": 4530942
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Idle.uasset",
+        "size": 4470584
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Jog.uasset",
+        "size": 4487048
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Walk.uasset",
+        "size": 4480551
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\BlendSpaces\\BS_ArmoredGum_Locomotion.uasset",
+        "size": 1657
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Blueprints\\BP_ArmoredGum.uasset",
+        "size": 24526
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Materials\\MI_ArmoredGum_NPR.uasset",
+        "size": 1908
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Materials\\M_ArmoredGum_Basic.uasset",
+        "size": 4024
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Mesh\\SK_ArmoredGum.uasset",
+        "size": 15956583
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Mesh\\SK_ArmoredGum_Skeleton.uasset",
+        "size": 7544
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\ABP\\ABP_CandyZombie.uasset",
+        "size": 26081
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Attack.uasset",
+        "size": 3479224
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Death.uasset",
+        "size": 3390680
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Hit.uasset",
+        "size": 3403919
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Idle.uasset",
+        "size": 3390072
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Jog.uasset",
+        "size": 3394769
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Walk.uasset",
+        "size": 3405299
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\BlendSpaces\\BS_CandyZombie_Locomotion.uasset",
+        "size": 1670
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Blueprints\\BP_CandyZombie.uasset",
+        "size": 24554
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Materials\\MI_CandyZombie_NPR.uasset",
+        "size": 1916
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Materials\\M_CandyZombie_Basic.uasset",
+        "size": 4032
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Mesh\\SK_CandyZombie.uasset",
+        "size": 11999993
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Mesh\\SK_CandyZombie_Skeleton.uasset",
+        "size": 7557
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\ABP\\ABP_Gingerbread.uasset",
+        "size": 26081
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Attack.uasset",
+        "size": 3440359
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Death.uasset",
+        "size": 3420735
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Hit.uasset",
+        "size": 3406307
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Idle.uasset",
+        "size": 3416893
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Run.uasset",
+        "size": 3430762
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Walk.uasset",
+        "size": 3420683
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\BlendSpaces\\BS_Gingerbread_Locomotion.uasset",
+        "size": 1670
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Blueprints\\BP_Gingerbread.uasset",
+        "size": 24554
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Materials\\MI_Gingerbread_NPR.uasset",
+        "size": 1916
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Materials\\M_Gingerbread_Basic.uasset",
+        "size": 4032
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Mesh\\SK_Gingerbread.uasset",
+        "size": 11743276
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Mesh\\SK_Gingerbread_Skeleton.uasset",
+        "size": 7557
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\ABP\\ABP_ShadowNinja.uasset",
+        "size": 26081
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Attack_SpinKick.uasset",
+        "size": 3456774
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Death.uasset",
+        "size": 3447545
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Hit.uasset",
+        "size": 3455427
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Idle.uasset",
+        "size": 3448627
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Sprint.uasset",
+        "size": 3442500
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Walk.uasset",
+        "size": 3447369
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\BlendSpaces\\BS_ShadowNinja_Locomotion.uasset",
+        "size": 1670
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Blueprints\\BP_ShadowNinja.uasset",
+        "size": 24554
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Materials\\MI_ShadowNinja_NPR.uasset",
+        "size": 1916
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Materials\\M_ShadowNinja_Basic.uasset",
+        "size": 4032
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Mesh\\SK_ShadowNinja.uasset",
+        "size": 12160718
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Mesh\\SK_ShadowNinja_Skeleton.uasset",
+        "size": 7557
+      }
+    ],
+    "umap": [
+      {
+        "path": "Content\\Maps\\HeadlessPIETest.umap",
+        "size": 11006
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_AnimTest.umap",
+        "size": 12602
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_Combat.umap",
+        "size": 19884
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_Dungeon.umap",
+        "size": 27765
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_Huikong.umap",
+        "size": 10117
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_Integration.umap",
+        "size": 16900
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_MaterialVerify.umap",
+        "size": 8520
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_Monsters.umap",
+        "size": 62620
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_NPR.umap",
+        "size": 21211
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_PVPArena.umap",
+        "size": 16004
+      },
+      {
+        "path": "Content\\Maps\\TestLevel_TownHub.umap",
+        "size": 19211
+      }
+    ],
+    "fbx": [
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_HitReaction.fbx",
+        "size": 290188
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Idle_01.fbx",
+        "size": 236812
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Idle_02.fbx",
+        "size": 225724
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Landing.fbx",
+        "size": 242364
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_LightAttack_01.fbx",
+        "size": 231084
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Run_01.fbx",
+        "size": 204812
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\AM_Huikong_Walk_01.fbx",
+        "size": 220396
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_HitReaction.fbx",
+        "size": 290236
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_Idle_01.fbx",
+        "size": 236860
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_Idle_02.fbx",
+        "size": 225788
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_Landing.fbx",
+        "size": 242412
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_LightAttack_01.fbx",
+        "size": 231148
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_Run_01.fbx",
+        "size": 204876
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Animations\\pure_AM_Huikong_Walk_01.fbx",
+        "size": 220460
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\model_3.fbx",
+        "size": 33942108
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\SKM_Huikong_Base.fbx",
+        "size": 4946188
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\受击.fbx",
+        "size": 24852796
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\回旋踢.fbx",
+        "size": 24783484
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\奔跑.fbx",
+        "size": 24767468
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-1.fbx",
+        "size": 24767996
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-2.fbx",
+        "size": 24790636
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\落地.fbx",
+        "size": 24801244
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\走路-1.fbx",
+        "size": 24772892
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Attack.fbx",
+        "size": 5619788
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Death.fbx",
+        "size": 5630588
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Hit.fbx",
+        "size": 5711900
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Idle.fbx",
+        "size": 5565292
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Jog.fbx",
+        "size": 5644172
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Animations\\AM_ArmoredGum_Walk.fbx",
+        "size": 5537788
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Mesh\\SK_ArmoredGum.fbx",
+        "size": 4729308
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Mesh\\SK_ArmoredGum_LOD1.fbx",
+        "size": 2485116
+      },
+      {
+        "path": "Content\\Monsters\\ArmoredGum\\Mesh\\SK_ArmoredGum_LOD2.fbx",
+        "size": 1328124
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Attack.fbx",
+        "size": 4250156
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Death.fbx",
+        "size": 4193964
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Hit.fbx",
+        "size": 4204700
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Idle.fbx",
+        "size": 4107676
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Jog.fbx",
+        "size": 4172156
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Animations\\AM_CandyZombie_Walk.fbx",
+        "size": 4131740
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Mesh\\SK_CandyZombie.fbx",
+        "size": 3563068
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Mesh\\SK_CandyZombie_LOD1.fbx",
+        "size": 1874268
+      },
+      {
+        "path": "Content\\Monsters\\CandyZombie\\Mesh\\SK_CandyZombie_LOD2.fbx",
+        "size": 1006924
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Attack.fbx",
+        "size": 4269852
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Death.fbx",
+        "size": 4347532
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Hit.fbx",
+        "size": 4376716
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Idle.fbx",
+        "size": 4328732
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Run.fbx",
+        "size": 4193436
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Animations\\AM_Gingerbread_Walk.fbx",
+        "size": 4302764
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Mesh\\SK_Gingerbread.fbx",
+        "size": 3815052
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Mesh\\SK_Gingerbread_LOD1.fbx",
+        "size": 1992572
+      },
+      {
+        "path": "Content\\Monsters\\Gingerbread\\Mesh\\SK_Gingerbread_LOD2.fbx",
+        "size": 1061740
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Attack_SpinKick.fbx",
+        "size": 4221420
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Death.fbx",
+        "size": 4243500
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Hit.fbx",
+        "size": 4255804
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Idle.fbx",
+        "size": 4190476
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Sprint.fbx",
+        "size": 4163404
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Animations\\AM_ShadowNinja_Walk.fbx",
+        "size": 4200764
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Mesh\\SK_ShadowNinja.fbx",
+        "size": 3635948
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Mesh\\SK_ShadowNinja_LOD1.fbx",
+        "size": 1928364
+      },
+      {
+        "path": "Content\\Monsters\\ShadowNinja\\Mesh\\SK_ShadowNinja_LOD2.fbx",
+        "size": 1036108
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_HitReaction.fbx",
+        "size": 24852796
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_Idle_01.fbx",
+        "size": 24767996
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_Idle_02.fbx",
+        "size": 24790636
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_Landing.fbx",
+        "size": 24801244
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_LightAttack_01.fbx",
+        "size": 24783484
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_Run_01.fbx",
+        "size": 24767468
+      },
+      {
+        "path": "Content\\_fbx_staging\\Anim_Huikong_Walk_01.fbx",
+        "size": 24772892
+      },
+      {
+        "path": "Content\\_fbx_staging\\model_3.fbx",
+        "size": 33942108
+      }
+    ],
+    "png": [
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\model_3.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\model_3.fbm\\texture_pbr_20250901_metallic.png",
+        "size": 3490671
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\model_3.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\Mesh\\model_3.fbm\\texture_pbr_20250901_roughness.png",
+        "size": 4588189
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\受击.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\受击.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\回旋踢.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\回旋踢.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\奔跑.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\奔跑.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-1.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-1.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-2.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\待机-2.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\落地.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\落地.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\走路-1.fbm\\texture_pbr_20250901.png",
+        "size": 14446890
+      },
+      {
+        "path": "Content\\Characters\\Huikong\\_old_anim\\走路-1.fbm\\texture_pbr_20250901_normal.png",
+        "size": 5176818
+      }
+    ],
+    "cpp": [
+      {
+        "path": "Source\\FirstGame\\Private\\AnimTestActor.cpp",
+        "size": 3910
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\FirstGame.cpp",
+        "size": 448
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\FirstGameGameInstance.cpp",
+        "size": 681
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\FirstGameGameMode.cpp",
+        "size": 2007
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Achievements\\AchievementData.cpp",
+        "size": 360
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Achievements\\AchievementManagerComponent.cpp",
+        "size": 2987
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\AI\\EnemyAIController.cpp",
+        "size": 1458
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Anim\\MonsterAnimInstance.cpp",
+        "size": 8041
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\BT\\BTTaskChasePlayer.cpp",
+        "size": 1894
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\BT\\BTTaskDetectPlayer.cpp",
+        "size": 2067
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\BT\\BTTaskEnemyAttack.cpp",
+        "size": 1316
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Camera\\CameraController.cpp",
+        "size": 5850
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Characters\\BaseEnemy.cpp",
+        "size": 11407
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Characters\\PlayerCharacter.cpp",
+        "size": 19471
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\CombatAbility.cpp",
+        "size": 3866
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\ComboManager.cpp",
+        "size": 2204
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\HitBoxComponent.cpp",
+        "size": 3042
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\HitCameraShake.cpp",
+        "size": 1301
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\HitStopManager.cpp",
+        "size": 1494
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Combat\\HurtBoxComponent.cpp",
+        "size": 1144
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Commandlets\\SetMaterialFlagsCommandlet.cpp",
+        "size": 3306
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\DataAssets\\CharacterDataFactory.cpp",
+        "size": 12885
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\DataAssets\\EquipmentAsset.cpp",
+        "size": 904
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\DataAssets\\SkillNodeData.cpp",
+        "size": 1413
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dialogue\\DialogueData.cpp",
+        "size": 289
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dialogue\\DialogueManagerComponent.cpp",
+        "size": 2964
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Door\\DoorActor.cpp",
+        "size": 3566
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dungeon\\DungeonFlow.cpp",
+        "size": 2193
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dungeon\\DungeonRoom.cpp",
+        "size": 5153
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dungeon\\LootItem.cpp",
+        "size": 4067
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Dungeon\\WaveManager.cpp",
+        "size": 3434
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Equipment\\EquipmentManagerComponent.cpp",
+        "size": 3834
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Input\\FirstGameInputConfig.cpp",
+        "size": 647
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Input\\InputSetupHelper.cpp",
+        "size": 2169
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Level\\LevelBuilder.cpp",
+        "size": 22835
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\LockOn\\LockOnComponent.cpp",
+        "size": 11627
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Skills\\SkillTreeComponent.cpp",
+        "size": 3050
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Social\\FriendManager.cpp",
+        "size": 2743
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Stats\\CharacterStatsComponent.cpp",
+        "size": 13420
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Subsystems\\AudioManagerSubsystem.cpp",
+        "size": 3650
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Subsystems\\CombatDataSubsystem.cpp",
+        "size": 773
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Subsystems\\GameManagerSubsystem.cpp",
+        "size": 987
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Subsystems\\SignalBusFunctionLibrary.cpp",
+        "size": 574
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Subsystems\\SignalBusSubsystem.cpp",
+        "size": 129
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\UI\\DamageNumberWidget.cpp",
+        "size": 1114
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\UI\\DeathWidget.cpp",
+        "size": 2144
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\UI\\HUDWidget.cpp",
+        "size": 4694
+      },
+      {
+        "path": "Source\\FirstGame\\Private\\Utils\\NPRMaterialUtils.cpp",
+        "size": 6438
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\FirstGameTests.cpp",
+        "size": 445
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\AudioManagerTests.cpp",
+        "size": 4398
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\BaseEnemyTests.cpp",
+        "size": 7661
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\CameraControllerTests.cpp",
+        "size": 11450
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\CharacterDataAssetTests.cpp",
+        "size": 9147
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\CharacterStatsTests.cpp",
+        "size": 14088
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\CombatAbilityTests.cpp",
+        "size": 7054
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\CombatIntegrationTests.cpp",
+        "size": 21695
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\ComboManagerTests.cpp",
+        "size": 9464
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\DungeonFlowTests.cpp",
+        "size": 9080
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\HitBoxComponentTests.cpp",
+        "size": 6322
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\HitCameraShakeTests.cpp",
+        "size": 6695
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\HitStopManagerTests.cpp",
+        "size": 6532
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\IntegrationTests.cpp",
+        "size": 11624
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\LockOnComponentTests.cpp",
+        "size": 11375
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\LootItemTests.cpp",
+        "size": 6733
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\NewModuleTests.cpp",
+        "size": 14253
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\SignalBusTests.cpp",
+        "size": 6330
+      },
+      {
+        "path": "Source\\FirstGameTests\\Private\\Tests\\WaveManagerTests.cpp",
+        "size": 7270
+      }
+    ],
+    "h": [
+      {
+        "path": "Source\\FirstGame\\Public\\AnimTestActor.h",
+        "size": 2892
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\FirstGame.h",
+        "size": 389
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\FirstGameGameInstance.h",
+        "size": 414
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\FirstGameGameMode.h",
+        "size": 1000
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Achievements\\AchievementData.h",
+        "size": 2024
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Achievements\\AchievementManagerComponent.h",
+        "size": 1828
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\AI\\EnemyAIController.h",
+        "size": 972
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Anim\\MonsterAnimInstance.h",
+        "size": 3807
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\BT\\BTTaskChasePlayer.h",
+        "size": 763
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\BT\\BTTaskDetectPlayer.h",
+        "size": 674
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\BT\\BTTaskEnemyAttack.h",
+        "size": 649
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Camera\\CameraController.h",
+        "size": 6213
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Characters\\BaseEnemy.h",
+        "size": 4521
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Characters\\PlayerCharacter.h",
+        "size": 9030
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\CombatAbility.h",
+        "size": 3231
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\ComboManager.h",
+        "size": 2561
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\HitBoxComponent.h",
+        "size": 1566
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\HitCameraShake.h",
+        "size": 1767
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\HitStopManager.h",
+        "size": 1342
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Combat\\HurtBoxComponent.h",
+        "size": 1159
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Commandlets\\SetMaterialFlagsCommandlet.h",
+        "size": 655
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\DataAssets\\CharacterDataAsset.h",
+        "size": 4561
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\DataAssets\\CharacterDataFactory.h",
+        "size": 2330
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\DataAssets\\EquipmentAsset.h",
+        "size": 2620
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\DataAssets\\SkillNodeData.h",
+        "size": 2431
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dialogue\\DialogueData.h",
+        "size": 1728
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dialogue\\DialogueManagerComponent.h",
+        "size": 2341
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Door\\DoorActor.h",
+        "size": 2377
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dungeon\\DungeonFlow.h",
+        "size": 1709
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dungeon\\DungeonRoom.h",
+        "size": 4141
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dungeon\\LootItem.h",
+        "size": 2967
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Dungeon\\WaveManager.h",
+        "size": 2941
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Equipment\\EquipmentManagerComponent.h",
+        "size": 1861
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Input\\FirstGameInputConfig.h",
+        "size": 2586
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Input\\InputSetupHelper.h",
+        "size": 1313
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Level\\LevelBuilder.h",
+        "size": 7149
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\LockOn\\ILockableTarget.h",
+        "size": 1387
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\LockOn\\LockOnComponent.h",
+        "size": 7010
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Skills\\SkillTreeComponent.h",
+        "size": 1821
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Social\\FriendManager.h",
+        "size": 3112
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Stats\\CharacterStatsComponent.h",
+        "size": 9243
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\AudioManagerSubsystem.h",
+        "size": 3928
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\CombatDataSubsystem.h",
+        "size": 2135
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\GameManagerSubsystem.h",
+        "size": 1663
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\SignalBusFunctionLibrary.h",
+        "size": 688
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\SignalBusSubsystem.h",
+        "size": 4185
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Subsystems\\SignalBusTypes.h",
+        "size": 872
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\UI\\DamageNumberWidget.h",
+        "size": 792
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\UI\\DeathWidget.h",
+        "size": 754
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\UI\\HUDWidget.h",
+        "size": 2605
+      },
+      {
+        "path": "Source\\FirstGame\\Public\\Utils\\NPRMaterialUtils.h",
+        "size": 6525
+      },
+      {
+        "path": "Source\\FirstGameTests\\Public\\FirstGameTests.h",
+        "size": 295
+      }
+    ]
+  }
+}

@@ -35,10 +35,6 @@
 		{
 			"Name": "PythonScriptPlugin",
 			"Enabled": true
-		},
-		{
-			"Name": "McpAutomationBridge",
-			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
