@@ -1,0 +1,46 @@
+[
+  {
+    "timestamp": "2026-06-20 19:04:26",
+    "char_key": "gingerbread",
+    "name_cn": "暴躁姜饼人",
+    "model_job_id": "dry-run-fake-id",
+    "model_files": [],
+    "rigged_files": [],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:24:57",
+    "char_key": "gingerbread",
+    "name_cn": "暴躁姜饼人",
+    "model_job_id": "1459869857176346624",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/待机-1/model_1.fbx"
+    ],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:37:53",
+    "char_key": "gingerbread",
+    "name_cn": "暴躁姜饼人",
+    "model_job_id": "1459872434320359424",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/待机-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/走路-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/奔跑/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/蓄力攻击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/受击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/gingerbread/motions/受击倒地-1/model_1.fbx"
+    ],
+    "status": "failed"
+  }
+]

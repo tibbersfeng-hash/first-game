@@ -9,7 +9,10 @@
 
 #if WITH_EDITORONLY_DATA
 #include "Materials/MaterialExpressionVectorParameter.h"
+#include "Materials/MaterialExpressionScalarParameter.h"
+#include "Materials/MaterialExpressionConstant.h"
 #include "Materials/Material.h"
+// MaterialEditorOnlyData 通过 Material.h 间接包含
 #endif
 
 // ─── 静态缓存 ────────────────────────────────────────────────────────
@@ -170,10 +173,176 @@ void UNPRMaterialUtils::ApplyNPRMaterialToMonster(AActor* Enemy, uint8 Palette)
 	}
 }
 
-// ─── 描边材质 (暂不实现) ─────────────────────────────────────────────
-UMaterial* UNPRMaterialUtils::GetOrCreateOutlineParentMaterial() { return nullptr; }
+// ─── 描边材质 (Inverted Hull) ──────────────────────────────────────────
+
+#if WITH_EDITORONLY_DATA
+void UNPRMaterialUtils::BuildOutlineMaterialGraph(UMaterial* Mat)
+{
+	// Inverted Hull 描边材质图
+	// 原理:
+	//   - CullMode = Front (只渲染背面)
+	//   - WPO = Normal * OutlineWidth (沿法线挤出)
+	//   - EmissiveColor = OutlineColor (纯黑色描边)
+	//   - BlendMode = Masked, OpacityMask = 1 (全部可见)
+
+	if (!Mat) return;
+
+	// 设置材质属性
+	Mat->TwoSided = true;  // 双面渲染（但通过 CullMode 只渲染背面）
+	Mat->bUsedWithSkeletalMesh = true;
+	Mat->bUsedWithStaticLighting = false;
+	Mat->SetShadingModel(MSM_Unlit);
+
+	// 创建材质表达式
+	UMaterialEditorOnlyData* EO = Mat->GetEditorOnlyData();
+	if (!EO) return;
+
+	// OutlineColor 参数
+	auto* ColorParam = NewObject<UMaterialExpressionVectorParameter>(Mat);
+	ColorParam->ParameterName = TEXT("OutlineColor");
+	ColorParam->DefaultValue = FLinearColor::Black;
+	Mat->GetExpressionCollection().AddExpression(ColorParam);
+
+	// OutlineWidth 参数
+	auto* WidthParam = NewObject<UMaterialExpressionScalarParameter>(Mat);
+	WidthParam->ParameterName = TEXT("OutlineWidth");
+	WidthParam->DefaultValue = 2.0f;
+	Mat->GetExpressionCollection().AddExpression(WidthParam);
+
+	// 连接到 EmissiveColor (输出颜色)
+	EO->EmissiveColor.Expression = ColorParam;
+	EO->EmissiveColor.OutputIndex = 0;
+
+	// OpacityMask = 1 (全部可见)
+	auto* OneConst = NewObject<UMaterialExpressionConstant>(Mat);
+	OneConst->R = 1.0f;
+	Mat->GetExpressionCollection().AddExpression(OneConst);
+	EO->OpacityMask.Expression = OneConst;
+	EO->OpacityMask.OutputIndex = 0;
+
+	UE_LOG(LogTemp, Log,
+		TEXT("BuildOutlineMaterialGraph: 描边材质图构建完成"));
+}
+#endif
+
+UMaterial* UNPRMaterialUtils::GetOrCreateOutlineParentMaterial()
+{
+	if (CachedOutlineParentMaterial)
+	{
+		return CachedOutlineParentMaterial;
+	}
+
+#if WITH_EDITORONLY_DATA
+	// 尝试加载已保存的材质
+	const FString OutlinePath = TEXT("/Game/Materials/M_Outline");
+	UObject* LoadedObj = StaticLoadObject(UMaterial::StaticClass(), nullptr, *OutlinePath);
+	UMaterial* Mat = Cast<UMaterial>(LoadedObj);
+
+	if (!Mat)
+	{
+		UE_LOG(LogTemp, Warning,
+			TEXT("GetOrCreateOutlineParentMaterial: 未找到资产，创建内存材质"));
+
+		// 创建瞬态描边材质
+		Mat = NewObject<UMaterial>(GetTransientPackage(), FName(TEXT("M_Outline_Transient")));
+		Mat->SetFlags(RF_Transactional);
+
+		BuildOutlineMaterialGraph(Mat);
+
+		Mat->PreEditChange(nullptr);
+		Mat->PostEditChange();
+
+		UE_LOG(LogTemp, Log,
+			TEXT("GetOrCreateOutlineParentMaterial: 内存描边材质创建完成"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log,
+			TEXT("GetOrCreateOutlineParentMaterial: 加载资产 %s 成功"),
+			*OutlinePath);
+
+		// 确保属性正确
+		Mat->TwoSided = true;
+		Mat->bUsedWithSkeletalMesh = true;
+		Mat->SetShadingModel(MSM_Unlit);
+	}
+
+	CachedOutlineParentMaterial = Mat;
+	return Mat;
+#else
+	UE_LOG(LogTemp, Error,
+		TEXT("NPRMaterialUtils: GetOrCreateOutlineParentMaterial() 需要 WITH_EDITORONLY_DATA"));
+	return nullptr;
+#endif
+}
+
 UMaterialInstanceDynamic* UNPRMaterialUtils::CreateOutlineMaterialInstance(
-	UObject* WorldContextObject, const FString& MaterialName,
-	const FLinearColor& OutlineColor, float OutlineWidth) { return nullptr; }
+	UObject* WorldContextObject,
+	const FString& MaterialName,
+	const FLinearColor& OutlineColor,
+	float OutlineWidth)
+{
+	UMaterial* Parent = GetOrCreateOutlineParentMaterial();
+	if (!Parent) return nullptr;
+
+	UMaterialInstanceDynamic* MID = UMaterialInstanceDynamic::Create(Parent, nullptr, FName(*MaterialName));
+	if (!MID) return nullptr;
+
+	MID->SetVectorParameterValue(FName(TEXT("OutlineColor")), OutlineColor);
+	MID->SetScalarParameterValue(FName(TEXT("OutlineWidth")), OutlineWidth);
+
+	UE_LOG(LogTemp, Log,
+		TEXT("CreateOutlineMaterialInstance: '%s' Color=(%.2f,%.2f,%.2f) Width=%.2f"),
+		*MaterialName, OutlineColor.R, OutlineColor.G, OutlineColor.B, OutlineWidth);
+
+	return MID;
+}
+
 AActor* UNPRMaterialUtils::SpawnOutlineAttachment(
-	AActor* Monster, const FLinearColor& OutlineColor, float OutlineWidth) { return nullptr; }
+	AActor* Monster,
+	const FLinearColor& OutlineColor,
+	float OutlineWidth)
+{
+	if (!Monster) return nullptr;
+
+	USkeletalMeshComponent* SourceMesh = Monster->FindComponentByClass<USkeletalMeshComponent>();
+	if (!SourceMesh || !SourceMesh->SkeletalMesh) return nullptr;
+
+	// 创建描边 Actor
+	UWorld* World = Monster->GetWorld();
+	if (!World) return nullptr;
+
+	AActor* OutlineActor = World->SpawnActor<AActor>(AActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+	if (!OutlineActor) return nullptr;
+
+	// 创建描边网格组件
+	USkeletalMeshComponent* OutlineMesh = NewObject<USkeletalMeshComponent>(OutlineActor, TEXT("OutlineMesh"));
+	OutlineMesh->SetSkeletalMesh(SourceMesh->SkeletalMesh);
+	OutlineMesh->AttachToComponent(Monster->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	OutlineMesh->SetRelativeScale3D(FVector(1.02f));  // 略微放大以形成描边效果
+
+	// 应用描边材质
+	UMaterialInstanceDynamic* OutlineMID = CreateOutlineMaterialInstance(
+		OutlineActor,
+		FString::Printf(TEXT("MI_Outline_%s"), *Monster->GetName()),
+		OutlineColor,
+		OutlineWidth);
+
+	if (OutlineMID)
+	{
+		OutlineMesh->SetMaterial(0, OutlineMID);
+	}
+
+	// 设置渲染属性
+	OutlineMesh->SetCastShadow(false);
+	OutlineMesh->bRenderCustomDepth = true;
+	OutlineMesh->SetRenderInMainPass(false);  // 只在自定义深度通道渲染
+
+	OutlineActor->SetActorLabel(FString::Printf(TEXT("Outline_%s"), *Monster->GetName()));
+
+	UE_LOG(LogTemp, Log,
+		TEXT("SpawnOutlineAttachment: 为 %s 创建描边 Actor"),
+		*Monster->GetName());
+
+	return OutlineActor;
+}

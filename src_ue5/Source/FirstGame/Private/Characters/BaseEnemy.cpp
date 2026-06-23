@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Dungeon/LootItem.h"
 #include "Anim/MonsterAnimInstance.h"
+#include "Utils/NPRMaterialUtils.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -375,4 +376,10 @@ void ABaseEnemy::ConfigureMonsterAssets()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("BaseEnemy: Failed to load AnimBP %s"), *AnimBPPath);
 	}
+
+	// 应用 NPR 材质
+	UNPRMaterialUtils::ApplyNPRMaterialToMonster(this, static_cast<uint8>(EnemyType));
+
+	// 创建描边 (Inverted Hull)
+	UNPRMaterialUtils::SpawnOutlineAttachment(this, FLinearColor::Black, 2.0f);
 }
