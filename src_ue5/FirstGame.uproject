@@ -1,44 +1,48 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "5.7",
-	"Category": "Games",
-	"Description": "\u683c\u6597\u840c\u4e3b - Q\u72482.5D\u6a2a\u7248\u683c\u6597\u95ef\u5173\u6e38\u620f",
-	"Modules": [
-		{
-			"Name": "FirstGame",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "FirstGameTests",
-			"Type": "UncookedOnly",
-			"LoadingPhase": "Default"
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "GameplayAbilities",
-			"Enabled": true
-		},
-		{
-			"Name": "EnhancedInput",
-			"Enabled": true
-		},
-		{
-			"Name": "Paper2D",
-			"Enabled": true
-		},
-		{
-			"Name": "GameplayCameras",
-			"Enabled": true
-		},
-		{
-			"Name": "PythonScriptPlugin",
-			"Enabled": true
-		}
-	],
-	"TargetPlatforms": [
-		"Windows",
-		"Linux"
-	]
+  "FileVersion": 3,
+  "EngineAssociation": "5.7",
+  "Category": "Games",
+  "Description": "格斗萌主 - Q版2.5D横版格斗闯关游戏",
+  "Modules": [
+    {
+      "Name": "FirstGame",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "FirstGameTests",
+      "Type": "UncookedOnly",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "GameplayAbilities",
+      "Enabled": true
+    },
+    {
+      "Name": "EnhancedInput",
+      "Enabled": true
+    },
+    {
+      "Name": "Paper2D",
+      "Enabled": true
+    },
+    {
+      "Name": "GameplayCameras",
+      "Enabled": true
+    },
+    {
+      "Name": "PythonScriptPlugin",
+      "Enabled": true
+    },
+    {
+      "Name": "McpAutomationBridge",
+      "Enabled": true
+    }
+  ],
+  "TargetPlatforms": [
+    "Windows",
+    "Linux"
+  ]
 }
