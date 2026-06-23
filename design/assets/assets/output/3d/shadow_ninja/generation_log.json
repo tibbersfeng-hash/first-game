@@ -1,0 +1,46 @@
+[
+  {
+    "timestamp": "2026-06-20 19:04:26",
+    "char_key": "shadow_ninja",
+    "name_cn": "暗影忍者糖",
+    "model_job_id": "dry-run-fake-id",
+    "model_files": [],
+    "rigged_files": [],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:25:18",
+    "char_key": "shadow_ninja",
+    "name_cn": "暗影忍者糖",
+    "model_job_id": "1459869865292316672",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/受击倒地-1/model_1.fbx"
+    ],
+    "status": "failed"
+  },
+  {
+    "timestamp": "2026-06-20 19:46:46",
+    "char_key": "shadow_ninja",
+    "name_cn": "暗影忍者糖",
+    "model_job_id": "1459874351943581696",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/待机-2/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/走路-2/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/冲刺跑-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/回旋踢/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/受击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/shadow_ninja/motions/受击倒地-1/model_1.fbx"
+    ],
+    "status": "failed"
+  }
+]

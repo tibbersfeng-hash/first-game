@@ -1,0 +1,23 @@
+[
+  {
+    "timestamp": "2026-06-18 19:38:25",
+    "char_key": "huikong",
+    "name_cn": "慧空",
+    "model_job_id": "1459146812216369152",
+    "model_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/model_1.obj",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/model_2.glb",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/model_3.fbx"
+    ],
+    "rigged_files": [
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/待机-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/待机-2/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/走路-1/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/奔跑/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/回旋踢/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/受击/model_1.fbx",
+      "/home/claude/.frontend/first-game/design/assets/output/3d/huikong/motions/落地/model_1.fbx"
+    ],
+    "status": "failed"
+  }
+]

@@ -165,3 +165,42 @@ scripts/
 
 # ── OS Generated ─────────────────────────────────────────────
 [Dd]esktop.ini
+
+# === 构建产物 ===
+src_ue5/Intermediate/
+src_ue5/Binaries/
+src_ue5/Saved/
+src_ue5/DerivedDataCache/
+
+# === IDE ===
+.vs/
+.vscode/
+*.sln
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# === 日志 ===
+*.log
+logs/
+
+# === 临时文件 ===
+*.tmp
+*.temp
+*~
+.#*
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# === OSS ===
+.ossutilconfig
+
+# === 截图 (可选) ===
+# docs/screenshots/
+

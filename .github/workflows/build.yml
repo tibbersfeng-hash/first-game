@@ -1,0 +1,78 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  UE5_PATH: "D:\Program Files\Epic Games\UE_5.7"
+  PROJECT_PATH: "D:\workspace\first-game\src_ue5"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Build Project
+      shell: cmd
+      run: |
+        "${{ env.UE5_PATH }}\Engine\Build\BatchFiles\Build.bat" ^
+          FirstGameEditor Win64 Development ^
+          -Project=${{ env.PROJECT_PATH }}\FirstGame.uproject ^
+          -WaitMutex ^
+          -NoLiveCoding
+    
+    - name: Run Tests
+      shell: cmd
+      run: |
+        "${{ env.UE5_PATH }}\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" ^
+          "${{ env.PROJECT_PATH }}\FirstGame.uproject" ^
+          -stdout -fullstdoutlogoutput -nosplash -unattended -nullrhi ^
+          -ExecCmds="Automation RunTests FirstGame; Automation QuitWhenTestsComplete"
+      continue-on-error: true
+    
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: build-artifacts
+        path: |
+          ${{ env.PROJECT_PATH }}/Binaries/Win64/*.dll
+          ${{ env.PROJECT_PATH }}/Binaries/Win64/*.pdb
+        retention-days: 7
+
+  validate:
+    runs-on: windows-latest
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Run Project Validation
+      run: |
+        python -X utf8 tools/validate_project.py
+    
+    - name: Generate Asset Report
+      run: |
+        python -X utf8 tools/generate_asset_report.py
+    
+    - name: Upload Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: reports
+        path: |
+          docs/asset_report.json
+          docs/validation_report.json
+        retention-days: 30
