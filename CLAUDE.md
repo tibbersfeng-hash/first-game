@@ -159,3 +159,50 @@ pip install git+https://github.com/fevin/bailian-cli.git
 ```bash
 export DASHSCOPE_API_KEY="你的key"
 ```
+
+## OSS 二进制资产管理
+
+> GitHub 只存代码和文档，所有二进制资产（UE5 .uasset、FBX 模型、贴图等）通过阿里云 OSS 管理。
+
+### 配置信息
+
+| 项 | 值 |
+|---|---|
+| Bucket | `xiaoxiao-game` |
+| Endpoint | `oss-cn-beijing.aliyuncs.com` |
+| 路径前缀 | `first-game/` |
+| AccessKey ID | 从 0.100 服务器获取（`~/.ossutilconfig`） |
+| AccessKey Secret | 从 0.100 服务器获取（`~/.ossutilconfig`） |
+
+### 新环境配置
+
+```bash
+# 1. 从 0.100 服务器复制 OSS 凭证
+scp root@172.25.0.100:~/.ossutilconfig ~/.ossutilconfig
+
+# 或手动创建（AccessKey 从团队获取）
+cat > ~/.ossutilconfig << 'EOF'
+[Credentials]
+language=EN
+endpoint=oss-cn-beijing.aliyuncs.com
+accessKeyID=<从团队获取>
+accessKeySecret=<从团队获取>
+EOF
+
+# 2. 安装 ossutil（如未安装）
+# 下载地址: https://help.aliyun.com/document_detail/120075.html
+
+# 3. 下载所有资源
+python3 tools/oss-assets/oss-sync.py sync-down
+```
+
+### 常用命令
+
+```bash
+python3 tools/oss-assets/oss-sync.py check        # 查看同步状态
+python3 tools/oss-assets/oss-sync.py sync-down     # 下载缺失资源
+python3 tools/oss-assets/oss-sync.py sync-up       # 上传本地新增资源
+python3 tools/oss-assets/oss-sync.py scan          # 重新扫描生成清单
+```
+
+> 详见 `tools/oss-assets/README.md`

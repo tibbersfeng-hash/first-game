@@ -85,8 +85,55 @@ python3 tools/oss-assets/oss-sync.py download src_ue5/Content/Maps/TestLevel.uma
 | Bucket | `xiaoxiao-game` |
 | Endpoint | `oss-cn-beijing.aliyuncs.com` |
 | 路径前缀 | `first-game/` |
+| AccessKey | 从团队获取或从 0.100 服务器复制 |
 
-凭证保存在 `~/.ossutilconfig`，不在仓库中。
+### 手动配置凭证
+
+创建 `~/.ossutilconfig`（Linux/macOS）或 `%USERPROFILE%\.ossutilconfig`（Windows）：
+
+```ini
+[Credentials]
+language=EN
+endpoint=oss-cn-beijing.aliyuncs.com
+accessKeyID=<从团队获取>
+accessKeySecret=<从团队获取>
+```
+
+> **快速方式**：从 0.100 服务器直接复制凭证文件
+> ```bash
+> scp root@172.25.0.100:~/.ossutilconfig ~/.ossutilconfig
+> ```
+
+### 安装 ossutil
+
+```bash
+# Linux
+curl -L https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-linux-amd64.zip -o /tmp/ossutil.zip
+unzip /tmp/ossutil.zip -d /tmp && sudo cp /tmp/ossutil*/ossutil64 /usr/local/bin/ossutil && chmod +x /usr/local/bin/ossutil
+
+# macOS (Intel)
+curl -L https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-mac-amd64.zip -o /tmp/ossutil.zip
+unzip /tmp/ossutil.zip -d /tmp && sudo cp /tmp/ossutil*/ossutil /usr/local/bin/ossutil && chmod +x /usr/local/bin/ossutil
+
+# macOS (Apple Silicon)
+curl -L https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-mac-arm64.zip -o /tmp/ossutil.zip
+unzip /tmp/ossutil.zip -d /tmp && sudo cp /tmp/ossutil*/ossutil /usr/local/bin/ossutil && chmod +x /usr/local/bin/ossutil
+
+# Windows
+curl -L https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-windows-amd64.zip -o %TEMP%\ossutil.zip
+# 解压后将 ossutil64.exe 放入 PATH 目录
+
+# 验证
+ossutil --version
+ossutil ls oss://xiaoxiao-game/ --limited-num 3
+```
+
+> **注意**：Windows 上运行 `oss-sync.py` 时需要设置 UTF-8 环境变量：
+> ```cmd
+> set PYTHONUTF8=1
+> set PYTHONIOENCODING=utf-8
+> python tools\oss-assets\oss-sync.py sync-down
+> ```
 
 ## .large-assets.json
 
@@ -113,11 +160,19 @@ python3 tools/oss-assets/oss-sync.py download src_ue5/Content/Maps/TestLevel.uma
 git clone git@github.com:tibbersfeng-hash/first-game.git
 cd first-game
 
-# 2. 运行安装脚本（自动安装 ossutil + 下载所有资产）
-bash tools/oss-assets/setup.sh
+# 2. 从 0.100 服务器复制 OSS 凭证
+scp root@172.25.0.100:~/.ossutilconfig ~/.ossutilconfig
 
-# 3. 如果跳过了资产下载，手动执行：
+# 3. 安装 ossutil（见上方"安装 ossutil"章节）
+
+# 4. 下载所有资源
+# Linux/macOS:
 python3 tools/oss-assets/oss-sync.py sync-down
+# Windows:
+set PYTHONUTF8=1 && set PYTHONIOENCODING=utf-8 && python tools\oss-assets\oss-sync.py sync-down
+
+# 5. 验证
+python3 tools/oss-assets/oss-sync.py check
 ```
 
 ## 排错
