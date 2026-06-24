@@ -20,6 +20,7 @@ class FIRSTGAME_API UHUDWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	// ─── Health Bar ──────────────────────────────────────────────────
 	UPROPERTY(meta = (BindWidget))
@@ -40,6 +41,13 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* RoomText;
 
+	// ─── Enemy Lock-On HUD ─────────────────────────────────────────
+	UPROPERTY(meta = (BindWidgetOptional))
+	UProgressBar* EnemyHealthBar;
+
+	UPROPERTY(meta = (BindWidgetOptional))
+	UTextBlock* EnemyNameText;
+
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void UpdateHealth(float Current, float Max);
 
@@ -51,6 +59,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void UpdateRoom(int32 Current, int32 Total);
+
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void UpdateEnemyHealth(const FString& Name, float Current, float Max);
+
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void HideEnemyHealth();
 
 	// ─── SignalBus 事件回调 ───────────────────────────────────────
 	UFUNCTION()

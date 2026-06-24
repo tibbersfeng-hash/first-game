@@ -353,6 +353,40 @@ ABaseEnemy* UMonsterAnimInstance::GetOwningEnemy() const
 
 UAnimSequence* UMonsterAnimInstance::GetCurrentAnimation() const
 {
-	// 获取当前播放的动画
-	return nullptr;  // TODO: 实现
+	// 根据当前状态返回对应的动画序列
+	ABaseEnemy* Enemy = const_cast<UMonsterAnimInstance*>(this)->GetOwningEnemy();
+	if (!Enemy) return nullptr;
+
+	uint8 EnemyType = Enemy->GetEnemyTypeValue();
+	FString BasePath;
+
+	switch (EnemyType)
+	{
+	case 0: BasePath = TEXT("/Game/Monsters/CandyZombie/Animations"); break;
+	case 1: BasePath = TEXT("/Game/Monsters/Gingerbread/Animations"); break;
+	case 2: BasePath = TEXT("/Game/Monsters/ShadowNinja/Animations"); break;
+	case 3: BasePath = TEXT("/Game/Monsters/ArmoredGum/Animations"); break;
+	default: return nullptr;
+	}
+
+	// 根据状态返回动画
+	if (CurrentAnimState == TEXT("Idle"))
+	{
+		return LoadObject<UAnimSequence>(nullptr, *(BasePath + TEXT("/AM_Idle")));
+	}
+	else if (CurrentAnimState == TEXT("Attack"))
+	{
+		return LoadObject<UAnimSequence>(nullptr, *(BasePath + TEXT("/AM_Attack")));
+	}
+	else if (CurrentAnimState == TEXT("Hit"))
+	{
+		return LoadObject<UAnimSequence>(nullptr, *(BasePath + TEXT("/AM_Hit")));
+	}
+	else if (CurrentAnimState == TEXT("Death"))
+	{
+		return LoadObject<UAnimSequence>(nullptr, *(BasePath + TEXT("/AM_Death")));
+	}
+
+	// Locomotion 使用 BlendSpace，不返回单个序列
+	return nullptr;
 }

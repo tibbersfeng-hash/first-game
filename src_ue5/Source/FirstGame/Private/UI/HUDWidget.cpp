@@ -7,9 +7,11 @@
 #include "Subsystems/SignalBusSubsystem.h"
 #include "Subsystems/SignalBusFunctionLibrary.h"
 #include "Characters/PlayerCharacter.h"
+#include "Characters/BaseEnemy.h"
 #include "DataAssets/CharacterDataAsset.h"
 #include "Dungeon/DungeonRoom.h"
 #include "Dungeon/DungeonFlow.h"
+#include "LockOn/LockOnComponent.h"
 
 void UHUDWidget::NativeConstruct()
 {
@@ -59,6 +61,42 @@ void UHUDWidget::NativeDestruct()
 	Super::NativeDestruct();
 }
 
+void UHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	// 更新锁定目标血条
+	APlayerCharacter* Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+	if (!Player) return;
+
+	ULockOnComponent* LockOn = Player->FindComponentByClass<ULockOnComponent>();
+	if (!LockOn) return;
+
+	AActor* Target = LockOn->GetCurrentTarget();
+	if (Target)
+	{
+		ABaseEnemy* Enemy = Cast<ABaseEnemy>(Target);
+		if (Enemy)
+		{
+			FString EnemyName;
+			switch (Enemy->EnemyType)
+			{
+			case EEnemyType::CandyZombie:  EnemyName = TEXT("糖果僵尸"); break;
+			case EEnemyType::Gingerbread:  EnemyName = TEXT("姜饼人"); break;
+			case EEnemyType::ShadowNinja:  EnemyName = TEXT("暗影忍者"); break;
+			case EEnemyType::ArmoredGum:   EnemyName = TEXT("装甲口香糖"); break;
+			default:                       EnemyName = TEXT("敌人"); break;
+			}
+			float EnemyMaxHP = Enemy->EnemyData ? Enemy->EnemyData->MaxHealth : 100.f;
+			UpdateEnemyHealth(EnemyName, Enemy->CurrentHealth, EnemyMaxHP);
+		}
+	}
+	else
+	{
+		HideEnemyHealth();
+	}
+}
+
 void UHUDWidget::UpdateHealth(float Current, float Max)
 {
 	if (HealthBar)
@@ -100,6 +138,32 @@ void UHUDWidget::UpdateRoom(int32 Current, int32 Total)
 	if (RoomText)
 	{
 		RoomText->SetText(FText::FromString(FString::Printf(TEXT("Room %d / %d"), Current + 1, Total)));
+	}
+}
+
+void UHUDWidget::UpdateEnemyHealth(const FString& Name, float Current, float Max)
+{
+	if (EnemyHealthBar)
+	{
+		EnemyHealthBar->SetPercent(Max > 0.f ? Current / Max : 0.f);
+		EnemyHealthBar->SetVisibility(ESlateVisibility::Visible);
+	}
+	if (EnemyNameText)
+	{
+		EnemyNameText->SetText(FText::FromString(Name));
+		EnemyNameText->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UHUDWidget::HideEnemyHealth()
+{
+	if (EnemyHealthBar)
+	{
+		EnemyHealthBar->SetVisibility(ESlateVisibility::Hidden);
+	}
+	if (EnemyNameText)
+	{
+		EnemyNameText->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
