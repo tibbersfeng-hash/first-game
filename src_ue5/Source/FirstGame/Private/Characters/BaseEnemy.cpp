@@ -124,6 +124,13 @@ void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 {
 	if (CurrentState == "Dead") return;
 
+	// 无敌帧检查 — 受击硬直期间无敌
+	if (EnemyHurtBox && EnemyHurtBox->IsInvincible())
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("Enemy invincible, damage blocked"));
+		return;
+	}
+
 	CurrentHealth = FMath::Clamp(CurrentHealth - Amount, 0.f, EnemyData ? EnemyData->MaxHealth : 50.f);
 
 	UE_LOG(LogTemp, Log, TEXT("Enemy took %.0f damage. HP: %.0f"), Amount, CurrentHealth);
@@ -145,14 +152,26 @@ void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 		SetState("HitStun");
 		bIsAggro = true; // Always aggro after being hit
 
+		// 设置无敌帧 (受击硬直期间无敌)
+		if (EnemyHurtBox)
+		{
+			EnemyHurtBox->SetInvincible(true);
+		}
+
 		// 测试环境中可能没有 World，跳过 Timer
 		if (GetWorld())
 		{
+			float HitStunTime = EnemyData ? EnemyData->HitStunDuration : 0.3f;
 			FTimerHandle Handle;
 			GetWorldTimerManager().SetTimer(Handle, [this]()
 			{
+				// 结束无敌帧
+				if (EnemyHurtBox)
+				{
+					EnemyHurtBox->SetInvincible(false);
+				}
 				SetState("Idle");
-			}, EnemyData ? EnemyData->HitStunDuration : 0.3f, false);
+			}, HitStunTime, false);
 		}
 	}
 }

@@ -4,6 +4,7 @@
 #include "FirstGame.h"
 #include "Characters/PlayerCharacter.h"
 #include "DataAssets/CharacterDataFactory.h"
+#include "DataAssets/CharacterDataAsset.h"
 #include "Level/LevelBuilder.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -67,33 +68,46 @@ void AFirstGameGameMode::BeginPlay()
 
 void AFirstGameGameMode::InitializePlayerCharacter()
 {
-	// 等待玩家生成后初始化
-	FTimerHandle InitHandle;
-	GetWorldTimerManager().SetTimer(InitHandle, [this]()
+	// 使用重试机制等待玩家生成
+	PlayerInitRetryCount = 0;
+	RetryInitializePlayer();
+}
+
+void AFirstGameGameMode::RetryInitializePlayer()
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
+	if (!Player)
 	{
-		APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
-		if (!Player)
+		PlayerInitRetryCount++;
+		if (PlayerInitRetryCount < MaxPlayerInitRetries)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("GameMode: PlayerCharacter not found yet"));
-			return;
-		}
-
-		if (Player->CharacterData)
-		{
-			UE_LOG(LogTemp, Log, TEXT("GameMode: Player already initialized"));
-			return;
-		}
-
-		// 创建武僧数据
-		UCharacterDataAsset* HuikongData = UCharacterDataFactory::CreateHuikongData(this);
-		if (HuikongData)
-		{
-			Player->InitializeCharacter(HuikongData);
-			UE_LOG(LogTemp, Log, TEXT("GameMode: Player initialized with Huikong data"));
+			UE_LOG(LogTemp, Log, TEXT("GameMode: 等待玩家生成 (%d/%d)"), PlayerInitRetryCount, MaxPlayerInitRetries);
+			FTimerHandle Handle;
+			GetWorldTimerManager().SetTimer(Handle, this, &AFirstGameGameMode::RetryInitializePlayer, 0.3f, false);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("GameMode: Failed to create Huikong data"));
+			UE_LOG(LogTemp, Error, TEXT("GameMode: 玩家生成超时，无法初始化数据"));
 		}
-	}, 0.5f, false);  // 等待 0.5 秒让玩家生成
+		return;
+	}
+
+	if (Player->CharacterData)
+	{
+		UE_LOG(LogTemp, Log, TEXT("GameMode: 玩家已初始化"));
+		return;
+	}
+
+	// 创建武僧数据
+	UCharacterDataAsset* HuikongData = UCharacterDataFactory::CreateHuikongData(this);
+	if (HuikongData)
+	{
+		Player->InitializeCharacter(HuikongData);
+		UE_LOG(LogTemp, Log, TEXT("GameMode: 玩家初始化成功 (HP:%.0f, Speed:%.0f)"),
+			HuikongData->MaxHealth, HuikongData->MoveSpeed);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameMode: 创建 Huikong 数据失败"));
+	}
 }

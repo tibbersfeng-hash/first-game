@@ -57,6 +57,13 @@ void UHitBoxComponent::OnHitBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	UHurtBoxComponent* HurtBox = Cast<UHurtBoxComponent>(OtherComp);
 	if (!HurtBox) return;
 
+	// 检查无敌状态 (闪避/受击无敌帧)
+	if (HurtBox->IsInvincible())
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("HIT BLOCKED: Target is invincible"));
+		return;
+	}
+
 	UE_LOG(LogTemp, Log, TEXT("HIT! Attacker=%s -> Target=%s, Damage=%.0f"),
 		*GetNameSafe(CurrentAttacker), *GetNameSafe(OtherActor), CurrentDamage);
 

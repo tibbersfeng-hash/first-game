@@ -23,6 +23,14 @@ protected:
 	/** 初始化玩家角色数据 */
 	void InitializePlayerCharacter();
 
+	/** 重试初始化玩家 (Timer 回调) */
+	UFUNCTION()
+	void RetryInitializePlayer();
+
+	/** 初始化重试计数 */
+	int32 PlayerInitRetryCount = 0;
+	static constexpr int32 MaxPlayerInitRetries = 10;
+
 	/** 玩家角色 Class */
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<class APlayerCharacter> PlayerCharacterClass;
