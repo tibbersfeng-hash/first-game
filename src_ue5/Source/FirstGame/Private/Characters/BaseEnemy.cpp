@@ -109,6 +109,17 @@ void ABaseEnemy::InitializeEnemy(UCharacterDataAsset* InDataAsset)
 		*EnemyData->CharacterId.ToString(), CurrentHealth, *CurrentState.ToString());
 }
 
+float ABaseEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
+{
+	if (CurrentState == "Dead") return 0.f;
+
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	ReceiveHitDamage(ActualDamage, DamageCauser);
+
+	return ActualDamage;
+}
+
 void ABaseEnemy::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 {
 	if (CurrentState == "Dead") return;

@@ -352,7 +352,22 @@ void APlayerCharacter::JumpAction()
 	Jump2D();
 }
 
-// ─── Damage ──────────────────────────────────────────────────────────
+// ─── Damage ─────────────────────────────────────────────────────────
+
+float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
+{
+	if (!CanAct() || CurrentState == "Dead") return 0.f;
+
+	// 闪避无敌帧
+	if (CurrentState == "Dodging") return 0.f;
+
+	// 应用伤害
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	ReceiveHitDamage(ActualDamage, DamageCauser);
+
+	return ActualDamage;
+}
 
 void APlayerCharacter::ReceiveHitDamage(float Amount, AActor* DamageCauser)
 {

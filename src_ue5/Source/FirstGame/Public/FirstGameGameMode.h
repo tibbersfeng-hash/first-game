@@ -20,6 +20,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	/** 初始化玩家角色数据 */
+	void InitializePlayerCharacter();
+
 	/** 玩家角色 Class */
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<class APlayerCharacter> PlayerCharacterClass;

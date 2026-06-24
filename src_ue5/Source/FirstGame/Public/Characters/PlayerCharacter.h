@@ -92,6 +92,9 @@ public:
 	void ReleaseLockOn();
 
 	// ─── Damage ──────────────────────────────────────────────────────
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+		AController* EventInstigator, AActor* DamageCauser) override;
+
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void ReceiveHitDamage(float Amount, AActor* DamageCauser);
 

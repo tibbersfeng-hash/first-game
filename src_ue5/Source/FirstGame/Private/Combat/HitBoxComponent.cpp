@@ -8,6 +8,7 @@
 #include "Subsystems/SignalBusTypes.h"
 #include "Subsystems/AudioManagerSubsystem.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/DamageEvents.h"
 
 UHitBoxComponent::UHitBoxComponent()
 {
@@ -61,6 +62,14 @@ void UHitBoxComponent::OnHitBeginOverlap(UPrimitiveComponent* OverlappedComponen
 
 	// Broadcast hit event
 	OnHit.Broadcast(CurrentAttacker, OtherActor, CurrentDamage);
+
+	// Apply damage to target via TakeDamage
+	if (OtherActor)
+	{
+		AController* Instigator = CurrentAttacker ? CurrentAttacker->GetInstigatorController() : nullptr;
+		FDamageEvent DamageEvent;
+		OtherActor->TakeDamage(CurrentDamage, DamageEvent, Instigator, CurrentAttacker);
+	}
 
 	// Trigger screen effects via SignalBus
 	USignalBusSubsystem* SignalBus = USignalBusFunctionLibrary::GetSignalBus(this);
