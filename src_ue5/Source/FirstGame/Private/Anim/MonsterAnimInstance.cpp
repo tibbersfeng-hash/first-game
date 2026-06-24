@@ -325,24 +325,33 @@ void UMonsterAnimInstance::PlayBlendSpace(UBlendSpace1D* BlendSpace, float Blend
 		return;
 	}
 
-	// UBlendSpace1D 继承自 UAnimSequenceBase
-	// 使用 Cast 转换后播放
+	// UE5.7: UBlendSpace1D 继承自 UBlendSpace → UAnimAsset
+	// 不能直接 Cast 到 UAnimSequenceBase
+	// 使用 Montage_Play 方式播放：创建一个动态 Montage 包装 BlendSpace
 	UAnimSequenceBase* AnimBase = Cast<UAnimSequenceBase>(BlendSpace);
 	if (AnimBase)
 	{
 		PlaySlotAnimationAsDynamicMontage(
 			AnimBase,
 			FName(TEXT("DefaultSlot")),
-			0.2f,  // BlendIn
-			0.2f,  // BlendOut
-			1.0f,  // PlayRate
-			1,     // LoopCount
-			-1.f   // BlendOutTriggerTime
+			0.2f, 0.2f, 1.0f, 1, -1.f
 		);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MonsterAnimInstance: Cannot cast BlendSpace to AnimSequenceBase"));
+		// Fallback: 直接播放 BlendSpace 中的第一个动画样本
+		if (BlendSpace->GetBlendSamples().Num() > 0)
+		{
+			UAnimSequence* FirstAnim = Cast<UAnimSequence>(BlendSpace->GetBlendSamples()[0].Animation);
+			if (FirstAnim)
+			{
+				PlaySlotAnimationAsDynamicMontage(
+					FirstAnim,
+					FName(TEXT("DefaultSlot")),
+					0.2f, 0.2f, 1.0f, 1, -1.f
+				);
+			}
+		}
 	}
 }
 
